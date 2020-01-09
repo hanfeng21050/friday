@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface RoleUserDao {
 
-    @Insert("insert into sys_role_user(userId, roleId) values(#{userId}, #{roleId})")
+    @Insert("insert into sys_role_user(user_id, role_id) values(#{userId}, #{roleId})")
     void save(SysRoleUser sysRoleUser);
 
     @Select("select * from sys_role_user t where t.userId = #{userId}")

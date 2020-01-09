@@ -1,6 +1,10 @@
 spring:
   profiles:
     active: dev
+  devtools:
+    restart:    #需要实时更新的目录
+      additional-paths: resources/**,static/**,templates/**
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.67.128:3306/RBAC?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
@@ -28,3 +32,5 @@ mybatis:
     mapUnderscoreToCamelCase: true
 logging:
   path: E:/demolog
+
+api-url: /api

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>用户列表</title>
+        <header th:replace="header::html"></header>
+    </head>
+    <body>
+        <div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">演示</a>
+            <a>
+              <cite>导航元素</cite></a>
+          </span>
+          <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+        </div>
+        <!--数据表格-->
+        <div class="layui-card-header">
+            <table class="layui-hide" id="table" lay-filter="member"></table>
+        </div>
+
+        <!--每条数据的编辑和删除操作-->
+        <script type="text/html" id="bar">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+
+        <!--批量删除和新增操作-->
+        <script type="text/html" id="toolbar">
+            <div class="layui-btn-container layui-col-md9">
+                <button type="button" class="layui-btn layui-btn-danger" onclick="delAll()">批量删除</button>
+                <button type="button" class="layui-btn" onclick="xadmin.open('添加用户','/user/add')">新增</button>
+            </div>
+
+            <div class="demoTable">
+                搜索ID：
+                <div class="layui-inline">
+                    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                </div>
+                <button class="layui-btn" data-type="reload">搜索</button>
+            </div>
+        </script>
+    </body>
+    <script>
+        layui.use('table', function(){
+            var table = layui.table;
+
+            //第一个实例
+            table.render({
+                elem: '#table'
+                ,toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+                ,url: '/user/list' //数据接口
+                ,response: {
+                    countName: 'count'
+                    ,dataName: 'datas' //规定数据列表的字段名称，默认：data
+                }
+                ,page: true //开启分页
+                ,cols: [
+                    [ //表头
+                        {type:'checkbox',fixed: "left"}
+                        ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
+                        ,{field: 'username', title: '用户名'}
+                        ,{field: 'nickname', title: '别名' }
+                        ,{field: 'telephone', title: '手机号码'}
+                        ,{field: 'email', title: '邮箱'}
+                        ,{field: 'birthday', title: '生日'}
+                        ,{field: 'status', title: '状态',templet: function (d) {
+                            return d.status == 1 ? "启动" : "禁用";
+                        }}
+                        ,{fixed: 'right', title:'操作', toolbar: '#bar'}
+                ]
+                ]
+            });
+
+        });
+    </script>
+
+</html>
