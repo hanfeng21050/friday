@@ -10,5 +10,15 @@ public interface UserService {
     //返回用户的列表(分页)
     public Results<SysUser> list(Integer offset, Integer limit);
 
+    //保存用户
     public Results<SysUser> save(UserDto userDto, Integer roleId);
+
+    //通过手机号查询用户
+    public SysUser getUserByPhone(String telephone);
+
+    //通过用户名查询用户
+    public SysUser getUserByUsername(String username);
+
+    //通过邮箱查询用户
+    public SysUser getUserByEmail(String email);
 }

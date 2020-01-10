@@ -1,6 +1,7 @@
 package com.hf.friday.controller;
 
 import com.hf.friday.base.PageTableRequest;
+import com.hf.friday.base.ResponseCode;
 import com.hf.friday.base.Results;
 import com.hf.friday.dto.UserDto;
 import com.hf.friday.model.SysUser;
@@ -60,12 +61,33 @@ public class UserController {
     @ResponseBody
     public Results<SysUser> addUser(UserDto userDto,Integer roleId)
     {
+        SysUser sysUser = null;
+        //查询用户名是否已经存在
+        sysUser = userService.getUserByUsername(userDto.getUsername());
+        if(sysUser != null && !(sysUser.getId().equals(userDto.getId())))
+        {
+            return Results.failure(ResponseCode.USERNAME_REPEAT.getCode(),ResponseCode.USERNAME_REPEAT.getMessage());
+        }
+
+        //查询手机好是否已经存在
+        sysUser = userService.getUserByPhone(userDto.getTelephone());
+        if(sysUser != null && !(sysUser.getId().equals(userDto.getId())))
+        {
+            return Results.failure(ResponseCode.PHONE_REPEAT.getCode(),ResponseCode.PHONE_REPEAT.getMessage());
+        }
+
+        //查询邮箱是否已经存在
+        sysUser = userService.getUserByEmail(userDto.getEmail());
+        if(sysUser != null && !(sysUser.getId().equals(userDto.getId())))
+        {
+            return Results.failure(ResponseCode.EMAIL_REPEAT.getCode(),ResponseCode.EMAIL_REPEAT.getMessage());
+        }
+
         //用户创建好后默认开启
         userDto.setStatus(1);
-
         //给密码MD5加密
         userDto.setPassword(MD5.crypt(userDto.getPassword()));
-
+        log.info("RoleController.getAll() param:(userDto = "+userDto+")");
         return userService.save(userDto,roleId);
     }
 

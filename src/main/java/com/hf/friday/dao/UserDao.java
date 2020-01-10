@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserDao {
 
 	@Select("select * from sys_user t where t.username = #{username}")
-	SysUser getUser(String username);
+	SysUser getUserByUsername(String username);
 
 	@Select("select * from sys_user t order by t.id limit #{startPosition} , #{limit}")
 	List<SysUser> getAllUsersByPage(@Param("startPosition") Integer startPosition, @Param("limit") Integer limit);
@@ -39,4 +39,7 @@ public interface UserDao {
 
     @Select("select * from sys_user t where t.username like '%${username}%' limit #{startPosition} , #{limit}")
     List<SysUser> getUserByFuzzyUsernameByPage(@Param("username") String username, @Param("startPosition") Integer startPosition, @Param("limit") Integer limit);
+
+    @Select("select * from sys_user t where t.email = #{email}")
+	SysUser getUserByEmail(String email);
 }
