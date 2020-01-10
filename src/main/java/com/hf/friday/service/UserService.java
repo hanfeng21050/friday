@@ -27,4 +27,7 @@ public interface UserService {
 
     //更新用户
     public Results updateUser(UserDto userDto, Integer roleId);
+
+    //删除用户
+    public int deleteUser(Long id);
 }

@@ -35,11 +35,12 @@
             </div>
 
             <div class="demoTable">
-                搜索ID：
-                <div class="layui-inline">
-                    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                <div class="layui-inline layui-show-xs-block">
+                    <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
                 </div>
-                <button class="layui-btn" data-type="reload">搜索</button>
+                <div class="layui-inline layui-show-xs-block">
+                    <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+                </div>
             </div>
         </script>
     </body>
@@ -92,6 +93,7 @@
                                 layer.alert("删除成功", {icon: 1},function (index1) {
                                     layer.close(index1);
                                     //xadmin.father_reload();
+                                    //只刷新这个表
                                     table.reload('table');
                                 });
                             },
@@ -121,15 +123,20 @@
                     }
                     ,cols: [
                         [ //表头
-                            {type: 'checkbox', fixed: 'left'}
-                            ,{field: 'id', title: 'ID', align:'center', width:50}
+                            {type:'checkbox',fixed: "left"}
+                            ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
                             ,{field: 'username', title: '用户名'}
-                            ,{field: 'telephone', title: '手机'}
-                            ,{field: 'status', title: '状态',  templet:function(d){
-                                return  d.status == '1' ? "启动":"禁用";
+                            ,{field: 'nickname', title: '别名' }
+                            ,{field: 'telephone', title: '手机号码'}
+                            ,{field: 'sex', title: '性别',templet: function (d) {
+                                return d.sex == 1 ? "男":"女"
                             }}
+                            ,{field: 'email', title: '邮箱'}
                             ,{field: 'birthday', title: '生日'}
-                            ,{title:'操作', toolbar: '#barDemo' }
+                            ,{field: 'status', title: '状态',templet: function (d) {
+                                return d.status == 1 ? "启动" : "禁用";
+                            }}
+                            ,{fixed: 'right', title:'操作', toolbar: '#bar'}
                         ]
                     ]
                 });

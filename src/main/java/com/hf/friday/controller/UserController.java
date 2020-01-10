@@ -138,6 +138,20 @@ public class UserController {
     }
 
 
+    @GetMapping("/delete")
+    @ResponseBody
+    public Results deleteUser(UserDto userDto)
+    {
+        int count = userService.deleteUser(userDto.getId());
+        if(count > 1)
+        {
+            log.info("RoleController.deleteUser() param:(userId = "+userDto.getId()+")");
+            return Results.success();
+        }else {
+            return Results.failure();
+        }
+    }
+
     //格式转换 json格式的日期到Date类型
     String pattern = "yyyy-MM-dd";
     @InitBinder

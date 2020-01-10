@@ -88,4 +88,13 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    @Override
+    public int deleteUser(Long id) {
+        //删除role_user表
+        roleUserDao.deleteRoleUserByUserId(id.intValue());
+
+        //删除user表
+        return userDao.deleteUser(id.intValue());
+    }
 }
