@@ -57,4 +57,35 @@ public class UserServiceImpl implements UserService {
     public SysUser getUserByEmail(String email) {
         return userDao.getUserByEmail(email);
     }
+
+    @Override
+    public SysUser getUserById(Long id) {
+
+        return userDao.getUserById(id);
+    }
+
+    @Override
+    public Results updateUser(UserDto userDto, Integer roleId) {
+        if(roleId != null)
+        {
+            //更新user表
+            userDao.updateUser(userDto);
+
+            //更新roleuser表
+            SysRoleUser roleUser = new SysRoleUser();
+            roleUser.setUserId(userDto.getId().intValue());
+            roleUser.setRoleId(roleId);
+            if(roleUserDao.getSysRoleUserByUserId(userDto.getId().intValue()) != null)
+            {
+                roleUserDao.updateSysRoleUser(roleUser);
+            }else
+            {
+                roleUserDao.save(roleUser);
+            }
+            return Results.success();
+        }else {
+            return Results.failure();
+        }
+
+    }
 }

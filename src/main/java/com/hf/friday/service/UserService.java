@@ -21,4 +21,10 @@ public interface UserService {
 
     //通过邮箱查询用户
     public SysUser getUserByEmail(String email);
+
+    //通过id查询用户
+    public SysUser getUserById(Long id);
+
+    //更新用户
+    public Results updateUser(UserDto userDto, Integer roleId);
 }

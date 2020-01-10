@@ -91,6 +91,52 @@ public class UserController {
         return userService.save(userDto,roleId);
     }
 
+    /**
+     * 跳转到editUser页面
+     * @param model
+     * @param sysUser
+     * @return
+     */
+    @GetMapping("/edit")
+    public String editUserPage(Model model,SysUser sysUser)
+    {
+        sysUser = userService.getUserById(sysUser.getId());
+        System.out.println(sysUser);
+        model.addAttribute(sysUser);
+        return "user/user-edit";
+    }
+
+    @PostMapping("/edit")
+    @ResponseBody
+    public Results editUser(UserDto userDto,Integer roleId)
+    {
+        SysUser sysUser = null;
+        //查询用户名是否已经存在
+        sysUser = userService.getUserByUsername(userDto.getUsername());
+        if(sysUser != null && !(sysUser.getId().equals(userDto.getId())))
+        {
+            return Results.failure(ResponseCode.USERNAME_REPEAT.getCode(),ResponseCode.USERNAME_REPEAT.getMessage());
+        }
+
+        //查询手机好是否已经存在
+        sysUser = userService.getUserByPhone(userDto.getTelephone());
+        if(sysUser != null && !(sysUser.getId().equals(userDto.getId())))
+        {
+            return Results.failure(ResponseCode.PHONE_REPEAT.getCode(),ResponseCode.PHONE_REPEAT.getMessage());
+        }
+
+        //查询邮箱是否已经存在
+        sysUser = userService.getUserByEmail(userDto.getEmail());
+        if(sysUser != null && !(sysUser.getId().equals(userDto.getId())))
+        {
+            return Results.failure(ResponseCode.EMAIL_REPEAT.getCode(),ResponseCode.EMAIL_REPEAT.getMessage());
+        }
+
+
+        log.info("RoleController.editUser() param:(userDto = "+userDto+" roleId:"+roleId+")");
+        return userService.updateUser(userDto,roleId);
+    }
+
 
     //格式转换 json格式的日期到Date类型
     String pattern = "yyyy-MM-dd";
