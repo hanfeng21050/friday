@@ -29,5 +29,8 @@ public interface UserService {
     public Results updateUser(UserDto userDto, Integer roleId);
 
     //删除用户
-    public int deleteUser(Long id);
+    public int deleteUser(List<Integer> list);
+
+    //模糊查询（根据用户名）
+    public Results findUserByFuzzyUserName(Integer offset, Integer limit, String username);
 }

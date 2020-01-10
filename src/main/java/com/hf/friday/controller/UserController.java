@@ -7,6 +7,7 @@ import com.hf.friday.dto.UserDto;
 import com.hf.friday.model.SysUser;
 import com.hf.friday.service.UserService;
 import com.hf.friday.util.MD5;
+import com.hf.friday.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomBooleanEditor;
@@ -20,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 import javax.jws.WebResult;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.SimpleFormatter;
 
 @Controller
@@ -140,16 +142,29 @@ public class UserController {
 
     @GetMapping("/delete")
     @ResponseBody
-    public Results deleteUser(UserDto userDto)
+    public Results deleteUser(String ids)
     {
-        int count = userService.deleteUser(userDto.getId());
-        if(count > 1)
+        List<Integer> list = StringUtils.String2Int(ids);
+
+        int count = userService.deleteUser(list);
+
+        if(count == ids.length())
         {
-            log.info("RoleController.deleteUser() param:(userId = "+userDto.getId()+")");
             return Results.success();
-        }else {
+        }else
+        {
             return Results.failure();
         }
+    }
+
+
+    @GetMapping("/findUserByFuzzyUserName")
+    @ResponseBody
+    public Results findUserByFuzzyUserName(PageTableRequest request,String username)
+    {
+        log.info("RoleController.findUserByFuzzyUserName() param:(request = "+request+" username:"+username+")");
+        request.countOffset();
+        return userService.findUserByFuzzyUserName(request.getOffset(),request.getLimit(),username);
     }
 
     //格式转换 json格式的日期到Date类型

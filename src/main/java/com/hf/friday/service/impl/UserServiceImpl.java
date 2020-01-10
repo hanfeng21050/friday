@@ -4,13 +4,14 @@ import com.hf.friday.base.Results;
 import com.hf.friday.dao.RoleUserDao;
 import com.hf.friday.dao.UserDao;
 import com.hf.friday.dto.UserDto;
-import com.hf.friday.model.SysRole;
 import com.hf.friday.model.SysRoleUser;
 import com.hf.friday.model.SysUser;
 import com.hf.friday.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 @Service
@@ -90,11 +91,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteUser(Long id) {
+    public int deleteUser(List<Integer> list) {
+        int count = 0;
         //删除role_user表
-        roleUserDao.deleteRoleUserByUserId(id.intValue());
+        for (Integer id : list) {
+            roleUserDao.deleteRoleUserByUserId(id.intValue());
+            userDao.deleteUser(id.intValue());
+            count++;
+        }
 
-        //删除user表
-        return userDao.deleteUser(id.intValue());
+        return count;
+    }
+
+    @Override
+    public Results findUserByFuzzyUserName(Integer offset, Integer limit, String username) {
+        return Results.success(userDao.getUserCountByFuzzyUsername(username).intValue(),userDao.getUserByFuzzyUsernameByPage(username,offset,limit));
     }
 }
