@@ -25,4 +25,5 @@ public class RoleUserController {
         log.info("RoleUserController.getRoleUserByUserId() param:(userId = "+userId+")");
         return roleUserService.getRoleUserByUserId(userId);
     }
+
 }

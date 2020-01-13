@@ -42,7 +42,7 @@ public class UserController {
     public Results<SysUser> list(PageTableRequest request)
     {
         request.countOffset();
-        log.info("RoleController.getAll() param:(request = "+request+")");
+        log.info("UserController.getAll() param:(request = "+request+")");
         return userService.list(request.getOffset(), request.getLimit());
     }
 
@@ -89,7 +89,7 @@ public class UserController {
         userDto.setStatus(1);
         //给密码MD5加密
         userDto.setPassword(MD5.crypt(userDto.getPassword()));
-        log.info("RoleController.getAll() param:(userDto = "+userDto+")");
+        log.info("UserController.getAll() param:(userDto = "+userDto+")");
         return userService.save(userDto,roleId);
     }
 
@@ -134,8 +134,8 @@ public class UserController {
             return Results.failure(ResponseCode.EMAIL_REPEAT.getCode(),ResponseCode.EMAIL_REPEAT.getMessage());
         }
 
+        log.info("UserController.editUser() param:(userDto = "+userDto+" roleId:"+roleId+")");
 
-        log.info("RoleController.editUser() param:(userDto = "+userDto+" roleId:"+roleId+")");
         return userService.updateUser(userDto,roleId);
     }
 
@@ -144,10 +144,9 @@ public class UserController {
     @ResponseBody
     public Results deleteUser(String ids)
     {
+        log.info("UserController.deleteUser() param:(ids = "+ids+")");
         List<Integer> list = StringUtils.String2Int(ids);
-
         int count = userService.deleteUser(list);
-
         if(count == ids.length())
         {
             return Results.success();
@@ -162,7 +161,7 @@ public class UserController {
     @ResponseBody
     public Results findUserByFuzzyUserName(PageTableRequest request,String username)
     {
-        log.info("RoleController.findUserByFuzzyUserName() param:(request = "+request+" username:"+username+")");
+        log.info("UserController.findUserByFuzzyUserName() param:(request = "+request+" username:"+username+")");
         request.countOffset();
         return userService.findUserByFuzzyUserName(request.getOffset(),request.getLimit(),username);
     }
