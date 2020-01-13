@@ -73,4 +73,9 @@ public class RoleServiceImpl implements RoleService {
         List<SysRole> roles = roleDao.getRoleByFuzzyNameByPage(roleName,offset,limit);
         return Results.success(count,roles);
     }
+
+    @Override
+    public SysRole getRoleById(Integer id) {
+        return roleDao.getRoleById(id);
+    }
 }

@@ -76,7 +76,7 @@
             var permissionIds = getCheckedMenuIds();
             data.field.permissionIds = permissionIds;
             $.ajax({
-                url:"/role/all",
+                url:"/role/edit",
                 type:"POST",
                 contentType: "application/json; charset=utf-8",
                 data:JSON.stringify(data.field),

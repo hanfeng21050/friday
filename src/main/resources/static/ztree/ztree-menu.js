@@ -62,6 +62,7 @@ function initMenuDatas(roleId){
         type : 'get',
         url : '/permission/listAllPermissionByRoleId?id=' + roleId,
         success : function(ret) {
+        	console.log(ret)
             var data = ret.datas;
             var length = data.length;
             var ids = [];

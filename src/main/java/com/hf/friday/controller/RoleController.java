@@ -80,6 +80,33 @@ public class RoleController {
 
 
     /**
+     * 跳转到修改页面
+     * @param model
+     * @return
+     */
+    @GetMapping("/edit")
+    public String addEditPage(Model model,SysRole role)
+    {
+
+        model.addAttribute("sysRole",roleService.getRoleById(role.getId()));
+        return "role/role-edit";
+    }
+
+
+
+    /**
+     * 修改
+     * @param roleDto
+     * @return
+     */
+    @PostMapping("/edit")
+    @ResponseBody
+    public Results addEditPage(RoleDto roleDto)
+    {
+        return null;
+    }
+
+    /**
      * 模糊查询
      * @param request
      * @param roleName

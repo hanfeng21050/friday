@@ -30,4 +30,7 @@ public interface RoleService {
 
     //模糊查询（根据角色）
     public Results findRoleByFuzzyName(Integer offset, Integer limit, String roleName);
- }
+
+    //根据id查询角色
+    SysRole getRoleById(Integer id);
+}

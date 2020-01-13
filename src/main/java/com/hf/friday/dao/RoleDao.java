@@ -38,4 +38,6 @@ public interface RoleDao {
     @Select("select * from sys_role t where t.name like '%${name}%' limit #{startPosition} , #{limit}")
     List<SysRole> getRoleByFuzzyNameByPage(@Param("name") String name, @Param("startPosition") Integer startPosition, @Param("limit") Integer limit);
 
+    @Select("select * from sys_role where id = #{id}")
+    SysRole getRoleById(Integer id);
 }
