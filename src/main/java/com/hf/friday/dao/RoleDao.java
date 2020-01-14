@@ -1,5 +1,6 @@
 package com.hf.friday.dao;
 
+import com.hf.friday.dto.RoleDto;
 import com.hf.friday.model.SysRole;
 import com.hf.friday.model.SysUser;
 import org.apache.ibatis.annotations.*;
@@ -30,7 +31,7 @@ public interface RoleDao {
     @Select("select * from sys_role t where t.id = #{id}")
     SysUser getUserById(Long id);
 
-    int updateRole(SysUser sysUser);
+    int updateRole(SysRole sysRole);
 
     @Select("select count(*) from sys_role t where t.name like '%${name}%'")
     Long getRoleCountByFuzzyName(@Param("name") String name);
@@ -40,4 +41,7 @@ public interface RoleDao {
 
     @Select("select * from sys_role where id = #{id}")
     SysRole getRoleById(Integer id);
+
+    @Delete("delete from sys_role where id = #{id}")
+    void deleteRole(int id);
 }

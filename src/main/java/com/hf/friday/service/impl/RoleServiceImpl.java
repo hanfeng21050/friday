@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.sql.Connection;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -53,18 +51,27 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public SysUser getUserByName(String name) {
+    public SysUser getRoleByName(String name) {
         return null;
     }
 
     @Override
-    public SysUser getUserById(Long id) {
+    public SysUser getRoleById(Long id) {
         return null;
     }
 
     @Override
-    public int deleteUser(List<Integer> list) {
-        return 0;
+    public int deleteRole(List<Integer> list) {
+        int count = 0;
+        for (Integer id : list) {
+            //删除中间表
+            rolePermissionDao.deleteRolePermissionByRoleId(id.intValue());
+            //删除角色表
+            roleDao.deleteRole(id.intValue());
+            count++;
+        }
+
+        return count;
     }
 
     @Override
@@ -77,5 +84,21 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public SysRole getRoleById(Integer id) {
         return roleDao.getRoleById(id);
+    }
+
+    @Override
+    public int update(RoleDto roleDto) {
+        List<Long> permissionIds = roleDto.getPermissionIds();
+        permissionIds.remove(0L);
+        //更新前删除该角色所有的权限信息
+        rolePermissionDao.deleteRolePermissionByRoleId(roleDto.getId());
+
+        //添加权限
+        if(!CollectionUtils.isEmpty(permissionIds))
+        {
+            rolePermissionDao.save(roleDto.getId(),permissionIds);
+        }
+
+        return roleDao.updateRole(roleDto);
     }
 }

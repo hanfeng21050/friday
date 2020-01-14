@@ -147,7 +147,6 @@
             for (var i = 0; i < checkStatus.data.length; i++) {
                 ids += checkStatus.data[i].id + ",";
             }
-            console.log(ids)
             layer.confirm('真的删除行么', function(index){
                 $.ajax({
                     url:"/role/delete",

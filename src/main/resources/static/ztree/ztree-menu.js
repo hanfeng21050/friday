@@ -20,7 +20,6 @@ function onlyGetMenuTree() {
                 var node = createNode(d,true);
                 children[i] = node;
             }
-			console.log(children);
             root.children = children;
         }
     });

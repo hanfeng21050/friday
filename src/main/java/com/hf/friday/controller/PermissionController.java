@@ -34,7 +34,6 @@ public class PermissionController {
     public Results<SysPermission> listAllPermissionByRoleId(RoleDto roleDto)
     {
         log.info("PermissionController.listAllPermissionByRoleId() param:(id="+roleDto.getId()+")");
-        System.out.println(permissionService.listAllPermissionByRoleId(roleDto.getId()));
         return permissionService.listAllPermissionByRoleId(roleDto.getId());
     }
 

@@ -72,7 +72,6 @@
 
         //监听提交
         form.on('submit(update)', function(data){
-            console.log(data);
             var permissionIds = getCheckedMenuIds();
             data.field.permissionIds = permissionIds;
             $.ajax({

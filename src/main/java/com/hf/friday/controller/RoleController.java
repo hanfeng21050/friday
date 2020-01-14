@@ -1,28 +1,18 @@
 package com.hf.friday.controller;
 
 import com.hf.friday.base.PageTableRequest;
-import com.hf.friday.base.ResponseCode;
 import com.hf.friday.base.Results;
 import com.hf.friday.dto.RoleDto;
-import com.hf.friday.dto.UserDto;
 import com.hf.friday.model.SysRole;
-import com.hf.friday.model.SysUser;
 import com.hf.friday.service.RoleService;
-import com.hf.friday.util.MD5;
 import com.hf.friday.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/role")
@@ -101,10 +91,19 @@ public class RoleController {
      */
     @PostMapping("/edit")
     @ResponseBody
-    public Results addEditPage(RoleDto roleDto)
+    public Results edit(@RequestBody RoleDto roleDto)
     {
-        return null;
+
+        log.info("RoleController.edit() param:(roleDto = "+roleDto+")");
+        int count =  roleService.update(roleDto);
+        if(count >= 1)
+        {
+            return Results.success();
+        }else {
+            return Results.failure();
+        }
     }
+
 
     /**
      * 模糊查询
@@ -119,5 +118,26 @@ public class RoleController {
         log.info("RoleController.findRoleByFuzzyName() param:(request = "+request+" ,roleName:"+roleName+")");
         request.countOffset();
         return roleService.findRoleByFuzzyName(request.getOffset(),request.getLimit(),roleName);
+    }
+
+    /**
+     * 删除角色
+     * @param ids
+     * @return
+     */
+    @GetMapping("/delete")
+    @ResponseBody
+    public Results deleteRole(String ids)
+    {
+        log.info("RoleController.deleteRole() param:(ids = "+ids+")");
+        List<Integer> list = StringUtils.String2Int(ids);
+        int count = roleService.deleteRole(list);
+        if(count == ids.length())
+        {
+            return Results.success();
+        }else
+        {
+            return Results.failure();
+        }
     }
 }

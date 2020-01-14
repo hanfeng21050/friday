@@ -103,7 +103,6 @@ public class UserController {
     public String editUserPage(Model model,SysUser sysUser)
     {
         sysUser = userService.getUserById(sysUser.getId());
-        System.out.println(sysUser);
         model.addAttribute(sysUser);
         return "user/user-edit";
     }
