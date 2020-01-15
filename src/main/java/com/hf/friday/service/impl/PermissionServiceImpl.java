@@ -32,4 +32,29 @@ public class PermissionServiceImpl implements PermissionService {
 
         return Results.success(0,permissionDao.listAllPermissionByRoleId(roleId));
     }
+
+    @Override
+    public Results<SysPermission> getMenuAll() {
+        return Results.success(0,permissionDao.findAll());
+    }
+
+    @Override
+    public Results save(SysPermission sysPermission) {
+        return (permissionDao.save(sysPermission) > 0 ? Results.success():Results.failure());
+    }
+
+    @Override
+    public SysPermission findPermissionById(Integer id) {
+        return permissionDao.findPermissionById(id);
+    }
+
+    @Override
+    public Results update(SysPermission sysPermission) {
+        return (permissionDao.updatePermission(sysPermission) > 0 ? Results.success() : Results.failure());
+    }
+
+    @Override
+    public Results delete(Integer id) {
+        return permissionDao.deletePemission(id) > 0 ? Results.success() : Results.failure();
+    }
 }
