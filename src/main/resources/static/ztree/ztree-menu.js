@@ -20,6 +20,7 @@ function onlyGetMenuTree() {
                 var node = createNode(d,true);
                 children[i] = node;
             }
+			console.log(children);
             root.children = children;
         }
     });
@@ -61,7 +62,6 @@ function initMenuDatas(roleId){
         type : 'get',
         url : '/permission/listAllPermissionByRoleId?id=' + roleId,
         success : function(ret) {
-        	console.log(ret)
             var data = ret.datas;
             var length = data.length;
             var ids = [];

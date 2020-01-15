@@ -5,7 +5,7 @@ import com.hf.friday.base.Results;
 import com.hf.friday.dto.RoleDto;
 import com.hf.friday.model.SysRole;
 import com.hf.friday.service.RoleService;
-import com.hf.friday.util.StringUtils;
+import com.hf.friday.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -130,7 +130,7 @@ public class RoleController {
     public Results deleteRole(String ids)
     {
         log.info("RoleController.deleteRole() param:(ids = "+ids+")");
-        List<Integer> list = StringUtils.String2Int(ids);
+        List<Integer> list = StringUtil.String2Int(ids);
         int count = roleService.deleteRole(list);
         if(count == ids.length())
         {

@@ -3,7 +3,7 @@ package com.hf.friday.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringUtils {
+public class StringUtil {
 
     /**
      * 将字符串转化为int集合

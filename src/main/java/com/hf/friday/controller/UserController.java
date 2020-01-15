@@ -7,10 +7,9 @@ import com.hf.friday.dto.UserDto;
 import com.hf.friday.model.SysUser;
 import com.hf.friday.service.UserService;
 import com.hf.friday.util.MD5;
-import com.hf.friday.util.StringUtils;
+import com.hf.friday.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomBooleanEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +17,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.jws.WebResult;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.SimpleFormatter;
 
 @Controller
 @RequestMapping("/user")
@@ -87,8 +84,9 @@ public class UserController {
 
         //用户创建好后默认开启
         userDto.setStatus(1);
-        //给密码MD5加密
+        //加密
         userDto.setPassword(MD5.crypt(userDto.getPassword()));
+       // userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
         log.info("UserController.getAll() param:(userDto = "+userDto+")");
         return userService.save(userDto,roleId);
     }
@@ -144,7 +142,7 @@ public class UserController {
     public Results deleteUser(String ids)
     {
         log.info("UserController.deleteUser() param:(ids = "+ids+")");
-        List<Integer> list = StringUtils.String2Int(ids);
+        List<Integer> list = StringUtil.String2Int(ids);
         int count = userService.deleteUser(list);
         if(count == ids.length())
         {
