@@ -97,4 +97,12 @@ public class PermissionController {
         log.info("PermissionController.deletePermission() param:(id="+id+")");
         return permissionService.delete(id);
     }
+
+    @GetMapping("/menu")
+    @ResponseBody
+    public Results getMenuByUserId(Integer userId)
+    {
+        log.info("PermissionController.getMenuByUserId() param:(userId="+userId+")");
+        return permissionService.getMenuByUserId(userId);
+    }
 }

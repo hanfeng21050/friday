@@ -27,4 +27,7 @@ public interface PermissionService {
 
     //删除权限
     Results delete(Integer id);
+
+    //根据用户权限返回菜单
+    Results getMenuByUserId(Integer userId);
 }

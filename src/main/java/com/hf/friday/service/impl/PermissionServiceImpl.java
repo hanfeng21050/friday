@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -56,5 +57,14 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Results delete(Integer id) {
         return permissionDao.deletePemission(id) > 0 ? Results.success() : Results.failure();
+    }
+
+    @Override
+    public Results getMenuByUserId(Integer userId) {
+        List<SysPermission> datas = permissionDao.listByUserId(userId);
+        datas = datas.stream().filter(p -> p.getType().equals(1)).collect(Collectors.toList());
+        JSONArray array = new JSONArray();
+        TreeUtil.setPermissionsTree(0,datas,array);
+        return Results.success(array);
     }
 }
