@@ -33,4 +33,7 @@ public interface UserService {
 
     //模糊查询（根据用户名）
     public Results findUserByFuzzyUserName(Integer offset, Integer limit, String username);
+
+    //修改密码
+    Results changePassword(String username, String oldPassword, String newPassword);
 }

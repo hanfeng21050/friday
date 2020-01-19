@@ -188,6 +188,21 @@ public class UserController {
         return userService.findUserByFuzzyUserName(request.getOffset(),request.getLimit(),username);
     }
 
+    @PostMapping("/changePassword")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:password')")
+    @ApiOperation(value = "修改密码", notes = "修改用户密码")//描述
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username",value = "用户名", required = true),
+            @ApiImplicitParam(name = "oldPassword",value = "旧密码", required = true),
+            @ApiImplicitParam(name = "newPassword",value = "新密码", required = true),
+    })
+    public Results changePassword(String username,String oldPassword,String newPassword)
+    {
+        log.info("UserController.changePassword() param:(username = "+username+")");
+        return userService.changePassword(username,oldPassword,newPassword);
+    }
+
     //格式转换 json格式的日期到Date类型
     String pattern = "yyyy-MM-dd";
     @InitBinder

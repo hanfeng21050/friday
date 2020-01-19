@@ -8,6 +8,7 @@ import com.hf.friday.model.SysRoleUser;
 import com.hf.friday.model.SysUser;
 import com.hf.friday.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,5 +107,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public Results findUserByFuzzyUserName(Integer offset, Integer limit, String username) {
         return Results.success(userDao.getUserCountByFuzzyUsername(username).intValue(),userDao.getUserByFuzzyUsernameByPage(username,offset,limit));
+    }
+
+    @Override
+    public Results changePassword(String username, String oldPassword, String newPassword) {
+
+        //比较密码是否正确
+        SysUser user = userDao.getUserByUsername(username);
+
+        if(user == null)
+        {
+            return Results.failure(500,"用户不存在");
+        }
+
+        BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
+        if(!encode.matches(oldPassword,user.getPassword()))
+        {
+            return Results.failure(500,"旧密码错误");
+        }
+
+        //修改密码
+        userDao.changePassword(user.getId(),new BCryptPasswordEncoder().encode(newPassword));
+        return Results.success();
     }
 }
