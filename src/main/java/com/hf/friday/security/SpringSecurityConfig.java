@@ -2,6 +2,7 @@ package com.hf.friday.security;
 
 import com.hf.friday.security.authentication.MyAuthenticationFailureHandler;
 import com.hf.friday.security.authentication.MyAuthenticationSuccessHandler;
+import com.hf.friday.security.authentication.MyLogoutSuccessHandler;
 import com.hf.friday.security.authentication.RestAuthenticationAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +28,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
     @Autowired
     private RestAuthenticationAccessDeniedHandler restAuthenticationAccessDeniedHandler;
+    @Autowired
+    private MyLogoutSuccessHandler myLogoutSuccessHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder()
     {
@@ -59,7 +63,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login.html")
                 .loginProcessingUrl("/login").permitAll()
                 .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailureHandler);
+                .failureHandler(myAuthenticationFailureHandler)
+                .and()
+                .logout().permitAll()
+                .invalidateHttpSession(true)//session失效
+                .deleteCookies("JESSIONID")
+                .logoutSuccessHandler(myLogoutSuccessHandler);
 
         //异常处理
         http.exceptionHandling().accessDeniedHandler(restAuthenticationAccessDeniedHandler);

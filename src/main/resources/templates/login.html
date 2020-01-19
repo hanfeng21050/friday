@@ -39,6 +39,7 @@
 					success : function(datas) {
 
 						if(datas.authenticated == true){
+							localStorage.clear();
 							localStorage.setItem("userId", datas.principal.id);
                             localStorage.setItem("username", datas.principal.username);
 							localStorage.setItem("nickName", datas.principal.nickname);
