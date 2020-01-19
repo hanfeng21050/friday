@@ -6,13 +6,21 @@ import com.hf.friday.dto.RoleDto;
 import com.hf.friday.model.SysRole;
 import com.hf.friday.service.RoleService;
 import com.hf.friday.util.StringUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -25,6 +33,7 @@ public class RoleController {
 
     @RequestMapping("/all")
     @ResponseBody
+    @ApiOperation(value = "获取所有角色", notes = "获取所有角色信息")//描述
     public Results<SysRole> All()
     {
         log.info("RoleController.All()");
@@ -41,6 +50,11 @@ public class RoleController {
     @GetMapping("/list")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:role:query')")
+    @ApiOperation(value = "分页获取角色", notes = "用户分页获取角色信息")//描述
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", required = true,dataType = "Integer"),
+            @ApiImplicitParam(name = "limit", required = true,dataType = "Integer"),
+    })
     public Results<SysRole> list(PageTableRequest request)
     {
         request.countOffset();
@@ -55,6 +69,7 @@ public class RoleController {
      */
     @GetMapping("/add")
     @PreAuthorize("hasAuthority('sys:role:add')")
+    @ApiOperation(value = "新增角色信息页面", notes = "跳转到角色信息新增页面")//描述
     public String addRolePage(Model model)
     {
         model.addAttribute(new SysRole());
@@ -65,6 +80,8 @@ public class RoleController {
     @PostMapping("/add")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:role:add')")
+    @ApiOperation(value = "保存角色信息", notes = "保存新增的角色信息")//描述
+    @ApiImplicitParam(name = "roleDto",value = "角色信息实体类", required = true,dataType = "RoleDto")
     public Results<SysRole> addRole(@RequestBody RoleDto roleDto)
     {
 
@@ -80,6 +97,8 @@ public class RoleController {
      */
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('sys:role:edit')")
+    @ApiOperation(value = "编辑角色信息页面", notes = "跳转到角色信息编辑页面")//描述
+    @ApiImplicitParam(name = "role",value = "角色信息实体类", required = true,dataType = "SysRole")
     public String addEditPage(Model model,SysRole role)
     {
 
@@ -97,6 +116,8 @@ public class RoleController {
     @PostMapping("/edit")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:role:edit')")
+    @ApiOperation(value = "保存角色信息", notes = "保存被编辑的角色信息")//描述
+    @ApiImplicitParam(name = "roleDto",value = "角色信息实体类", required = true,dataType = "RoleDto")
     public Results edit(@RequestBody RoleDto roleDto)
     {
 
@@ -120,6 +141,10 @@ public class RoleController {
     @GetMapping("/findRoleByFuzzyName")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:role:query')")
+    @ApiOperation(value = "模糊查询角色信息", notes = "模糊搜索查询角色信息")//描述
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "roleName",value = "模糊搜索的角色名", required = true),
+    })
     public Results findRoleByFuzzyName(PageTableRequest request,String roleName)
     {
         log.info("RoleController.findRoleByFuzzyName() param:(request = "+request+" ,roleName:"+roleName+")");
@@ -135,6 +160,7 @@ public class RoleController {
     @GetMapping("/delete")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:role:del')")
+    @ApiOperation(value = "删除角色信息", notes = "删除角色信息 exp:1,2,3,")//描述
     public Results deleteRole(String ids)
     {
         log.info("RoleController.deleteRole() param:(ids = "+ids+")");
@@ -147,5 +173,12 @@ public class RoleController {
         {
             return Results.failure();
         }
+    }
+
+    String pattern = "yyyy-MM-dd";
+    //只需要加上下面这段即可，注意不能忘记注解
+    @InitBinder
+    public void initBinder(WebDataBinder binder, WebRequest request) {
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat(pattern), true));// CustomDateEditor为自定义日期编辑器
     }
 }

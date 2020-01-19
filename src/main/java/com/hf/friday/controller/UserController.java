@@ -8,6 +8,9 @@ import com.hf.friday.model.SysUser;
 import com.hf.friday.service.UserService;
 import com.hf.friday.util.MD5;
 import com.hf.friday.util.StringUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -38,6 +41,8 @@ public class UserController {
      */
     @GetMapping("/list")
     @ResponseBody
+    @ApiOperation(value = "分页获取用户信息", notes = "分页获取用户信息")//描述
+    @ApiImplicitParam(name = "request", value = "分页查询实体类", required=false)
     @PreAuthorize("hasAuthority('sys:user:query')")
     public Results<SysUser> list(PageTableRequest request)
     {
@@ -53,6 +58,7 @@ public class UserController {
      */
     @GetMapping("/add")
     @PreAuthorize("hasAuthority('sys:user:add')")
+    @ApiOperation(value = "用户新增页面", notes = "跳转到新增用户信息页面")//描述
     public String addUserPage(Model model)
     {
         model.addAttribute(new SysUser());
@@ -62,6 +68,7 @@ public class UserController {
 
     @PostMapping("/add")
     @ResponseBody
+    @ApiOperation(value = "保存用户信息", notes = "保存新增的用户信息")//描述
     @PreAuthorize("hasAuthority('sys:user:add')")
     public Results<SysUser> addUser(UserDto userDto,Integer roleId)
     {
@@ -104,6 +111,8 @@ public class UserController {
      */
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('sys:user:edit')")
+    @ApiOperation(value = "用户编辑页面", notes = "跳转到用户信息编辑页面")//描述
+    @ApiImplicitParam(name = "user", value = "用户实体类", dataType = "SysUser")
     public String editUserPage(Model model,SysUser sysUser)
     {
         sysUser = userService.getUserById(sysUser.getId());
@@ -114,6 +123,7 @@ public class UserController {
     @PostMapping("/edit")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:edit')")
+    @ApiOperation(value = "保存用户信息", notes = "保存编辑完的用户信息")//描述
     public Results editUser(UserDto userDto,Integer roleId)
     {
         SysUser sysUser = null;
@@ -147,12 +157,14 @@ public class UserController {
     @GetMapping("/delete")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:del')")
+    @ApiOperation(value = "删除用户信息", notes = "删除用户信息 exp:1,2,3,")//描述
+    @ApiImplicitParam(name = "ids", value = "用户id集合", required = true, dataType = "String")
     public Results deleteUser(String ids)
     {
         log.info("UserController.deleteUser() param:(ids = "+ids+")");
         List<Integer> list = StringUtil.String2Int(ids);
         int count = userService.deleteUser(list);
-        if(count == ids.length())
+        if(count == list.size())
         {
             return Results.success();
         }else
@@ -165,6 +177,10 @@ public class UserController {
     @GetMapping("/findUserByFuzzyUserName")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:query')")
+    @ApiOperation(value = "模糊查询用户信息", notes = "模糊搜索查询用户信息")//描述
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username",value = "模糊搜索的用户名", required = true),
+    })
     public Results findUserByFuzzyUserName(PageTableRequest request,String username)
     {
         log.info("UserController.findUserByFuzzyUserName() param:(request = "+request+" username:"+username+")");
