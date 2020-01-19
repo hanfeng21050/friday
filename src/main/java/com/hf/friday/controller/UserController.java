@@ -11,6 +11,8 @@ import com.hf.friday.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -36,6 +38,7 @@ public class UserController {
      */
     @GetMapping("/list")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:query')")
     public Results<SysUser> list(PageTableRequest request)
     {
         request.countOffset();
@@ -49,6 +52,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/add")
+    @PreAuthorize("hasAuthority('sys:user:add')")
     public String addUserPage(Model model)
     {
         model.addAttribute(new SysUser());
@@ -58,6 +62,7 @@ public class UserController {
 
     @PostMapping("/add")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:add')")
     public Results<SysUser> addUser(UserDto userDto,Integer roleId)
     {
         SysUser sysUser = null;
@@ -85,8 +90,8 @@ public class UserController {
         //用户创建好后默认开启
         userDto.setStatus(1);
         //加密
-        userDto.setPassword(MD5.crypt(userDto.getPassword()));
-       // userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
+        //userDto.setPassword(MD5.crypt(userDto.getPassword()));
+        userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
         log.info("UserController.getAll() param:(userDto = "+userDto+")");
         return userService.save(userDto,roleId);
     }
@@ -98,6 +103,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/edit")
+    @PreAuthorize("hasAuthority('sys:user:edit')")
     public String editUserPage(Model model,SysUser sysUser)
     {
         sysUser = userService.getUserById(sysUser.getId());
@@ -107,6 +113,7 @@ public class UserController {
 
     @PostMapping("/edit")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:edit')")
     public Results editUser(UserDto userDto,Integer roleId)
     {
         SysUser sysUser = null;
@@ -139,6 +146,7 @@ public class UserController {
 
     @GetMapping("/delete")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:del')")
     public Results deleteUser(String ids)
     {
         log.info("UserController.deleteUser() param:(ids = "+ids+")");
@@ -156,6 +164,7 @@ public class UserController {
 
     @GetMapping("/findUserByFuzzyUserName")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:query')")
     public Results findUserByFuzzyUserName(PageTableRequest request,String username)
     {
         log.info("UserController.findUserByFuzzyUserName() param:(request = "+request+" username:"+username+")");

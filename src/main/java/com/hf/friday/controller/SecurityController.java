@@ -11,4 +11,10 @@ public class SecurityController {
     {
         return "login";
     }
+
+    @GetMapping("/403.html")
+    public String noPermission()
+    {
+        return "403";
+    }
 }

@@ -8,6 +8,7 @@ import com.hf.friday.service.RoleService;
 import com.hf.friday.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,7 @@ public class RoleController {
      */
     @GetMapping("/list")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:query')")
     public Results<SysRole> list(PageTableRequest request)
     {
         request.countOffset();
@@ -52,6 +54,7 @@ public class RoleController {
      * @return
      */
     @GetMapping("/add")
+    @PreAuthorize("hasAuthority('sys:role:add')")
     public String addRolePage(Model model)
     {
         model.addAttribute(new SysRole());
@@ -61,6 +64,7 @@ public class RoleController {
 
     @PostMapping("/add")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:add')")
     public Results<SysRole> addRole(@RequestBody RoleDto roleDto)
     {
 
@@ -75,6 +79,7 @@ public class RoleController {
      * @return
      */
     @GetMapping("/edit")
+    @PreAuthorize("hasAuthority('sys:role:edit')")
     public String addEditPage(Model model,SysRole role)
     {
 
@@ -91,6 +96,7 @@ public class RoleController {
      */
     @PostMapping("/edit")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:edit')")
     public Results edit(@RequestBody RoleDto roleDto)
     {
 
@@ -113,6 +119,7 @@ public class RoleController {
      */
     @GetMapping("/findRoleByFuzzyName")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:query')")
     public Results findRoleByFuzzyName(PageTableRequest request,String roleName)
     {
         log.info("RoleController.findRoleByFuzzyName() param:(request = "+request+" ,roleName:"+roleName+")");
@@ -127,6 +134,7 @@ public class RoleController {
      */
     @GetMapping("/delete")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:del')")
     public Results deleteRole(String ids)
     {
         log.info("RoleController.deleteRole() param:(ids = "+ids+")");
