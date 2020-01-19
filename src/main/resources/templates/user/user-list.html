@@ -83,7 +83,10 @@
                         }}
                         ,{fixed: 'right', title:'操作', toolbar: '#bar'}
                 ]
-                ]
+                ],
+                done:function () {
+                    checkPermission();
+                }
             });
 
             //监听工具条
@@ -149,7 +152,7 @@
                 });
                 return false;
             });
-            //checkPermission();
+            checkPermission();
         });
 
         function delAll() {
