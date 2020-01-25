@@ -4,55 +4,36 @@ import com.hf.friday.base.PageTableRequest;
 import com.hf.friday.base.Results;
 import com.hf.friday.dto.FileDto;
 import com.hf.friday.model.SysFile;
-import com.hf.friday.model.SysRole;
-import com.hf.friday.model.SysUser;
 import com.hf.friday.service.FileService;
+import com.hf.friday.util.StringUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 import java.io.*;
-import java.net.URLEncoder;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 @Controller
 @RequestMapping("/file")
 @Slf4j
 public class FileController {
-    @Value("${file.path}")
-    private String filePath;
-
     @Autowired
     private FileService fileService;
-
-    @Autowired
-    private ResourceLoader resourceLoader;
+    @Value("${file.uploadPath}")
+    private String filePath;
 
 
     /**
@@ -100,10 +81,28 @@ public class FileController {
     @GetMapping("/download")
     @ApiOperation(value = "下载文件", notes = "下载用户文件")//描述
     @PreAuthorize("hasAuthority('sys:file:download')")
-    public Results download(@RequestParam(value = "id") Integer id, HttpServletResponse res) throws IOException {
+    public ResponseEntity download(@RequestParam(value = "id") Integer id) throws IOException {
         log.info("FileController.download() param:(id = "+id+")");
+        return fileService.download(id);
+    }
 
-        return fileService.download(res,id);
+    @GetMapping("/delete")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('sys:file:del')")
+    @ApiOperation(value = "删除文件", notes = "删除文件 exp:1,2,3,")//描述
+    @ApiImplicitParam(name = "ids", value = "文件id集合", required = true, dataType = "String")
+    public Results deleteFile(String ids)
+    {
+        log.info("FileController.deleteFile() param:(ids = "+ids+")");
+        List<Integer> list = StringUtil.String2Int(ids);
+        int count = fileService.deleteFile(list);
+        if(count > 0)
+        {
+            return Results.success();
+        }else
+        {
+            return Results.failure();
+        }
     }
 
     //格式转换 json格式的日期到Date类型

@@ -24,7 +24,7 @@
                 <div class="layui-card-body ">
                     <form class="layui-form  layui-col-space1">
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" name="username"  placeholder="请输入文件名" autocomplete="off" class="layui-input">
+                            <input type="text" name="fileName"  placeholder="请输入文件名" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
                             <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
@@ -71,9 +71,9 @@
             ,cols: [
                 [ //表头
                     {type:'checkbox',fixed: "left"}
-                    ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
                     ,{field: 'fileName', title: '文件名'}
-                    ,{field: 'uuidName', title: '保存后的文件名' }
+                    ,{field: "url",title:"URL"}
+                    ,{field: "size",title:"字节大小(/kb)"}
                     ,{field: 'downloadNum', title: '下载次数' }
                     ,{field: 'createTime', title: '上传时间'}
                     ,{fixed: 'right', title:'操作', toolbar: '#bar'}
@@ -90,7 +90,7 @@
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     $.ajax({
-                        url:"/user/delete",
+                        url:"/file/delete",
                         type:"GET",
                         data:{ids:data.id+","},
                         dataType:'json',
@@ -113,14 +113,14 @@
 
         //搜索
         form.on('submit(search)', function(data){
-            var username = data.field.username;
+            var fileName = data.field.fileName;
             table.render({
                 elem: '#table'
                 ,toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
                 ,url: '/user/findUserByFuzzyUserName' //数据接口
                 ,page: true //开启分页
                 ,where:{
-                    "username":username
+                    "fileName":fileName
                 }
                 ,response: {
                     countName: 'count', //规定数据总数的字段名称，默认：count
@@ -129,21 +129,14 @@
                 ,cols: [
                     [ //表头
                         {type:'checkbox',fixed: "left"}
-                        ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
-                        ,{field: 'username', title: '用户名'}
-                        ,{field: 'nickname', title: '别名' }
-                        ,{field: 'telephone', title: '手机号码'}
-                        ,{field: 'sex', title: '性别',templet: function (d) {
-                            return d.sex == 1 ? "男":"女"
-                        }}
-                        ,{field: 'email', title: '邮箱'}
-                        ,{field: 'birthday', title: '生日'}
-                        ,{field: 'status', title: '状态',templet: function (d) {
-                            return d.status == 1 ? "启动" : "禁用";
-                        }}
+                        ,{field: 'fileName', title: '文件名'}
+                        ,{field: "url",title:"URL"}
+                        ,{field: "size",title:"字节大小(/kb)"}
+                        ,{field: 'downloadNum', title: '下载次数' }
+                        ,{field: 'createTime', title: '上传时间'}
                         ,{fixed: 'right', title:'操作', toolbar: '#bar'}
                     ]
-                ]
+                ],
             });
             return false;
         });
@@ -165,7 +158,7 @@
         console.log(ids)
         layer.confirm('真的删除行么', function(index){
             $.ajax({
-                url:"/user/delete",
+                url:"/file/delete",
                 type:"GET",
                 data:{ids:ids},
                 dataType:'json',

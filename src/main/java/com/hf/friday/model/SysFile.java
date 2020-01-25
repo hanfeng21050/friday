@@ -12,6 +12,7 @@ public class SysFile extends BaseEntity {
     private String uuidName; //保存在本地的文件名
     private Integer downloadNum;//下载次数
     private Integer userId; //文件所属用户
-    private String url;
+    private String size; //字节大小
+    private String url; //地址
     private String description;
 }

@@ -4,11 +4,9 @@ import com.hf.friday.base.Results;
 import com.hf.friday.dto.FileDto;
 import com.hf.friday.model.SysFile;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public interface FileService {
 
@@ -19,8 +17,14 @@ public interface FileService {
     Results<SysFile> list(Integer offset, Integer limit,Integer userId);
 
     //通过文件id下载文件
-    Results download(HttpServletResponse response, Integer id);
+    ResponseEntity download(Integer id);
 
     //通过文件id查询文件
     SysFile findFileById(Integer id);
+
+    //通过文件名查询文件
+    SysFile findFileByName(String fileName);
+
+    //删除文件
+    int deleteFile(List<Integer> list);
 }

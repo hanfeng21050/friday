@@ -164,7 +164,7 @@ public class UserController {
         log.info("UserController.deleteUser() param:(ids = "+ids+")");
         List<Integer> list = StringUtil.String2Int(ids);
         int count = userService.deleteUser(list);
-        if(count == list.size())
+        if(count > 0)
         {
             return Results.success();
         }else

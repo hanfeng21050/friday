@@ -40,4 +40,7 @@ logging:
 
 api-url: /api
 file:
-  path: E:/upload/
+  ###静态资源实际存储路径
+  uploadPath: E:/upload/
+  ###静态资源对外暴露的访问路径
+  staticAccessPath: /file/**

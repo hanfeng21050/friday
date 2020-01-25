@@ -8,26 +8,29 @@ import com.hf.friday.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Result;
 import java.io.*;
-import java.net.URLEncoder;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @Transactional
 @Slf4j
 public class FileServiceImpl implements FileService {
-    @Value("${file.path}")
+    @Value("${file.uploadPath}")
     private String filePath;
 
     @Autowired
@@ -44,6 +47,11 @@ public class FileServiceImpl implements FileService {
         MultipartFile file = fileDto.getFile();
         //文件名
         String originalFilename = file.getOriginalFilename();
+
+        //文件大小
+        DecimalFormat df = new DecimalFormat("0.0");//格式化，区小数后两位
+        String size = df.format((double)file.getBytes().length/1024);
+
         //避免文件重名
         String extName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         String uuidName = UUID.randomUUID().toString() + extName;
@@ -55,10 +63,11 @@ public class FileServiceImpl implements FileService {
         sysFile.setUserId(fileDto.getUserId());
         sysFile.setUuidName(uuidName);
         sysFile.setFileName(originalFilename);
-        sysFile.setUrl("/file/"+originalFilename);
+        sysFile.setSize(size);
+        sysFile.setUrl("/file/"+uuidName);
         fileDao.save(sysFile);
 
-        return Results.success();
+        return Results.success("上传成功",sysFile);
     }
 
     @Override
@@ -67,61 +76,79 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Results download(HttpServletResponse res, Integer id) {
-        SysFile sysFile = fileDao.findFileById(id);
-
-        //设置响应头
-        res.setContentType("application/force-download");// 设置强制下载不打开
+    public ResponseEntity download(Integer id) {
         try {
-            res.addHeader("Content-Disposition", "attachment;fileName=" +
-                    URLEncoder.encode(sysFile.getFileName(), "utf-8"));// 设置文件名
-        } catch (UnsupportedEncodingException e) {
+            //更新数据库信息
+            fileDao.updateFileDownloadNum(id);
+
+            SysFile sysFile = fileDao.findFileById(id);
+            String uuidName = sysFile.getUuidName();
+            // 获取本地文件系统中的文件资源
+            FileSystemResource resource = new FileSystemResource(filePath + uuidName);
+            // 解析文件的 mime 类型
+            String mediaTypeStr = URLConnection.getFileNameMap().getContentTypeFor(uuidName);
+            // 无法判断MIME类型时，作为流类型
+            mediaTypeStr = (mediaTypeStr == null) ? MediaType.APPLICATION_OCTET_STREAM_VALUE : mediaTypeStr;
+            // 实例化MIME
+            MediaType mediaType = MediaType.parseMediaType(mediaTypeStr);
+
+            /*
+             * 构造响应的头
+             */
+            HttpHeaders headers = new HttpHeaders();
+            // 下载之后需要在请求头中放置文件名，该文件名按照ISO_8859_1编码。
+            String filename = new String(sysFile.getFileName().getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+            headers.setContentDispositionFormData("attachment", filename);
+            headers.setContentType(mediaType);
+            /*
+             * 返还资源
+             */
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(resource.getInputStream().available())
+                    .body(resource);
+        } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        res.setHeader("Context-Type", "application/xmsdownload");
-
-
-        //判断文件是否存在
-        File file = new File(Paths.get(filePath, sysFile.getUuidName()).toString());
-        if (file.exists()) {
-            byte[] buffer = new byte[1024];
-            FileInputStream fis = null;
-            BufferedInputStream bis = null;
-            try {
-                fis = new FileInputStream(file);
-                bis = new BufferedInputStream(fis);
-                OutputStream os = res.getOutputStream();
-                int i = bis.read(buffer);
-                while (i != -1) {
-                    os.write(buffer, 0, i);
-                    i = bis.read(buffer);
-                }
-                return Results.success();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return Results.failure();
-            } finally {
-                if (bis != null) {
-                    try {
-                        bis.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (fis != null) {
-                    try {
-                        fis.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     @Override
     public SysFile findFileById(Integer id) {
         return fileDao.findFileById(id);
+    }
+
+    @Override
+    public SysFile findFileByName(String fileName) {
+        return fileDao.findFileByName(fileName);
+    }
+
+    @Override
+    public int deleteFile(List<Integer> list) {
+        SysFile sysFile = null;
+        int count = 0;
+        if(list.size() >0)
+        {
+            for (Integer id : list) {
+
+                //通过id拿到文件实际保存的文件名
+                sysFile = fileDao.findFileById(id);
+                String uuidName = sysFile.getUuidName();
+
+                //找到文件夹下的文件
+                //判断文件是否存在
+                File file = new File(Paths.get(filePath, uuidName).toString());
+                //删除文件
+                if(file.exists())
+                {
+                    file.delete();
+                    count ++ ;
+                }
+
+                //删除数据记录记录
+                fileDao.deleteById(id);
+            }
+        }
+        return count;
     }
 }
