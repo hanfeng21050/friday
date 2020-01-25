@@ -1,0 +1,12 @@
+package com.hf.friday.dto;
+
+import com.hf.friday.base.PageTableRequest;
+import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+@Data
+public class FileDto {
+
+    private MultipartFile file;
+    private Integer userId;
+}

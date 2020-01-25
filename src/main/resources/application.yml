@@ -25,6 +25,10 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       maxPoolPreparedStatementPerConnectionSize: 20
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 mybatis:
   type-aliases-package: com.hf.friday.model
   mapper-locations: classpath:/mybatis-mappers/*
@@ -33,4 +37,7 @@ mybatis:
 logging:
   path: E:/demolog
 
+
 api-url: /api
+file:
+  path: E:/upload/

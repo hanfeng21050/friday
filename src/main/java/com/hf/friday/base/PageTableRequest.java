@@ -10,6 +10,7 @@ public class PageTableRequest implements Serializable {
     private Integer page;
     private Integer limit;
     private Integer offset;
+    private Integer userId;
 
     public void countOffset(){
         if(null == this.page || null == this.limit){

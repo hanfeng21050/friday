@@ -58,7 +58,7 @@ public class RoleController {
     public Results<SysRole> list(PageTableRequest request)
     {
         request.countOffset();
-        log.info("RoleController.getAll() param:(request = "+request+")");
+        log.info("RoleController.list() param:(request = "+request+")");
         return roleService.list(request.getOffset(), request.getLimit());
     }
 

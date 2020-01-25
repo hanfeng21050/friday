@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文件列表</title>
+    <header th:replace="header::html"></header>
+</head>
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">用户管理</a>
+            <a>
+              <cite>用户列表</cite></a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row  layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form  layui-col-space1">
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="username"  placeholder="请输入文件名" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="layui-card-header">
+                    <button class="layui-btn layui-btn-danger" onclick="delAll()" permission="sys:file:del"><i class="layui-icon"></i>批量删除</button>
+                    <button class="layui-btn" onclick="xadmin.open('上传文件','/file/upload',500,300)" permission="sys:file:upload"><i class="layui-icon"></i>上传</button>
+                </div>
+
+                <div class="layui-card-body ">
+                    <table class="layui-hide" id="table" lay-filter="member"></table>
+                </div>
+
+                <div class="layui-card-body ">
+                    <script type="text/html" id="bar">
+                        <a class="layui-btn layui-btn-xs" lay-event="download" permission="sys:file:download">下载</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" permission="sys:file:del">删除</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        var userId = localStorage.getItem("userId");
+        var form = layui.form;
+        //第一个实例
+        table.render({
+            elem: '#table'
+            ,toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+            ,url: '/file/list' //数据接口
+            ,response: {
+                countName: 'count'
+                ,dataName: 'datas' //规定数据列表的字段名称，默认：data
+            }
+            ,page: true //开启分页
+            ,where: {"userId":userId}
+            ,cols: [
+                [ //表头
+                    {type:'checkbox',fixed: "left"}
+                    ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
+                    ,{field: 'fileName', title: '文件名'}
+                    ,{field: 'uuidName', title: '保存后的文件名' }
+                    ,{field: 'downloadNum', title: '下载次数' }
+                    ,{field: 'createTime', title: '上传时间'}
+                    ,{fixed: 'right', title:'操作', toolbar: '#bar'}
+                ]
+            ],
+            done:function () {
+                checkPermission();
+            }
+        });
+
+        //监听工具条
+        table.on('tool(member)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    $.ajax({
+                        url:"/user/delete",
+                        type:"GET",
+                        data:{ids:data.id+","},
+                        dataType:'json',
+                        success:function(result){
+                            layer.alert("删除成功", {icon: 1},function (index1) {
+                                layer.close(index1);
+                                //xadmin.father_reload();
+                                //只刷新这个表
+                                table.reload('table');
+                            });
+                        },
+                    });
+
+                });
+            } else if(obj.event === 'download'){
+                location.href = '/file/download?id='+data.id
+            }
+        });
+
+
+        //搜索
+        form.on('submit(search)', function(data){
+            var username = data.field.username;
+            table.render({
+                elem: '#table'
+                ,toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+                ,url: '/user/findUserByFuzzyUserName' //数据接口
+                ,page: true //开启分页
+                ,where:{
+                    "username":username
+                }
+                ,response: {
+                    countName: 'count', //规定数据总数的字段名称，默认：count
+                    dataName: 'datas' //规定数据列表的字段名称，默认：data
+                }
+                ,cols: [
+                    [ //表头
+                        {type:'checkbox',fixed: "left"}
+                        ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
+                        ,{field: 'username', title: '用户名'}
+                        ,{field: 'nickname', title: '别名' }
+                        ,{field: 'telephone', title: '手机号码'}
+                        ,{field: 'sex', title: '性别',templet: function (d) {
+                            return d.sex == 1 ? "男":"女"
+                        }}
+                        ,{field: 'email', title: '邮箱'}
+                        ,{field: 'birthday', title: '生日'}
+                        ,{field: 'status', title: '状态',templet: function (d) {
+                            return d.status == 1 ? "启动" : "禁用";
+                        }}
+                        ,{fixed: 'right', title:'操作', toolbar: '#bar'}
+                    ]
+                ]
+            });
+            return false;
+        });
+        checkPermission();
+    });
+
+    function delAll() {
+        var table = layui.table;
+        var checkStatus = table.checkStatus('table');
+        if (checkStatus.data.length == 0) {
+            parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
+            return;
+        }
+
+        var ids = "";
+        for (var i = 0; i < checkStatus.data.length; i++) {
+            ids += checkStatus.data[i].id + ",";
+        }
+        console.log(ids)
+        layer.confirm('真的删除行么', function(index){
+            $.ajax({
+                url:"/user/delete",
+                type:"GET",
+                data:{ids:ids},
+                dataType:'json',
+                success:function(result){
+                    layer.alert("删除成功", {icon: 1},function (index1) {
+                        layer.close(index1);
+                        //xadmin.father_reload();
+                        //只刷新这个表
+                        table.reload('table');
+                    });
+                },
+            });
+
+        });
+    }
+</script>
+
+</html>
