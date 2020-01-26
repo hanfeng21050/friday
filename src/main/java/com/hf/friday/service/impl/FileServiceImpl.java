@@ -151,4 +151,9 @@ public class FileServiceImpl implements FileService {
         }
         return count;
     }
+
+    @Override
+    public Results findFileByFuzzyFileName(Integer offset, Integer limit, String fileName,Integer userId) {
+        return Results.success(fileDao.getFileCountByFuzzyFilename(fileName,userId),fileDao.findFileByFuzzyFileName(fileName,offset,limit,userId));
+    }
 }

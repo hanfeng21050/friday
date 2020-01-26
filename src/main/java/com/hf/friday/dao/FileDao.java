@@ -31,4 +31,10 @@ public interface FileDao {
 
     @Delete("delete from sys_file where id = #{id}")
     void deleteById(Integer id);
+
+    @Select("select count(*) from sys_file t where t.user_id = #{userId} and t.file_name like '%${fileName}%'")
+    int getFileCountByFuzzyFilename(String fileName,Integer userId);
+
+    @Select("select * from sys_file t where t.user_id = #{userId} and t.file_name like '%${fileName}%' limit #{startPosition} , #{limit}")
+    List<SysFile> findFileByFuzzyFileName(String fileName, Integer startPosition, Integer limit, Integer userId);
 }

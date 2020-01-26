@@ -27,4 +27,7 @@ public interface FileService {
 
     //删除文件
     int deleteFile(List<Integer> list);
+
+    //模糊查询
+    Results findFileByFuzzyFileName(Integer offset, Integer limit, String fileName,Integer userId);
 }

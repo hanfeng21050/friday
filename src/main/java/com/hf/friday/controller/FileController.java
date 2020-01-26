@@ -105,6 +105,22 @@ public class FileController {
         }
     }
 
+    @GetMapping("/findFileByFuzzyFileName")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('sys:file:query')")
+    @ApiOperation(value = "模糊查询文件信息", notes = "模糊搜索查询文件信息")//描述
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "fileName",value = "模糊搜索的文件名", required = true),
+            @ApiImplicitParam(name = "userId",value = "用户id", required = true),
+    })
+    public Results findFileByFuzzyFileName(PageTableRequest request,String fileName,Integer userId)
+    {
+        log.info("FileController.findFileByFuzzyFileName() param:(request = "+request+" fileName:"+fileName+")");
+        request.countOffset();
+        return fileService.findFileByFuzzyFileName(request.getOffset(),request.getLimit(),fileName,userId);
+    }
+
+
     //格式转换 json格式的日期到Date类型
     String pattern = "yyyy-MM-dd";
     @InitBinder
