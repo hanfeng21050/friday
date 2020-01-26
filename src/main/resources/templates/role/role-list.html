@@ -56,6 +56,7 @@
         layui.use('table', function(){
             var table = layui.table;
             var form = layui.form;
+            var index  = layer.load(1);//加载动画
             //第一个实例
             table.render({
                 elem: '#table'
@@ -77,6 +78,7 @@
                 ]
                 ],
                 done:function () {
+                    layer.close(index) //加载完数据
                     checkPermission();
                 }
             });
