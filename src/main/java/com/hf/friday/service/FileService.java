@@ -30,4 +30,5 @@ public interface FileService {
 
     //模糊查询
     Results findFileByFuzzyFileName(Integer offset, Integer limit, String fileName,Integer userId);
+
 }

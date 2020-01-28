@@ -117,7 +117,7 @@ public class UserController {
     {
         sysUser = userService.getUserById(sysUser.getId());
         model.addAttribute(sysUser);
-        return "user/user-edit";
+        return "user/user-info";
     }
 
     @PostMapping("/edit")
@@ -201,6 +201,21 @@ public class UserController {
     {
         log.info("UserController.changePassword() param:(username = "+username+")");
         return userService.changePassword(username,oldPassword,newPassword);
+    }
+
+
+    @PostMapping("/switchStat")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:edit')")
+    @ApiOperation(value = "修改状态", notes = "修改用户状态")//描述
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "status",value = "状态", required = true),
+            @ApiImplicitParam(name = "id",value = "用户id", required = true),
+    })
+    public Results switchStat(Boolean status,Integer id)
+    {
+        log.info("UserController.changePassword() param:(id = "+id+",status="+status+")");
+        return userService.switchStat(id,status);
     }
 
     //格式转换 json格式的日期到Date类型

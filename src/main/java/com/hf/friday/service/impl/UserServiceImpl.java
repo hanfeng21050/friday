@@ -130,4 +130,16 @@ public class UserServiceImpl implements UserService {
         userDao.changePassword(user.getId(),new BCryptPasswordEncoder().encode(newPassword));
         return Results.success();
     }
+
+    @Override
+    public Results switchStat(Integer id, Boolean status) {
+        int res = userDao.switchStat(id,status);
+        if(res > 0)
+        {
+            return Results.success();
+        }else
+        {
+            return Results.failure();
+        }
+    }
 }

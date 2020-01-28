@@ -36,4 +36,7 @@ public interface UserService {
 
     //修改密码
     Results changePassword(String username, String oldPassword, String newPassword);
+
+    //修改状态
+    Results switchStat(Integer id, Boolean status);
 }

@@ -27,9 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw  new AuthenticationCredentialsNotFoundException("用户不存在");
         }else if(user.getStatus() == SysUser.Status.LOCKED){
             throw  new AuthenticationCredentialsNotFoundException("用户被锁定，请联系管理员");
-        }else if(user.getStatus() == SysUser.Status.DISABLED){
-            throw  new AuthenticationCredentialsNotFoundException("用户不可用");
-        }else if(user.getStatus() == SysUser.Status.VALID) {
+        } else if(user.getStatus() == SysUser.Status.VALID) {
             LoginUser loginUser = new LoginUser();
             //赋值
             BeanUtils.copyProperties(user,loginUser);

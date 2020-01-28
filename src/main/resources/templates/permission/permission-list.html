@@ -30,7 +30,7 @@
                     <div class="layui-card-header">
                         <form class="layui-form layui-col-md12 x-so" id="layuiFormPermission">
                             <a class="layui-btn" id="crollAll" >折叠展开</a>
-                            <a class="layui-btn" onclick="xadmin.open('新增权限','/permission/add')" permission="sys:menu:add"><i class="layui-icon"></i>新增权限</a>
+                            <a class="layui-btn" onclick="xadmin.open('新增权限','/permission/add',700,800)" permission="sys:menu:add"><i class="layui-icon"></i>新增权限</a>
                         </form>
                     </div>
 
@@ -130,7 +130,7 @@
 
                 });
             } else if (obj.event === 'edit') {
-                xadmin.open('编辑用户信息', '/permission/edit/?id=' + data.id);
+                xadmin.open('编辑用户信息', '/permission/edit/?id=' + data.id,700,800);
             }
         })
         // checkPermission()

@@ -52,7 +52,7 @@
             </div>
         </div>
     </body>
-    <script>
+    <script >
         layui.use('table', function(){
             var table = layui.table;
             var form = layui.form;
@@ -80,7 +80,14 @@
                         ,{field: 'email', title: '邮箱'}
                         ,{field: 'birthday', title: '生日'}
                         ,{field: 'status', title: '状态',templet: function (d) {
-                            return d.status == 1 ? "启动" : "禁用";
+                            var state = "";
+                            if (d.status == 1) {
+                                state = "<input type='checkbox' value='" + d.id + "' id='status' lay-filter='stat' checked='checked' name='status'  lay-skin='switch' lay-text='开启|关闭' >";
+                            }
+                            else {
+                                state = "<input type='checkbox' value='" + d.id + "' id='status' lay-filter='stat'  name='status'  lay-skin='switch' lay-text='开启|关闭' >";
+                            }
+                            return state;
                         }}
                         ,{fixed: 'right', title:'操作', toolbar: '#bar'}
                 ]
@@ -117,6 +124,30 @@
                 }
             });
 
+            form.on('switch(stat)', function(obj){
+                var current_user_id = obj.value;
+                var status =this.checked ? '1' : '0';
+                $.ajax({
+                    type: 'POST',
+                    url: '/user/switchStat',
+                    data: {"status":status,"id":current_user_id},
+                    dataType:'json',
+                    beforeSend:function(){
+                        index_wx = layer.msg('正在切换中，请稍候',{icon: 16,time:false,shade:0.8});
+                    },
+                    error: function(result){
+                        layer.msg('数据异常，操作失败！');
+                        table.reload('table');
+                    },
+                    success: function(result,status){
+                        setTimeout(function(){layer.msg('操作成功！')});
+                    },
+                    dataType:'html'
+                });
+
+
+
+            });
 
             //搜索
             form.on('submit(search)', function(data){

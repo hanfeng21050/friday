@@ -22,10 +22,10 @@ public class SysUser extends BaseEntity<Long> {
 	private Integer sex;
 	private Integer status;
 	private String intro;
+	private String description;
 
 	public interface Status {
-		int DISABLED = 0;
 		int VALID = 1;
-		int LOCKED = 2;
+		int LOCKED = 0;
 	}
 }

@@ -15,6 +15,6 @@ public class RestAuthenticationAccessDeniedHandler implements AccessDeniedHandle
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
         httpServletResponse.setStatus(httpServletResponse.SC_FORBIDDEN);
         httpServletResponse.setCharacterEncoding("utf-8");
-        httpServletResponse.sendRedirect("/403.html");
+        httpServletResponse.sendRedirect("/403.html" );
     }
 }
