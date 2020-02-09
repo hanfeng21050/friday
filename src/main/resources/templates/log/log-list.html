@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>版本日志</title>
+    <header th:replace="header::html"></header>
+</head>
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a>
+              <cite>更新日志</cite></a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    更新日志
+                </div>
+                <div class="layui-card-body ">
+                    <ul class="layui-timeline">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    layui.use(['layer'], function(){
+        init()
+    });
+
+
+    function init() {
+        var size = 10;
+        $.ajax({
+            url:"/versionlog/listBySizeAndNew",//返回最新10条记录
+            type:"GET",
+            data:{size:size},
+            dataType:'json',
+            success:function(result){
+                html = ""
+                datas = result.datas
+
+                for (let i = 0; i < datas.length; i++) {
+                    html+="<li class=\"layui-timeline-item\">\n" +
+                        "                            <i class=\"layui-icon layui-timeline-axis\">&#xe63f;</i>\n" +
+                        "                            <div class=\"layui-timeline-content layui-text\">\n" +
+                        "                                <h3>v"+datas[i].version+"  <span class=\"layui-badge-rim\">"+datas[i].createTime+"</span></h3>\n" +
+                        "                                <ul>\n" +
+                        "                                    <li>"+datas[i].logDetails+"</li>\n" +
+                        "                                </ul>\n" +
+                        "                                <div style=\"margin: 15px 0; text-align: center; background-color: #F2F2F2;\">\n" +
+                        "                                    <ins class=\"adsbygoogle\" style=\"display:inline-block;width:728px;height:90px\" data-ad-client=\"ca-pub-6111334333458862\" data-ad-slot=\"9841027833\"></ins>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                        </li>"
+
+                }
+                $(".layui-timeline").append(html)
+            },
+            error:function (result) {
+                layer.alert("获取数据异常！", {icon: 6})
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

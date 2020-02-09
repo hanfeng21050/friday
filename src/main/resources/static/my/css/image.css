@@ -1,4 +1,4 @@
-body{background-color: #98ede7
+body{background-color: #eaeaef
 }
 * {
     margin: 0;
@@ -12,8 +12,8 @@ body{background-color: #98ede7
     height: 80%;
     margin: auto;
     margin-top: 10px;
-    border: 1px solid #ffcb42;
-    border-radius: 2px;
+    border: 5px double #020205;
+    border-radius: 20px;
     overflow: hidden;
     background-color: rgba(252, 255, 252, 0);
 }
@@ -29,13 +29,6 @@ body{background-color: #98ede7
     text-align: center;
     z-index: 2;
 }
-.scale-big,
-.scale-small {
-    width: 14px;
-    height: 14px;
-    vertical-align: middle;
-    cursor: pointer;
-}
 .drag-box {
     position: relative;
     display: flex;
@@ -49,7 +42,6 @@ body{background-color: #98ede7
     height: auto;
     max-height: 100%;
     max-width: 100%;
-    cursor: move;
 }
 .next-img{
     position: absolute;
@@ -90,8 +82,8 @@ body{background-color: #98ede7
     width: 80%;
     height: 13%;
     margin: auto;
-    border: 2px solid #fff7a8;
-    border-radius: 2px;
+    border: 5px double #020205;
+    border-radius: 20px;
     overflow: hidden;
     background-color: #eaeaef;
 }

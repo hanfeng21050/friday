@@ -16,7 +16,7 @@ public class Results<T>  implements Serializable {
     public Results() {
     }
 
-    public Results(Integer code, String msg) {
+    public  Results(Integer code, String msg) {
         super();
         this.code = code;
         this.msg = msg;

@@ -28,14 +28,13 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.info("登陆失败");
-
         if ("json".equals("json")) {
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Methods", "*");
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             Map<String,Object> map = new HashMap<>();
-            if(exception instanceof LockedException){
+            if(exception instanceof InternalAuthenticationServiceException){
                 map.put("message","账户被锁定，登录失败!");
             }else if(exception instanceof BadCredentialsException){
                 map.put("message","账户名或密码输入错误，登录失败!");
