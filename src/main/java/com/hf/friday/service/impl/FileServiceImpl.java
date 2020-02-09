@@ -4,7 +4,10 @@ import com.hf.friday.base.Results;
 import com.hf.friday.dao.FileDao;
 import com.hf.friday.dto.FileDto;
 import com.hf.friday.model.SysFile;
+import com.hf.friday.model.SysUser;
 import com.hf.friday.service.FileService;
+import com.hf.friday.service.UserService;
+import com.hf.friday.util.ThumbnailUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -30,21 +35,25 @@ import java.util.UUID;
 @Transactional
 @Slf4j
 public class FileServiceImpl implements FileService {
-    @Value("${file.uploadPath}")
+    @Value("${file.standardPath}")
     private String filePath;
+    @Value(("${file.thumbnailPath}"))
+    private String fileUploadStandardPath;//缩略图路径
 
     @Autowired
     private FileDao fileDao;
     @Autowired
     private final ResourceLoader resourceLoader;
+    @Autowired
+    private UserService userService;
 
     public FileServiceImpl(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
     @Override
-    public Results upload(FileDto fileDto) throws IOException {
-        MultipartFile file = fileDto.getFile();
+    public Results upload(FileDto dto) throws IOException {
+        MultipartFile file = dto.getFile();
         //文件名
         String originalFilename = file.getOriginalFilename();
 
@@ -52,19 +61,38 @@ public class FileServiceImpl implements FileService {
         DecimalFormat df = new DecimalFormat("0.0");//格式化，区小数后两位
         String size = df.format((double)file.getBytes().length/1024);
 
+
         //避免文件重名
         String extName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        String uuidName = UUID.randomUUID().toString() + extName;
+        String Uuid = UUID.randomUUID().toString();
+        String uuidName = Uuid + extName;
+
         //文件上传
         FileCopyUtils.copy(file.getInputStream(),new FileOutputStream(new File(filePath+uuidName)));
 
+        //缩略图上传
+        ThumbnailUtil.storeThumbnail(filePath+uuidName,fileUploadStandardPath+uuidName);
+
+        //文件分辨率 宽X长
+        File outFIle = new File(filePath+uuidName);
+        BufferedImage img = ImageIO.read(outFIle);
+        String ratio = "" + img.getHeight() + "X" + img.getWidth();
+
+        //上传者
+        SysUser user = userService.getUserById(dto.getUserId().longValue());
+
         //文件信息保存到数据库
         SysFile sysFile = new SysFile();
-        sysFile.setUserId(fileDto.getUserId());
+        sysFile.setUserId(dto.getUserId());
         sysFile.setUuidName(uuidName);
         sysFile.setFileName(originalFilename);
         sysFile.setSize(size);
         sysFile.setUrl("/file/"+uuidName);
+        sysFile.setThumbnailUrl("/file/thumbnail/"+uuidName);
+        sysFile.setRatio(ratio);
+        sysFile.setUploadUserId(dto.getUserId());
+        sysFile.setUploadUserName(user.getUsername());
+
         fileDao.save(sysFile);
 
         return Results.success("上传成功",sysFile);
@@ -138,12 +166,18 @@ public class FileServiceImpl implements FileService {
                 //找到文件夹下的文件
                 //判断文件是否存在
                 File file = new File(Paths.get(filePath, uuidName).toString());
+                File file1 = new File(Paths.get(fileUploadStandardPath,uuidName).toString());
                 //删除文件
-                if(file.exists())
+                if(file.exists() )
                 {
                     file.delete();
                     count ++ ;
                 }
+                if(file1.exists())
+                {
+                    file1.delete();
+                }
+
 
                 //删除数据记录记录
                 fileDao.deleteById(id);
@@ -156,5 +190,6 @@ public class FileServiceImpl implements FileService {
     public Results findFileByFuzzyFileName(Integer offset, Integer limit, String fileName,Integer userId) {
         return Results.success(fileDao.getFileCountByFuzzyFilename(fileName,userId),fileDao.findFileByFuzzyFileName(fileName,offset,limit,userId));
     }
+
 
 }

@@ -2,8 +2,10 @@ package com.hf.friday.dao;
 
 import com.hf.friday.model.SysFile;
 import org.apache.ibatis.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -11,7 +13,7 @@ import java.util.List;
 public interface FileDao {
 
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Insert("insert into sys_file(file_name, uuid_name, user_id,url, description, create_time, update_time,size) values(#{fileName},#{uuidName},#{userId},#{url}, #{description},now(), now(),#{size})")
+    @Insert("insert into sys_file(file_name, uuid_name, user_id,url,thumbnail_url,ratio,upload_user_id,upload_user_name, description, create_time, update_time,size) values(#{fileName},#{uuidName},#{userId},#{url},#{thumbnailUrl},#{ratio},#{uploadUserId},#{uploadUserName},#{description},now(), now(),#{size})")
     void save(SysFile sysFile);
 
     @Select("select * from sys_file t where user_id = #{userId} order by t.id limit #{startPosition} , #{limit}")

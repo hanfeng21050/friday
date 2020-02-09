@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>上传文件</title>
+    <title>图片</title>
     <header th:replace="header::html"></header>
 </head>
 
@@ -11,7 +11,7 @@
 <div class="x-body">
     <div style="text-align: center">
         <div class="layui-upload">
-            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多图片 </button>
             <div class="layui-upload-list">
                 <table class="layui-table">
                     <thead>
@@ -38,7 +38,7 @@
             ,uploadListIns = upload.render({
             elem: '#testList'
             ,url: '/file/upload' //改成您自己的上传接口
-            ,accept: 'file'
+            ,accept: 'images'
             ,multiple: true
             ,auto: false
             ,data:{"userId":userId}

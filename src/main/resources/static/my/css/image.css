@@ -1,0 +1,121 @@
+body{background-color: #98ede7
+}
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 100%;
+}
+.drag {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    margin-top: 10px;
+    border: 5px solid #2b2b2b;
+    border-radius: 2px;
+    overflow: hidden;
+    background-color: rgb(252, 255, 252);
+}
+.drag-action {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 5px 0;
+    width: 50px;
+    height: 25px;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 2px;
+    text-align: center;
+    z-index: 2;
+}
+.scale-big,
+.scale-small {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.drag-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.drag-img {
+    position: absolute;
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    cursor: move;
+}
+.next-img{
+    position: absolute;
+    right: 10px;
+    top: 45%;
+    padding: 5px 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 2px;
+    text-align: center;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.prev-img{
+    position: absolute;
+    left: 10px;
+    top: 45%;
+    padding: 5px 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 2px;
+    text-align: center;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.prev-img:hover{
+    border: 3px solid rgba(255, 0, 0, 0);
+}
+.next-img:hover{
+    border: 3px solid rgba(255, 0, 0, 0);
+}
+
+/*smallImg*/
+.smallImg{
+    position: relative;
+    width: 80%;
+    height: 13%;
+    margin: auto;
+    border: 2px solid #fff7a8;
+    border-radius: 2px;
+    overflow: hidden;
+    background-color: #eaeaef;
+}
+
+.smallImg li {
+    float: left;
+    width: 10%;
+}
+.smallImg li a {
+    display: block;
+    width: auto;
+    height: 100%;
+    overflow: hidden;
+    border: 4px solid white;
+    vertical-align: middle;
+    margin: 5px auto;
+}
+.smallImg li a:hover {
+    border-color: red;
+}
+.smallImg .cur a {
+    border-color: #F45E5E;
+}
+.smallImg li img {
+    width: 99%;
+    cursor: pointer;
+}

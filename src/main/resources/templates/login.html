@@ -9,6 +9,8 @@
 	<title>登录</title>
 	<header th:replace="header::html"></header>
 	<link rel="stylesheet" th:href="@{/xadmin/css/login.css}" />
+	<link rel="stylesheet" th:href="@{/my/css/yz.css}" />
+
 </head>
 <body>
 	<div class="login">
@@ -20,10 +22,33 @@
 			<hr class="hr15">
 			<input id="password" name="password" placeholder="密码" type="password" autocomplete="off">
 			<hr class="hr15">
-            <input style="width: 100%;" lay-submit lay-filter="login" type="submit" value="登录">
+            <input style="width: 100%;" lay-submit lay-filter="login" type="submit" id="login" value="登录">
 			<hr class="hr20">
 			<span id="info" style="color: red"></span>
 		</form>
+
+		<div class="box">
+			<img src="/my/image/cw.png" class="cuo">
+			<span class="top-s">身份验证</span>
+			<span class="top-x">拖动滑块，使图片角度为正</span>
+			<div id="rotateWrap1">
+				<div class="rotateverify-contaniner">
+					<div class="rotate-can-wrap">
+						<canvas class="rotateCan rotate-can" width="200" height="200"></canvas>
+						<div class="statusBg status-bg"></div>
+					</div>
+					<div class="control-wrap slideDragWrap">
+						<div class="control-tips">
+							<p class="c-tips-txt cTipsTxt">滑动将图片转正</p>
+						</div>
+						<div class="control-bor-wrap controlBorWrap"></div>
+						<div class="control-btn slideDragBtn">
+							<i class="control-btn-ico"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 <script type="text/javascript">
@@ -32,39 +57,59 @@
             var form = layui.form;
             //监听提交
             form.on('submit(login)', function(data){
-                $.ajax({
-					type : 'post',
-					url : '/login',
-					data : $("#login-form").serialize(),
-					success : function(datas) {
+				$(".box").css("display", "block");
+				$("body").css({ "background": "#807878" });
 
-						if(datas.authenticated == true){
-							localStorage.clear();
-							localStorage.setItem("userId", datas.principal.id);
-                            localStorage.setItem("username", datas.principal.username);
-							localStorage.setItem("nickName", datas.principal.nickname);
-							var authorities = datas.authorities;
-							var permission = [];
-							for(var i in authorities){
-								permission.push(authorities[i].authority);
-							}
-							localStorage.setItem("permission", JSON.stringify(permission));
-							layer.msg("登录成功",{time:500},function(){
-								location.href='/'
+				var myRotateVerify = new RotateVerify('#rotateWrap1', {
+					initText: '滑动将图片转正',//默认
+					slideImage: ['my/image/1.png', 'my/image/2.png', 'my/image/4.png', 'my/image/5.png'],//arr  [imgsrc1,imgsrc2] 或者str 'imgsrc1'
+					slideAreaNum: 10,// 误差范围角度 +- 10(默认)
+					getSuccessState: function (res) {//验证通过 返回  true;
+						if(res == true)
+						{
+							$.ajax({
+								type : 'post',
+								url : '/login',
+								data : $("#login-form").serialize(),
+								success : function(datas) {
+
+									if(datas.authenticated == true){
+										localStorage.clear();
+										localStorage.setItem("userId", datas.principal.id);
+										localStorage.setItem("username", datas.principal.username);
+										localStorage.setItem("nickName", datas.principal.nickname);
+										var authorities = datas.authorities;
+										var permission = [];
+										for(var i in authorities){
+											permission.push(authorities[i].authority);
+										}
+										localStorage.setItem("permission", JSON.stringify(permission));
+										layer.msg("登录成功",{time:500},function(){
+											location.href='/'
+										});
+									}else{
+										layer.msg("登录异常，请联系管理员");
+									}
+								},
+								error : function(xhr, textStatus, errorThrown) {
+									var msg = xhr.responseText;
+									var response = JSON.parse(msg);
+									layer.msg(response.message);
+								}
 							});
-						}else{
-							layer.msg("登录异常，请联系管理员");
 						}
-					},
-					error : function(xhr, textStatus, errorThrown) {
-						var msg = xhr.responseText;
-						var response = JSON.parse(msg);
-						layer.msg(response.message);
 					}
-				});
+				})
                 return false;
             });
         });
     })
+
+
+	//    点击x
+	$(".cuo").click(function () {
+		$(".box").css("display", "none");
+		$("body").css("background", "#F1F1F1");
+	})
 </script>
 </html>

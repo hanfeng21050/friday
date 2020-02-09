@@ -16,4 +16,7 @@ public interface RolePermissionDao {
     @Delete("delete from sys_role_permission where role_id = #{roleId}")
     int deleteRolePermissionByRoleId(Integer roleId);
 
+    @Delete("delete from sys_role_permission where permission_id = #{PermissionId}")
+    int deleteRolePermissionByPermissionId(Integer PermissionId);
+
 }

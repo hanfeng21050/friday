@@ -13,6 +13,10 @@ public class SysFile extends BaseEntity {
     private Integer downloadNum;//下载次数
     private Integer userId; //文件所属用户
     private String size; //字节大小
-    private String url; //地址
-    private String description;
+    private String url; //原图地址
+    private String ratio;//分辨率
+    private Integer uploadUserId;//上传者id
+    private String uploadUserName;//上传者姓名
+    private String thumbnailUrl; //缩略图地址
+    private String description;//描述
 }

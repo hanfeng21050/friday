@@ -46,6 +46,9 @@ druid:
 api-url: /api
 file:
   ###静态资源实际存储路径
-  uploadPath: /home/upload/
+  standardPath: /home/upload/
+  ###缩略图保存路径
+  thumbnailPath: /home/upload/thumbnail/
   ###静态资源对外暴露的访问路径
-  staticAccessPath: /file/**
+  staticAccessStandardPath: /file/**
+  staticAccessThumbnailPath: /file/thumbnail/**

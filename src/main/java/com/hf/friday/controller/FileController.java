@@ -2,6 +2,7 @@ package com.hf.friday.controller;
 
 import com.hf.friday.base.PageTableRequest;
 import com.hf.friday.base.Results;
+import com.hf.friday.dao.File;
 import com.hf.friday.dto.FileDto;
 import com.hf.friday.model.SysFile;
 import com.hf.friday.service.FileService;
@@ -32,9 +33,6 @@ import java.util.List;
 public class FileController {
     @Autowired
     private FileService fileService;
-    @Value("${file.uploadPath}")
-    private String filePath;
-
 
     /**
      * 分页查询
@@ -70,7 +68,7 @@ public class FileController {
 
     @PostMapping("/upload")
     @ResponseBody
-    @ApiOperation(value = "下载文件", notes = "下载用户文件")//描述
+    @ApiOperation(value = "上传文件", notes = "上传图片文件")//描述
     @PreAuthorize("hasAuthority('sys:file:upload')")
     public Results upload(FileDto fileDto) throws IOException {
         log.info("FileController.upload() param:(fileDto = "+fileDto+")");
@@ -122,7 +120,7 @@ public class FileController {
 
 
     //格式转换 json格式的日期到Date类型
-    String pattern = "yyyy-MM-dd";
+    String pattern = "yyyy-MM-dd HH:mm:ss";
     @InitBinder
     public void initBinder(WebDataBinder binder, WebRequest request)
     {

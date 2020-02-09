@@ -6,7 +6,6 @@ import com.hf.friday.base.Results;
 import com.hf.friday.dto.UserDto;
 import com.hf.friday.model.SysUser;
 import com.hf.friday.service.UserService;
-import com.hf.friday.util.MD5;
 import com.hf.friday.util.StringUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -117,7 +116,7 @@ public class UserController {
     {
         sysUser = userService.getUserById(sysUser.getId());
         model.addAttribute(sysUser);
-        return "user/user-info";
+        return "user/user-edit";
     }
 
     @PostMapping("/edit")

@@ -3,6 +3,7 @@ package com.hf.friday.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.hf.friday.base.Results;
 import com.hf.friday.dao.PermissionDao;
+import com.hf.friday.dao.RolePermissionDao;
 import com.hf.friday.dto.RoleDto;
 import com.hf.friday.model.SysPermission;
 import com.hf.friday.service.PermissionService;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 public class PermissionServiceImpl implements PermissionService {
     @Autowired
     private PermissionDao permissionDao;
+    @Autowired
+    private RolePermissionDao rolePermissionDao;
 
     @Override
     public Results<JSONArray> listAllPermission() {
@@ -56,6 +59,8 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Results delete(Integer id) {
+        //移除与该权限相关联的角色-权限中间表信息
+        rolePermissionDao.deleteRolePermissionByPermissionId(id);
         return permissionDao.deletePemission(id) > 0 ? Results.success() : Results.failure();
     }
 

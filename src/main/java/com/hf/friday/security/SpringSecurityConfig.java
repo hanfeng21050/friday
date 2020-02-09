@@ -54,6 +54,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/xadmin/**",
                         "/ztree/**",
                         "/static/**",
+                        "/my/**",
+                        "/flow-loading/**",
                         "login.html")
                 .permitAll()
                 .anyRequest()

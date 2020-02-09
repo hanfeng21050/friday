@@ -7,9 +7,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://cdb-r9zo05hq.bj.tencentcdb.com:10191/rbac?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
-    username: friday
-    password: 123456
+    url: jdbc:mysql://localhost:3306/rbac?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+    username: root
+    password: root
     platform: mysql
     type: com.alibaba.druid.pool.DruidDataSource
     filters: stat,wall,sl4j
@@ -46,6 +46,9 @@ druid:
 api-url: /api
 file:
   ###静态资源实际存储路径
-  uploadPath: E:/upload/
+  standardPath: E:/upload/
+  ###缩略图保存路径
+  thumbnailPath: E:/upload/thumbnail/
   ###静态资源对外暴露的访问路径
-  staticAccessPath: /file/**
+  staticAccessStandardPath: /file/**
+  staticAccessThumbnailPath: /file/thumbnail/**

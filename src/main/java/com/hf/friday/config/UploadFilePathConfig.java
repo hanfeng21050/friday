@@ -7,14 +7,22 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 public class UploadFilePathConfig extends WebMvcConfigurerAdapter {
-    @Value("${file.staticAccessPath}")
-    private String staticAccessPath;
-    @Value("${file.uploadPath}")
-    private String uploadPath;
+    @Value("${file.staticAccessStandardPath}")
+    private String staticAccessStandardPath;//原图的对外暴露的地址
+
+    @Value("${file.staticAccessThumbnailPath}")
+    private String staticAccessThumbnailPath;//缩略图的对外暴露的地址
+
+    @Value("${file.standardPath}")
+    private String standardPath;
+
+    @Value("${file.thumbnailPath}")
+    private String thumbnailPath;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(staticAccessPath).addResourceLocations("file:///" + uploadPath);
+        registry.addResourceHandler(staticAccessStandardPath).addResourceLocations("file:///" + standardPath);
+        registry.addResourceHandler(staticAccessThumbnailPath).addResourceLocations("file:///" + thumbnailPath);
         super.addResourceHandlers(registry);
     }
 
