@@ -32,12 +32,6 @@
     </div>
     <!--图片-->
     <div class="drag">
-        <!--缩放-->
-        <div class="drag-action">
-            <img src="/my/image/scale-big.png" alt="+" class="scale-big">
-            <img src="/my/image/scale-small.png" alt="-" class="scale-small"><br />
-
-        </div>
         <div class="drag-box">
             <img th:src="${dto.getFile().getUrl()}" th:alt="${dto.getFile().getFileName()}" class="drag-img">
         </div>
@@ -69,24 +63,6 @@
         get_small_img()
     })
 
-    var drag = $(".drag-img")
-    var dragImg = new DragScale(drag, drag)
-    // 拖动
-    dragImg.drag()
-    // 滚轮
-    $(".drag-box").on("mousewheel", function() {
-        dragImg.scale(0)
-    })
-    // 放大
-    $(".scale-big").click(function() {
-        dragImg.scale(1)
-    })
-    // 缩小
-    $(".scale-small").click(function() {
-        dragImg.scale(2)
-    })
-
-
     //下载图片
     $("#download").click(function () {
         var id = $("#id").val()
@@ -100,7 +76,6 @@
         _this.addClass('cur').siblings().removeClass('cur');
         change_src(index)
     })
-
 
     //下一张
     $(".next-img").click(function () {
