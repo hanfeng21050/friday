@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户编辑</title>
+    <header th:replace="header::html"></header>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">新增章节</div>
+                <div class="layui-card-body" pad15>
+
+                    <div class="layui-form" lay-filter="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户id</label>
+                            <div class="layui-input-inline">
+                                <input type="text" disabled name="uploadUser" th:value="${comic.uploadUser}"  class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">漫画id</label>
+                            <div class="layui-input-inline">
+                                <input class="layui-input" disabled type="text"  name="comicId" th:value="${comic.id}">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" th:value="${comic.title}" name="title"  class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="update">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script></script>
+<script>
+    $(function () {
+        var item = localStorage.getItem("userId");
+        $("#userId").val(item)
+    })
+
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+        var form = layui.form
+            , layer = layui.layer;
+
+
+        //监听提交
+        form.on('submit(update)', function (data) {
+            $.ajax({
+                url: "/chapter/add",
+                type: "POST",
+                data: data.field,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.code == 500 || result.code == 5000100 || result.code == 5000101 || result.code == 5000102) {
+                        layer.alert(result.msg);
+                    } else {
+                        layer.alert("设置成功", {icon: 6}, function () {
+                            //关闭当前frame
+                            xadmin.close();
+                            // 可以对父窗口进行刷新
+                            xadmin.father_reload();
+                        });
+                    }
+
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

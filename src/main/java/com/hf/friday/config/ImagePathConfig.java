@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
-public class UploadFilePathConfig extends WebMvcConfigurerAdapter {
+public class ImagePathConfig extends WebMvcConfigurerAdapter {
     @Value("${file.staticAccessStandardPath}")
     private String staticAccessStandardPath;//原图的对外暴露的地址
 
@@ -19,10 +19,18 @@ public class UploadFilePathConfig extends WebMvcConfigurerAdapter {
     @Value("${file.thumbnailPath}")
     private String thumbnailPath;
 
+    @Value("${comic.path}")
+    private String comicPath;
+    @Value("${comic.staticAccesspath}")
+    private String staticAccessComicPath;
+
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(staticAccessStandardPath).addResourceLocations("file:///" + standardPath);
         registry.addResourceHandler(staticAccessThumbnailPath).addResourceLocations("file:///" + thumbnailPath);
+        registry.addResourceHandler(staticAccessComicPath).addResourceLocations("file:///" + comicPath);
+
         super.addResourceHandlers(registry);
     }
 

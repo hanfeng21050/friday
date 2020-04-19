@@ -2,7 +2,6 @@ package com.hf.friday.controller;
 
 import com.hf.friday.base.PageTableRequest;
 import com.hf.friday.base.Results;
-import com.hf.friday.dao.File;
 import com.hf.friday.dto.FileDto;
 import com.hf.friday.model.SysFile;
 import com.hf.friday.service.FileService;
@@ -12,7 +11,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +39,7 @@ public class FileController {
      */
     @GetMapping("/list")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:file:query')")
+    //@PreAuthorize("hasAuthority('sys:file:query')")
     @ApiOperation(value = "分页获取保存文件", notes = "用户分页获取文件")//描述
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", required = true,dataType = "Integer"),

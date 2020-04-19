@@ -1,26 +1,43 @@
 package com.hf.friday.dao;
 
-import com.hf.friday.base.Results;
-import com.hf.friday.model.SysFile;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Component;
-
+import com.hf.friday.model.Image;
+import com.hf.friday.model.ImageExample;
 import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 @Mapper
-@Component
-public interface ImageDao {
+@Repository
+public interface ImageDAO {
+    long countByExample(ImageExample example);
 
-    @Select("select count(*) from sys_file")
-    Integer findImageCountAll();
+    int deleteByExample(ImageExample example);
 
-    @Select("select * from sys_file limit #{offset},#{limit}")
-    List<SysFile> findImageAll(Integer offset, Integer limit);
+    int deleteByPrimaryKey(Integer id);
 
-    @Select("select * from sys_file where id = #{id}")
-    SysFile findImageById(Integer id);
+    int insert(Image record);
 
-    @Select("select count(*) from sys_file where id <= #{id}")
-    Integer findIndex(Integer id);
+    int insertSelective(Image record);
+
+    List<Image> selectByExample(ImageExample example);
+
+    Image selectByPrimaryKey(Integer id);
+
+    int updateByExampleSelective(@Param("record") Image record, @Param("example") ImageExample example);
+
+    int updateByExample(@Param("record") Image record, @Param("example") ImageExample example);
+
+    int updateByPrimaryKeySelective(Image record);
+
+    int updateByPrimaryKey(Image record);
+
+    /**
+     * 查询一个章节的图片,且该章节状态为1
+     * @param id
+     * @return
+     */
+    @Select("SELECT * from image where image.chapter_id = (select chapter.id from chapter WHERE  chapter.status = 1 and chapter.id = #{id}) ORDER BY image.url ASC")
+    List<Image> listByChapterId(Integer id);
 }

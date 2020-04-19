@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   devtools:
     restart:    #需要实时更新的目录
@@ -7,7 +7,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/rbac?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/rbac?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
     username: root
     password: root
     platform: mysql
@@ -52,3 +52,8 @@ file:
   ###静态资源对外暴露的访问路径
   staticAccessStandardPath: /file/**
   staticAccessThumbnailPath: /file/thumbnail/**
+
+comic:
+  path: E:/upload/comic/
+  staticAccesspath: /comic/**
+  host: http://192.168.0.114:8081

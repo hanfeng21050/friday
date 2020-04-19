@@ -34,7 +34,6 @@ public class DruidConfig {
         initParam.put("loginPassword","123456");
         initParam.put("allow","");  //默认就是允许所有访问
         initParam.put("deny","");		//默认访问
-
         servletRegistrationBean.setInitParameters(initParam);
         return  servletRegistrationBean;
     }

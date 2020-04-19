@@ -10,6 +10,7 @@ import com.hf.friday.service.UserService;
 import com.hf.friday.util.ThumbnailUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.ResourceLoader;
@@ -52,11 +53,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Results upload(FileDto dto) throws IOException {
+    public  Results upload(FileDto dto) throws IOException {
         MultipartFile file = dto.getFile();
         //文件名
         String originalFilename = file.getOriginalFilename();
-
         //文件大小
         DecimalFormat df = new DecimalFormat("0.0");//格式化，区小数后两位
         String size = df.format((double)file.getBytes().length/1024);

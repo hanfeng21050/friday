@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图片列表</title>
+    <header th:replace="header::html"></header>
+</head>
+<body>
+
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">图片</a>
+        <a>
+          <cite>图片列表</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+
+
+<ul class="layui-nav">
+    <li class="layui-nav-item"><a onclick="xadmin.open('添加用户','/comic/add',1515,800)">上传作品</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:">排序</a>
+        <dl class="layui-nav-child">
+            <dd><a href="">按上传时间</a></dd>
+            <dd><a href="">按收藏数</a></dd>
+            <dd><a href="">按热度</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a href="">占位</a></li>
+
+    <li class="layui-nav-item layui-col-md-offset4"><input type="text" style="line-height: 25px;border-radius: 5px"> <button type="button" class="layui-btn layui-btn-primary layui-btn-radius">搜索</button> </li>
+</ul>
+
+<div class="comic-boay" id="comicList">
+</div>
+
+</body>
+<script>
+    $(function () {
+        getData()
+    })
+
+    function goDetail(id) {
+        location.href="goComicDetail/" + id;
+    }
+    function getData(callback) {
+        $.ajax({
+            url: "/comic/all",
+            type: "GET",
+            dataType: 'json',
+            success: function (result) {
+                let data = result.datas;
+                html = ""
+                for (let i = 0; i < data.length; i++) {
+                    if(data[i].coverImg == null)
+                    {
+                        data[i].coverImg="/my/image/1.jpg"
+                    }
+                    html += " <div class='item' onclick='goDetail("+data[i].id+")'>\n" +
+                        "        <img src='"+data[i].coverImg+"'> \n" +
+                        "        <div class='name'>"+data[i].title+"</div>\n" +
+                        "    </div>";
+                }
+                console.log(html)
+                document.getElementById("comicList").innerHTML = html;
+            }
+        });
+    }
+</script>
+<style>
+    .comic-boay {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .item {
+        overflow: hidden;
+        width: 150px;
+        padding: 5px;
+    }
+
+    .item > img {
+        width: 150px;
+        height: 200px;
+    }
+    .item:hover{
+        cursor: pointer;
+    }
+    .name{
+        padding: 5px 0;
+        text-align: center;
+        font-size:14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .name:hover{
+        color: #eea40b;
+
+    }
+</style>
+</html>

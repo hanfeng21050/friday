@@ -1,17 +1,14 @@
 package com.hf.friday.service;
 
 import com.hf.friday.base.Results;
-import com.hf.friday.model.SysFile;
+import com.hf.friday.vo.ImageVO;
 
-import javax.xml.transform.Result;
+import java.io.IOException;
 
+/**
+ * @Author CoolWind
+ * @Date 2020/4/18 14:27
+ */
 public interface ImageService {
-
-    Results list(Integer offset, Integer limit);
-
-    Results countAll();
-
-    SysFile findImageById(Integer id);
-
-    Integer findIndex(Integer id);
+    Results upload(ImageVO dto) throws IOException;
 }
