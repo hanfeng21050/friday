@@ -15,7 +15,7 @@
 
 		<div class="input-box">
 			<i class="icon iconfont icon-account"></i>
-			<input type="text" id="username" placeholder="Username">
+			<input type="text" id="username"  placeholder="Username">
 		</div>
 		<div class="input-box">
 			<i class="icon iconfont icon-password"></i>
@@ -47,13 +47,12 @@
 	$('#login').on('click',function () {
 		var username = $("#username").val();
 		var password = $("#password").val();
-
-		var data = {"username":username,"password":password}
+		var data = "username="+username+"&password="+password
 		console.log(JSON.stringify(data))
 		$.ajax({
 			type : 'post',
 			url : '/login',
-			data : JSON.stringify(data),
+			data : data,
 			success : function(datas) {
 
 				if(datas.authenticated == true){
