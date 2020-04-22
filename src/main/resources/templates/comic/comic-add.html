@@ -10,7 +10,7 @@
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
-            <div class="layui-card">
+            <div class="layui-card" style="height: 740px !important;">
                 <div class="layui-card-header">新增漫画</div>
                 <div class="layui-card-body" pad15>
 
@@ -39,16 +39,12 @@
                         </div>
 
 
+
                         <div class="layui-form-item layui-form-text">
                             <label class="layui-form-label">类别</label>
-                            <div class="layui-input-block">
-                                <select name="type">
-                                    <option value=""></option>
-                                    <option value="0">写作</option>
-                                    <option value="1">阅读</option>
-                                    <option value="2">游戏</option>
-                                    <option value="3">音乐</option>
-                                    <option value="4">旅行</option>
+                            <div class="layui-input-inline">
+                                <select name="type"  id="types">
+
                                 </select>
                             </div>
 
@@ -57,8 +53,8 @@
 
                         <div class="layui-form-item layui-form-text" >
                             <label class="layui-form-label">标签</label>
-                            <div  class="layui-input-block" >
-                               <input  type="checkbox" name="like" value="1" title="写作">
+                            <div id="tags" class="layui-input-block" >
+                               
                             </div>
                         </div>
 
@@ -94,15 +90,19 @@
         var form = layui.form
             ,layer = layui.layer;
 
+        //获取type和tag
+        getData(function () {
+            layui.form.render('radio')
+        });
 
         //监听提交
         form.on('submit(update)', function(data){
             //获取checkbox[name='like']的值
             var arr = new Array();
-            $("input:checkbox[name='like']:checked").each(function(i){
+            $("input:checkbox[name='tagList']:checked").each(function(i){
                 arr[i] = $(this).val();
             });
-            data.field.like = arr.join(",");//将数组合并成字符串
+            data.field.tagList = arr.join(",");//将数组合并成字符串
 
             $.ajax({
                 url: "/comic/add",
@@ -126,7 +126,39 @@
             return false;
         });
 
+
+
+        function getData(callback) {
+
+            $.ajax({
+                url: "/comic/getTagAndType",
+                type: "GET",
+                dataType: 'json',
+                success: function (result) {
+                    var html = "";
+                    var html1 = "";
+                    let tagList = result.data.tagList;
+                    let typeList = result.data.typeList;
+
+                    console.log(tagList);
+                    console.log(typeList);
+
+                    for (let i = 0; i< tagList.length;i++) {
+                        html += '<input  type="checkbox" name="tagList" value="'+tagList[i].id+'" title="'+tagList[i].name+'">'
+                    }
+                    $("#tags").append(html);
+
+                    for (let i = 0; i< typeList.length;i++) {
+                        html1 += '<option value="'+typeList[i].id+'">'+typeList[i].name+'</option>'
+                    }
+                    $("#types").append(html1);
+                    form.render();//重新渲染
+                }
+            });
+        }
     });
+
+
 </script>
 </body>
 </html>

@@ -1,8 +1,6 @@
 package com.hf.friday.vo;
 
-import com.hf.friday.model.Chapter;
-import com.hf.friday.model.Comic;
-import com.hf.friday.model.Comment;
+import com.hf.friday.model.*;
 import lombok.Data;
 
 import java.util.List;
@@ -18,4 +16,6 @@ public class ComicDetailVO {
     private Comic comic;
     private List<Chapter> chapterList;
     private List<Comment> comments;
+    private List<Tag> tagList;
+    private List<Type> typeList;
 }

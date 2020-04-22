@@ -7,6 +7,9 @@
     <result column="comic_id" jdbcType="INTEGER" property="comicId" />
     <result column="like_mun" jdbcType="INTEGER" property="likeMun" />
     <result column="disleke_num" jdbcType="INTEGER" property="dislekeNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hf.friday.model.Comment">
     <result column="text" jdbcType="LONGVARCHAR" property="text" />
@@ -70,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, comic_id, like_mun, disleke_num
+    id, user_id, comic_id, like_mun, disleke_num, create_time, update_time, `status`
   </sql>
   <sql id="Blob_Column_List">
     `text`
@@ -141,10 +144,12 @@
   </delete>
   <insert id="insert" parameterType="com.hf.friday.model.Comment">
     insert into comment (id, user_id, comic_id, 
-      like_mun, disleke_num, `text`
+      like_mun, disleke_num, create_time, 
+      update_time, `status`, `text`
       )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{comicId,jdbcType=INTEGER}, 
-      #{likeMun,jdbcType=INTEGER}, #{dislekeNum,jdbcType=INTEGER}, #{text,jdbcType=LONGVARCHAR}
+      #{likeMun,jdbcType=INTEGER}, #{dislekeNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{text,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.hf.friday.model.Comment">
@@ -165,6 +170,15 @@
       <if test="dislekeNum != null">
         disleke_num,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
       <if test="text != null">
         `text`,
       </if>
@@ -184,6 +198,15 @@
       </if>
       <if test="dislekeNum != null">
         #{dislekeNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="text != null">
         #{text,jdbcType=LONGVARCHAR},
@@ -214,6 +237,15 @@
       <if test="record.dislekeNum != null">
         disleke_num = #{record.dislekeNum,jdbcType=INTEGER},
       </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
       <if test="record.text != null">
         `text` = #{record.text,jdbcType=LONGVARCHAR},
       </if>
@@ -229,6 +261,9 @@
       comic_id = #{record.comicId,jdbcType=INTEGER},
       like_mun = #{record.likeMun,jdbcType=INTEGER},
       disleke_num = #{record.dislekeNum,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      `status` = #{record.status,jdbcType=INTEGER},
       `text` = #{record.text,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -240,7 +275,10 @@
       user_id = #{record.userId,jdbcType=INTEGER},
       comic_id = #{record.comicId,jdbcType=INTEGER},
       like_mun = #{record.likeMun,jdbcType=INTEGER},
-      disleke_num = #{record.dislekeNum,jdbcType=INTEGER}
+      disleke_num = #{record.dislekeNum,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      `status` = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -260,6 +298,15 @@
       <if test="dislekeNum != null">
         disleke_num = #{dislekeNum,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
       <if test="text != null">
         `text` = #{text,jdbcType=LONGVARCHAR},
       </if>
@@ -272,6 +319,9 @@
       comic_id = #{comicId,jdbcType=INTEGER},
       like_mun = #{likeMun,jdbcType=INTEGER},
       disleke_num = #{dislekeNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=INTEGER},
       `text` = #{text,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -280,7 +330,10 @@
     set user_id = #{userId,jdbcType=INTEGER},
       comic_id = #{comicId,jdbcType=INTEGER},
       like_mun = #{likeMun,jdbcType=INTEGER},
-      disleke_num = #{dislekeNum,jdbcType=INTEGER}
+      disleke_num = #{dislekeNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -5,6 +5,9 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="tag_id" jdbcType="INTEGER" property="tagId" />
     <result column="comic_id" jdbcType="INTEGER" property="comicId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, tag_id, comic_id
+    id, tag_id, comic_id, create_time, update_time, `status`
   </sql>
   <select id="selectByExample" parameterType="com.hf.friday.model.ComicTagExample" resultMap="BaseResultMap">
     select
@@ -106,9 +109,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.hf.friday.model.ComicTag">
-    insert into comic_tag (id, tag_id, comic_id
+    insert into comic_tag (id, tag_id, comic_id, 
+      create_time, update_time, `status`
       )
-    values (#{id,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER}, #{comicId,jdbcType=INTEGER}
+    values (#{id,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER}, #{comicId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.hf.friday.model.ComicTag">
@@ -123,6 +128,15 @@
       <if test="comicId != null">
         comic_id,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -133,6 +147,15 @@
       </if>
       <if test="comicId != null">
         #{comicId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -154,6 +177,15 @@
       <if test="record.comicId != null">
         comic_id = #{record.comicId,jdbcType=INTEGER},
       </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -163,7 +195,10 @@
     update comic_tag
     set id = #{record.id,jdbcType=INTEGER},
       tag_id = #{record.tagId,jdbcType=INTEGER},
-      comic_id = #{record.comicId,jdbcType=INTEGER}
+      comic_id = #{record.comicId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      `status` = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -177,13 +212,25 @@
       <if test="comicId != null">
         comic_id = #{comicId,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hf.friday.model.ComicTag">
     update comic_tag
     set tag_id = #{tagId,jdbcType=INTEGER},
-      comic_id = #{comicId,jdbcType=INTEGER}
+      comic_id = #{comicId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

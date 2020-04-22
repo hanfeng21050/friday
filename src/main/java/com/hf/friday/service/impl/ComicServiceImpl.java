@@ -2,10 +2,7 @@ package com.hf.friday.service.impl;
 
 import com.hf.friday.base.PageTableRequest;
 import com.hf.friday.base.Results;
-import com.hf.friday.dao.ChapterDAO;
-import com.hf.friday.dao.ComicConfigDAO;
-import com.hf.friday.dao.ComicDAO;
-import com.hf.friday.dao.ImageDAO;
+import com.hf.friday.dao.*;
 import com.hf.friday.model.*;
 import com.hf.friday.service.ComicService;
 import com.hf.friday.util.StringUtil;
@@ -50,6 +47,14 @@ public class ComicServiceImpl implements ComicService {
     private ComicConfigDAO comicConfigDAO;
     @Autowired
     private ChapterDAO chapterDAO;
+    @Autowired
+    private TagDAO tagDAO;
+    @Autowired
+    private TypeDAO typeDAO;
+    @Autowired
+    private ComicTagDAO comicTagDAO;
+    @Autowired
+    private ComicTypeDAO comicTypeDAO;
 
     @Override
     public Results<Comic> listByPage(Integer offset, Integer limit) {
@@ -87,6 +92,40 @@ public class ComicServiceImpl implements ComicService {
         comic.setFire(0);
 
         return comicDAO.insertSelective(comic) > 0 ? Results.success() : Results.failure();
+    }
+
+    @Override
+    public Results addComic(Comic comic, List<Integer> tagIdList, Integer typeId) {
+        //保存comic
+        ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(1);
+        comicConfig.setNum(comicConfig.getNum() + 1);
+        comicConfigDAO.updateByPrimaryKey(comicConfig);
+        String no = StringUtil.genNO(comicConfig.getNum());
+        comic.setNo(no);
+        comic.setStatus(0);
+        comic.setCreateTime(new Date());
+        comic.setLikeNum(0);
+        comic.setCount(0);
+        comic.setFire(0);
+        comicDAO.insertSelective(comic);
+
+        int comicId = comic.getId();
+        //保存type
+        ComicType comicType = new ComicType();
+        comicType.setComicId(comicId);
+        comicType.setTypeId(typeId);
+        comicType.setCreateTime(new Date());
+        comicTypeDAO.insertSelective(comicType);
+
+        //保存标签
+        for (Integer tagId : tagIdList) {
+            ComicTag comicTag = new ComicTag();
+            comicTag.setComicId(comicId);
+            comicTag.setTagId(tagId);
+            comicTag.setCreateTime(new Date());
+            comicTagDAO.insertSelective(comicTag);
+        }
+        return Results.success();
     }
 
     @Override
@@ -132,23 +171,28 @@ public class ComicServiceImpl implements ComicService {
 
 
     /**
-     * 返回一个章节页面的图片
-     * @param id
+     * 返回一个章节页面的图片 分页
      * @return
      */
     @Override
-    public Results<DetailVO> list(int id) {
+    public Results<DetailVO> list(PageTableRequest request) {
 
-        List<Image> images = imageDAO.listByChapterId(id);
+        //返回图片
+        request.countOffset();
+        List<Image> images = imageDAO.listByChapterId(request.getId(),request.getOffset(),request.getLimit());
+        //返回当前章节图片的总数
+        ImageExample example = new ImageExample();
+        example.createCriteria().andChapterIdEqualTo(request.getId());
+        long count = imageDAO.countByExample(example);
 
         for (Image image : images) {
             image.setUrl(host + image.getUrl());
         }
-
-        Chapter chapter = chapterDAO.selectByPrimaryKey(id);
+        Chapter chapter = chapterDAO.selectByPrimaryKey(request.getId());
         DetailVO detailVO = new DetailVO();
         detailVO.setChapter(chapter);
         detailVO.setImageList(images);
+        detailVO.setCount((int) count);
         return Results.success("success",detailVO);
     }
 
@@ -244,5 +288,21 @@ public class ComicServiceImpl implements ComicService {
         comic.setStatus(status? 1:0);
         comicDAO.updateByPrimaryKey(comic);
         return Results.success();
+    }
+
+    @Override
+    public Results<ComicDetailVO> getTagAndType() {
+        TagExample tagExample = new TagExample();
+        tagExample.createCriteria().andStatusEqualTo(1);
+        List<Tag> tagList = tagDAO.selectByExample(tagExample);
+
+        TypeExample typeExample = new TypeExample();
+        typeExample.createCriteria().andStatusEqualTo(1);
+        List<Type> typeList = typeDAO.selectByExample(typeExample);
+
+        ComicDetailVO vo = new ComicDetailVO();
+        vo.setTagList(tagList);
+        vo.setTypeList(typeList);
+        return Results.success(vo);
     }
 }

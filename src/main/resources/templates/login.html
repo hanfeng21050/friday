@@ -1,79 +1,82 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="Cache-Control" content="no-cache">
-	<meta http-equiv="Expires" content="0">
 	<title>登录</title>
-	<header th:replace="header::html"></header>
-	<link rel="stylesheet" th:href="@{/xadmin/css/login.css}" />
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="my/css/login.css" type="text/css">
+	<link rel="stylesheet" href="my/css/button.css" type="text/css">
+	<link rel="stylesheet" href="my/css/iconfont.css" type="text/css">
+	<script type="text/javascript" src="xadmin/js/jquery.min.js"></script>
 
 </head>
 <body>
-	<div class="login">
-		<div class="message">后台管理系统</div>
-		<div id="darkbannerwrap"></div>
+<div class="login-box">
+	<h2>LOGIN</h2>
+	<div class="form">
 
-        <form action="/login" id="login-form" method="post">
-			<input id="username" name="username" placeholder="用户名" type="text" autocomplete="off">
-			<hr class="hr15">
-			<input id="password" name="password" placeholder="密码" type="password" autocomplete="off">
-			<hr class="hr15">
-            <input style="width: 100%;" lay-submit lay-filter="login" type="submit" id="login" value="登录">
-			<hr class="hr20">
-			<span id="info" style="color: red"></span>
-		</form>
-
+		<div class="input-box">
+			<i class="icon iconfont icon-account"></i>
+			<input type="text" id="username" placeholder="Username">
+		</div>
+		<div class="input-box">
+			<i class="icon iconfont icon-password"></i>
+			<input type="password" id="password" placeholder="Password">
+		</div>
 	</div>
+
+	<a id="login" href="#" >登录</a>
+</div>
 </body>
+
+
 <script type="text/javascript">
-    $(function  () {
-        layui.use('form', function(){
-            var form = layui.form;
-            //监听提交
-            form.on('submit(login)', function(data){
-				$.ajax({
-					type : 'post',
-					url : '/login',
-					data : $("#login-form").serialize(),
-					success : function(datas) {
+	const buttons = document.querySelectorAll('a');
+	buttons.forEach(btn=>{
+		btn.addEventListener('click',function(e){
+			let x = e.clientX - e.target.offsetLeft;
+			let y = e.clientY - e.target.offsetTop;
+			let ripples = document.createElement('span');
+			ripples.style.left = x + 'px';
+			ripples.style.top = y + 'px';
+			this.appendChild(ripples);
+			setTimeout(()=>{
+				ripples.remove()
+			},600)
+		})
+	})
 
-						if(datas.authenticated == true){
-							localStorage.clear();
-							localStorage.setItem("userId", datas.principal.id);
-							localStorage.setItem("username", datas.principal.username);
-							localStorage.setItem("nickName", datas.principal.nickname);
-							var authorities = datas.authorities;
-							var permission = [];
-							for(var i in authorities){
-								permission.push(authorities[i].authority);
-							}
-							localStorage.setItem("permission", JSON.stringify(permission));
-							layer.msg("登录成功",{time:500},function(){
-								location.href='/'
-							});
-						}else{
-							layer.msg("登录异常，请联系管理员");
-						}
-					},
-					error : function(xhr, textStatus, errorThrown) {
-						var msg = xhr.responseText;
-						var response = JSON.parse(msg);
-						layer.msg(response.message);
+	$('#login').on('click',function () {
+		var username = $("#username").val();
+		var password = $("#password").val();
+
+		var data = {"username":username,"password":password}
+		console.log(JSON.stringify(data))
+		$.ajax({
+			type : 'post',
+			url : '/login',
+			data : JSON.stringify(data),
+			success : function(datas) {
+
+				if(datas.authenticated == true){
+					localStorage.clear();
+					localStorage.setItem("userId", datas.principal.id);
+					localStorage.setItem("username", datas.principal.username);
+					localStorage.setItem("nickName", datas.principal.nickname);
+					var authorities = datas.authorities;
+					var permission = [];
+					for(var i in authorities){
+						permission.push(authorities[i].authority);
 					}
-				});
-                return false;
-            });
-        });
-    })
+					localStorage.setItem("permission", JSON.stringify(permission));
+					location.href='/'
+				}else{
 
-
-	//    点击x
-	$(".cuo").click(function () {
-		$(".box").css("display", "none");
-		$("body").css("background", "#F1F1F1");
+				}
+			},
+			error : function(xhr, textStatus, errorThrown) {
+				var msg = xhr.responseText;
+				var response = JSON.parse(msg);
+			}
+		});
 	})
 </script>
 </html>

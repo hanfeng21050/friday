@@ -26,9 +26,11 @@ public interface ComicService {
 
     public Results insert(Comic comic);
 
+    Results addComic(Comic comic, List<Integer> string2Int, Integer type);
+
     public Results upload(ImageVO imageVO) throws IOException;
 
-    Results<DetailVO> list(int id);
+    Results<DetailVO> list(PageTableRequest request);
 
     Results<Chapter> getChapter(int id);
 
@@ -37,4 +39,6 @@ public interface ComicService {
     Results<ComicDetailVO> getComicDetail(Integer id);
 
     Results switchStat(Boolean status, Integer id);
+
+    Results<ComicDetailVO> getTagAndType();
 }

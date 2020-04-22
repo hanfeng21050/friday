@@ -1,6 +1,7 @@
 package com.hf.friday.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import lombok.Data;
 
 /**
@@ -30,6 +31,12 @@ public class Comment implements Serializable {
      * 不喜欢数
      */
     private Integer dislekeNum;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private Integer status;
 
     /**
      * 评论

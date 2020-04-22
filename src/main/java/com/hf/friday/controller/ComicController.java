@@ -2,6 +2,7 @@ package com.hf.friday.controller;
 
 import com.hf.friday.base.PageTableRequest;
 import com.hf.friday.base.Results;
+import com.hf.friday.util.StringUtil;
 import com.hf.friday.vo.ComicDetailVO;
 import com.hf.friday.vo.ComicVO;
 import com.hf.friday.vo.DetailVO;
@@ -37,7 +38,7 @@ public class ComicController {
      */
     @GetMapping("/list")
     @ResponseBody
-    public Results<Comic> list(PageTableRequest request)
+    public Results<Comic> listByPage(PageTableRequest request)
     {
         request.countOffset();
         log.info("ComicController.list() param:(request = "+request+")");
@@ -54,14 +55,24 @@ public class ComicController {
         return Results.success("success",all.size(),all);
     }
 
+    /**
+     * 添加漫画需要用到的数据
+     * @return
+     */
+    @RequestMapping("/getTagAndType")
+    @ResponseBody
+    public Results<ComicDetailVO> getTagAndType()
+    {
+        return comicService.getTagAndType();
+    }
+
+
     @ResponseBody
     @PostMapping("/add")
-    public Results addComic(@RequestParam HashMap<Object,Object> map)
+    public Results addComic(Comic comic,String tagList, Integer type)
     {
-        System.out.println(map);
-        return null;
-        //log.info("ComicController.addComic() param:(Comic="+comic+")");
-        //return comicService.insert(comic);
+        log.info("ComicController.addComic() param:(Comic="+comic+";tagList="+tagList+";type=)"+type+"");
+        return comicService.addComic(comic, StringUtil.String2Int(tagList),type);
     }
 
     /**
@@ -117,16 +128,16 @@ public class ComicController {
     /**
      * 返回一个章节页面的图片
      * 移动段返回接口
-     * @param id 当前章节id
      * @return
      */
     @ResponseBody
     @GetMapping("/app/imagelist")
     //@PreAuthorize("hasAnyAuthority('comic:query')")
-    public Results<DetailVO> list(int id)
+    public Results<DetailVO> list(PageTableRequest request)
     {
-        log.info("app:ComicController.list() param:(id = "+id+")");
-        return comicService.list(id);
+
+        log.info("app:ComicController.list() param:(request = "+request+")");
+        return comicService.list(request);
     }
 
 

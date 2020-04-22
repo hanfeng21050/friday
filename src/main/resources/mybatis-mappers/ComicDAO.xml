@@ -130,7 +130,7 @@
       #{status,jdbcType=INTEGER}, #{likeNum,jdbcType=INTEGER}, #{fire,jdbcType=INTEGER}, 
       #{count,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR}, #{score,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.hf.friday.model.Comic">
+  <insert id="insertSelective" parameterType="com.hf.friday.model.Comic" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
     insert into comic
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
