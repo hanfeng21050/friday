@@ -9,12 +9,7 @@ import lombok.Data;
  * 
  */
 @Data
-public class ComicType implements Serializable {
-    /**
-     * 唯一
-     */
-    private Integer id;
-
+public class ComicType extends BaseEntity<Integer> {
     /**
      * 漫画id
      */
@@ -24,12 +19,4 @@ public class ComicType implements Serializable {
      * 类型id
      */
     private Integer typeId;
-
-    private Date createTime;
-
-    private Date updateTime;
-
-    private Integer status;
-
-    private static final long serialVersionUID = 1L;
 }

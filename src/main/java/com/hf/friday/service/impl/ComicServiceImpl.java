@@ -62,7 +62,10 @@ public class ComicServiceImpl implements ComicService {
         example.setLimit(limit);
         example.setOffset((long)offset);
         List<Comic> comicList = comicDAO.selectByExample(example);
-        return Results.success(comicList.size(),comicList);
+
+
+        int count = (int) comicDAO.countByExample(new ComicExample());
+        return Results.success(count,comicList);
     }
 
     @Override

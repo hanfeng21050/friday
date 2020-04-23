@@ -11,12 +11,7 @@ import lombok.Data;
  * 
  */
 @Data
-public class Comic implements Serializable {
-    /**
-     * id
-     */
-    private Integer id;
-
+public class Comic extends BaseEntity<Integer> {
     /**
      * 漫画编号
      */
@@ -38,19 +33,6 @@ public class Comic implements Serializable {
     private String announcement;
 
     /**
-     * 创建时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd  HH:mm:ss")
-
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd  HH:mm:ss")
-    private Date updateTime;
-
-    /**
      * 上传者
      */
     private String uploadUser;
@@ -60,10 +42,6 @@ public class Comic implements Serializable {
      */
     private String author;
 
-    /**
-     * 状态 0上传未审 1 审核通过
-     */
-    private Integer status;
 
     /**
      * 收藏数量
@@ -89,6 +67,4 @@ public class Comic implements Serializable {
      * 评分
      */
     private Double score;
-
-    private static final long serialVersionUID = 1L;
 }

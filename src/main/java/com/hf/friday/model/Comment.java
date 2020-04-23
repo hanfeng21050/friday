@@ -9,9 +9,7 @@ import lombok.Data;
  * 
  */
 @Data
-public class Comment implements Serializable {
-    private Integer id;
-
+public class Comment extends BaseEntity<Integer> {
     /**
      * 用户
      */
@@ -32,16 +30,9 @@ public class Comment implements Serializable {
      */
     private Integer dislekeNum;
 
-    private Date createTime;
-
-    private Date updateTime;
-
-    private Integer status;
-
     /**
      * 评论
      */
     private String text;
 
-    private static final long serialVersionUID = 1L;
 }

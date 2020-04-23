@@ -9,12 +9,7 @@ import lombok.Data;
  * 
  */
 @Data
-public class Image implements Serializable {
-    /**
-     * 唯一
-     */
-    private Integer id;
-
+public class Image extends BaseEntity<Integer> {
     /**
      * 图片地址
      */
@@ -29,12 +24,4 @@ public class Image implements Serializable {
      * 所属章节
      */
     private Integer chapterId;
-
-    private Date createTime;
-
-    private Date updateTime;
-
-    private Integer status;
-
-    private static final long serialVersionUID = 1L;
 }

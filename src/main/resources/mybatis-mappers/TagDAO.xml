@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.hf.friday.model.Tag">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="src" jdbcType="VARCHAR" property="src" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, create_time, update_time, `status`
+    id, `name`, src, create_time, update_time, `status`
   </sql>
   <select id="selectByExample" parameterType="com.hf.friday.model.TagExample" resultMap="BaseResultMap">
     select
@@ -108,10 +109,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.hf.friday.model.Tag">
-    insert into tag (id, `name`, create_time, 
-      update_time, `status`)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+    insert into tag (id, `name`, src, 
+      create_time, update_time, `status`
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{src,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hf.friday.model.Tag">
     insert into tag
@@ -121,6 +124,9 @@
       </if>
       <if test="name != null">
         `name`,
+      </if>
+      <if test="src != null">
+        src,
       </if>
       <if test="createTime != null">
         create_time,
@@ -138,6 +144,9 @@
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="src != null">
+        #{src,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -165,6 +174,9 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.src != null">
+        src = #{record.src,jdbcType=VARCHAR},
+      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -183,6 +195,7 @@
     update tag
     set id = #{record.id,jdbcType=INTEGER},
       `name` = #{record.name,jdbcType=VARCHAR},
+      src = #{record.src,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       `status` = #{record.status,jdbcType=INTEGER}
@@ -195,6 +208,9 @@
     <set>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="src != null">
+        src = #{src,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -211,6 +227,7 @@
   <update id="updateByPrimaryKey" parameterType="com.hf.friday.model.Tag">
     update tag
     set `name` = #{name,jdbcType=VARCHAR},
+      src = #{src,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=INTEGER}

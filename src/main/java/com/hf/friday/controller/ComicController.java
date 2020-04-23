@@ -72,7 +72,7 @@ public class ComicController {
     public Results addComic(Comic comic,String tagList, Integer type)
     {
         log.info("ComicController.addComic() param:(Comic="+comic+";tagList="+tagList+";type=)"+type+"");
-        return comicService.addComic(comic, StringUtil.String2Int(tagList),type);
+        return comicService.addComic(comic, StringUtil.String2Int2(tagList),type);
     }
 
     /**
@@ -139,8 +139,6 @@ public class ComicController {
         log.info("app:ComicController.list() param:(request = "+request+")");
         return comicService.list(request);
     }
-
-
     /**
      * 移动段返回章节列表
      * @param id 当前漫画id
@@ -169,6 +167,5 @@ public class ComicController {
         log.info("app:ComicController.getComicDetail() param:(id = "+id+")");
         return comicService.getComicDetail(id);
     }
-
 
 }

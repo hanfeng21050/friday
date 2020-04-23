@@ -9,19 +9,9 @@ import lombok.Data;
  * 
  */
 @Data
-public class ComicConfig implements Serializable {
-    private Integer id;
-
+public class ComicConfig extends BaseEntity<Integer> {
     /**
      * 漫画总数
      */
     private Integer num;
-
-    private Date createTime;
-
-    private Date updateTime;
-
-    private Integer status;
-
-    private static final long serialVersionUID = 1L;
 }
