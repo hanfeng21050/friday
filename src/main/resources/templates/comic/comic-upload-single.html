@@ -33,7 +33,7 @@
             elem: '#upload'
             ,url: '/comic/upload' //改成您自己的上传接口
             ,data:{"id":id}
-            ,before: function(obj){
+            ,choose: function(obj){
                 //预读本地文件示例，不支持ie8
                 obj.preview(function(index, file, result){
                     $('#cover').attr('src', result); //图片链接（base64）

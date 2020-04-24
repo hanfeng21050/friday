@@ -14,4 +14,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageVO {
     private MultipartFile file;
     private Integer id;
+    private String name;
 }

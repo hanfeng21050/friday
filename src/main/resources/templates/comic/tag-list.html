@@ -34,8 +34,9 @@
 
                         <div class="layui-card-header">
                             <button class="layui-btn layui-btn-danger" onclick="delAll()" ><i class="layui-icon"></i>批量删除</button>
-                            <button class="layui-btn" onclick="xadmin.open('新增标签','/comic/tag-add',1515,800)"><i class="layui-icon"></i>添加</button>
+                            <button class="layui-btn" onclick="xadmin.open('新增标签','/tag/add')"><i class="layui-icon"></i>添加</button>
                         </div>
+
 
                         <div class="layui-card-body ">
                             <table class="layui-hide" id="table" lay-filter="member"></table>
@@ -50,6 +51,8 @@
                 </div>
             </div>
         </div>
+
+
     </body>
     <script >
         layui.use('table', function() {
@@ -69,9 +72,11 @@
                 , cols: [
                     [ //表头
                         {type: 'checkbox', fixed: "left"}
-                        , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                        , {field: 'id', title: 'ID', sort: true}
                         , {field: 'name', title: '名称'}
-                        , {field: 'src', title: '封面'}
+                        , {field: 'src', title: '封面',templet:function (d) {
+                            return "<a href='"+d.src+"'><img class='img' src='"+d.src+"'></a>"
+                        }}
                         , {field: 'createTime', title: '上传时间'}
                         , {field: 'updateTime', title: '更新时间'}
                         , {
@@ -85,7 +90,7 @@
                             return state;
                         }
                     }
-                        , {fixed: 'right', title: '操作', toolbar: '#bar'}
+                        , { title: '操作', toolbar: '#bar'}
                     ]
                 ],
                 done: function () {
@@ -93,6 +98,7 @@
                     checkPermission();
                 }
             });
+
 
             //监听工具条
             table.on('tool(member)', function (obj) {
@@ -127,14 +133,26 @@
 
 
             });
-
         })
     </script>
 
 <style>
-    .title:hover{
-        color: rgba(255, 173, 0, 1);
-        font-weight: bold;
+    body
+    {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+    }
+    .layui-table-cell{
+        height:150px;
+        line-height: 150px;
+        text-align: center;
+    }
+    .img{
+        height: 100%;
+        width: auto;
+        cursor: pointer;
     }
 </style>
+
 </html>

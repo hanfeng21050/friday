@@ -68,7 +68,7 @@
                 ,cols: [
                     [ //表头
                         {type:'checkbox',fixed: "left"}
-                        ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
+                        ,{field: 'id', title: 'ID',  sort: true}
                         ,{field: 'title', title: '名称',templet:function (d) {
                             return "<a class='title' href='/api/goComicDetail/"+d.id+"'>"+d.title+"</a>"
                         } }
@@ -92,7 +92,7 @@
                             }
                             return state;
                         }}
-                        ,{fixed: 'right', title:'操作', toolbar: '#bar'}
+                        ,{ title:'操作', toolbar: '#bar'}
                 ]
                 ],
                 done:function () {

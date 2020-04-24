@@ -34,7 +34,7 @@
 
                         <div class="layui-card-header">
                             <button class="layui-btn layui-btn-danger" onclick="delAll()" permission="sys:user:del"><i class="layui-icon"></i>批量删除</button>
-                            <button class="layui-btn" onclick="xadmin.open('添加用户','/user/add',1515,800)" permission="sys:user:add"><i class="layui-icon"></i>添加</button>
+                            <button class="layui-btn" onclick="xadmin.open('添加用户','/user/add')" permission="sys:user:add"><i class="layui-icon"></i>添加</button>
                         </div>
 
                         <div class="layui-card-body ">
@@ -70,7 +70,7 @@
                 ,cols: [
                     [ //表头
                         {type:'checkbox',fixed: "left"}
-                        ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
+                        ,{field: 'id', title: 'ID',  sort: true}
                         ,{field: 'username', title: '用户名'}
                         ,{field: 'nickname', title: '别名' }
                         ,{field: 'telephone', title: '手机号码'}
@@ -89,7 +89,7 @@
                             }
                             return state;
                         }}
-                        ,{fixed: 'right', title:'操作', toolbar: '#bar'}
+                        ,{ title:'操作', toolbar: '#bar',width:120}
                 ]
                 ],
                 done:function () {

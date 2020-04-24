@@ -19,4 +19,6 @@ public class Tag extends BaseEntity<Integer> {
      * 标签展示图
      */
     private String src;
+
+
 }

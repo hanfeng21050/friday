@@ -80,7 +80,7 @@
                         return state;
                     }
                     }
-                    ,{fixed: 'right', title:'操作', toolbar: '#bar'}
+                    ,{title:'操作', toolbar: '#bar'}
                 ]
             ],
             done:function () {
@@ -111,7 +111,7 @@
 
                 });
             } else if(obj.event === 'upload'){
-                xadmin.open('上传文件','/chapter/upload?id='+data.id ,500,300)
+                xadmin.open('上传文件','/chapter/upload?id='+data.id)
             }
         });
 

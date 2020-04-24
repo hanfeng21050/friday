@@ -116,7 +116,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.hf.friday.model.Tag">
+  <insert id="insertSelective" parameterType="com.hf.friday.model.Tag" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
     insert into tag
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

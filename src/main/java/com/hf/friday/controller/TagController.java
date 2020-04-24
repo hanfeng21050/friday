@@ -5,13 +5,16 @@ import com.hf.friday.base.Results;
 import com.hf.friday.model.Comic;
 import com.hf.friday.model.Tag;
 import com.hf.friday.service.TagService;
+import com.hf.friday.util.StringUtil;
+import com.hf.friday.vo.ImageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * @Author CoolWind
@@ -40,6 +43,28 @@ public class TagController {
 
 
     /**
+     * 跳转add页面
+     * @param model
+     * @return
+     */
+    @GetMapping("/add")
+    public String uploadPage(Model model)
+    {
+        Tag tag = new Tag();
+        model.addAttribute(tag);
+        return "comic/tag-add";
+    }
+
+
+    @ResponseBody
+    @PostMapping("/add")
+    public Results addComic(ImageVO vo) throws IOException {
+        return tagService.addComic(vo);
+    }
+
+
+
+    /**
      * 切换状态
      * @param status
      * @param id
@@ -52,5 +77,6 @@ public class TagController {
         log.info("ComicController.getComicDetail() param:(id = "+id+")");
         return tagService.switchStat(status,id);
     }
+
 
 }

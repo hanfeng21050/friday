@@ -25,6 +25,7 @@ public class ImagePathConfig extends WebMvcConfigurerAdapter {
     private String staticAccessComicPath;
 
 
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(staticAccessStandardPath).addResourceLocations("file:///" + standardPath);
