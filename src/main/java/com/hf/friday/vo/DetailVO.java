@@ -16,4 +16,5 @@ public class DetailVO {
     private List<Image> imageList;//图片列表
     private Chapter chapter;//当前章节
     private int count;//当前章节图片的总数
+    private String host;
 }

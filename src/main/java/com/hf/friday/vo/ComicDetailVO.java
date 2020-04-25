@@ -18,4 +18,5 @@ public class ComicDetailVO {
     private List<Comment> comments;
     private List<Tag> tagList;
     private List<Type> typeList;
+    private String host;
 }

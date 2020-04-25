@@ -1,5 +1,6 @@
 package com.hf.friday.service.impl;
 
+import com.hf.friday.base.Constants;
 import com.hf.friday.base.PageTableRequest;
 import com.hf.friday.base.Results;
 import com.hf.friday.dao.*;
@@ -11,6 +12,7 @@ import com.hf.friday.vo.ComicVO;
 import com.hf.friday.vo.DetailVO;
 import com.hf.friday.vo.ImageVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -62,11 +64,13 @@ public class ComicServiceImpl implements ComicService {
         example.setLimit(limit);
         example.setOffset((long)offset);
         List<Comic> comicList = comicDAO.selectByExample(example);
-
-
         int count = (int) comicDAO.countByExample(new ComicExample());
         return Results.success(count,comicList);
     }
+
+    @Autowired
+
+
 
     @Override
     public List<Comic> selectAll()
@@ -82,7 +86,7 @@ public class ComicServiceImpl implements ComicService {
     @Override
     public Results insert(Comic comic) {
         //生成编号
-        ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(1);
+        ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
         comicConfig.setNum(comicConfig.getNum() + 1);
         comicConfigDAO.updateByPrimaryKey(comicConfig);
 
@@ -100,7 +104,7 @@ public class ComicServiceImpl implements ComicService {
     @Override
     public Results addComic(Comic comic, List<Integer> tagIdList, Integer typeId) {
         //保存comic
-        ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(1);
+        ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
         comicConfig.setNum(comicConfig.getNum() + 1);
         comicConfigDAO.updateByPrimaryKey(comicConfig);
         String no = StringUtil.genNO(comicConfig.getNum());
@@ -187,27 +191,27 @@ public class ComicServiceImpl implements ComicService {
         ImageExample example = new ImageExample();
         example.createCriteria().andChapterIdEqualTo(request.getId());
         long count = imageDAO.countByExample(example);
+        ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
 
-        for (Image image : images) {
-            image.setUrl(host + image.getUrl());
-        }
         Chapter chapter = chapterDAO.selectByPrimaryKey(request.getId());
         DetailVO detailVO = new DetailVO();
         detailVO.setChapter(chapter);
         detailVO.setImageList(images);
         detailVO.setCount((int) count);
+        detailVO.setHost(comicConfig.getHost());
         return Results.success("success",detailVO);
     }
 
 
     /**
-     * appindex页面所需数据
+     * app index页面所需数据
      * @return
      */
     @Override
     public Results<ComicVO> getHotComic(PageTableRequest request) {
         if(request.getType() == 1)
         {
+            ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
             ComicExample comicExample = new ComicExample();
             comicExample.setOffset((long) request.getOffset());
             comicExample.setLimit(request.getLimit());
@@ -217,12 +221,12 @@ public class ComicServiceImpl implements ComicService {
 
             List<ComicVO> list = new ArrayList<>();
             for (Comic comic1 : comicList) {
-                comic1.setCoverImg(host + comic1.getCoverImg());
                 ComicVO dto = new ComicVO();
                 //最新章节
                 Chapter chapter = chapterDAO.selectNew(comic1.getId());
                 dto.setChapter(chapter);
                 dto.setComic(comic1);
+                dto.setHost(comicConfig.getHost());
                 list.add(dto);
             }
             return Results.success("success",list.size(),list);
@@ -237,10 +241,9 @@ public class ComicServiceImpl implements ComicService {
      */
     @Override
     public Results<ComicDetailVO> getComicDetail(Integer id) {
+        ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
         //查询漫画
         Comic comic = comicDAO.selectByPrimaryKey(id);
-        comic.setCoverImg(host + comic.getCoverImg());
-
         //推荐漫画
         ComicExample comicExample = new ComicExample();
         comicExample.setOffset(0L);
@@ -261,16 +264,17 @@ public class ComicServiceImpl implements ComicService {
         comicDetailVO.setComic(comic);
 
         List<ComicVO> comicVOList = new ArrayList<>();
+        //详细下的推荐漫画
         for (Comic comic1 : comicList) {
-            comic1.setCoverImg(host + comic1.getCoverImg());
             ComicVO dto = new ComicVO();
             Chapter chapter = chapterDAO.selectNew(comic1.getId());
             dto.setChapter(chapter);
             dto.setComic(comic1);
+            dto.setHost(comicConfig.getHost());
             comicVOList.add(dto);
         }
         comicDetailVO.setComicVOList(comicVOList);
-
+        comicDetailVO.setHost(comicConfig.getHost());
         return Results.success(comicDetailVO);
     }
 

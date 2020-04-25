@@ -12,5 +12,6 @@ import lombok.Data;
 @Data
 public class ComicVO {
     private Comic comic;
+    private String host;
     private Chapter chapter;//最新章节
 }
