@@ -5,6 +5,8 @@
 <!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
 <configuration  scan="true" scanPeriod="10 seconds">
 
+    <logger name="com.hf.friday.dao" level="DEBUG"></logger>
+
     <!--<property name="log.path" value="D:/bmslog" />-->
     <springProperty scope="context" name="log.path" source="logging.path" defaultValue="/home/logs/bms"/>
     <contextName>logback</contextName>

@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -33,8 +32,7 @@ public class ComicController {
 
     /**
      * 分页查询
-     * @param request
-     * @return
+     * @param request 分页请求
      */
     @GetMapping("/list")
     @ResponseBody
@@ -57,7 +55,6 @@ public class ComicController {
 
     /**
      * 添加漫画需要用到的数据
-     * @return
      */
     @RequestMapping("/getTagAndType")
     @ResponseBody
@@ -77,8 +74,6 @@ public class ComicController {
 
     /**
      * 跳转到单图片上传页面
-     * @param model
-     * @return
      */
     @GetMapping("/uploadSingle")
     public String uploadPage(Model model,int id)
@@ -99,9 +94,8 @@ public class ComicController {
 
     /**
      * 切换漫画状态
-     * @param status
-     * @param id
-     * @return
+     * @param status 状态
+     * @param id id
      */
     @PostMapping("/switchStat")
     @ResponseBody
@@ -114,8 +108,6 @@ public class ComicController {
 
     /**
      * 跳转到漫画添加
-     * @param model
-     * @return
      */
     @GetMapping("/add")
     public String addComicPage(Model model)
@@ -128,7 +120,6 @@ public class ComicController {
     /**
      * 返回一个章节页面的图片
      * 移动段返回接口
-     * @return
      */
     @ResponseBody
     @GetMapping("/app/imagelist")

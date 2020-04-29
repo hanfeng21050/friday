@@ -245,63 +245,63 @@ public class CommentExample {
             return (Criteria) this;
         }
 
-        public Criteria andComicIdIsNull() {
-            addCriterion("comic_id is null");
+        public Criteria andTargetIdIsNull() {
+            addCriterion("target_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdIsNotNull() {
-            addCriterion("comic_id is not null");
+        public Criteria andTargetIdIsNotNull() {
+            addCriterion("target_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdEqualTo(Integer value) {
-            addCriterion("comic_id =", value, "comicId");
+        public Criteria andTargetIdEqualTo(Integer value) {
+            addCriterion("target_id =", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdNotEqualTo(Integer value) {
-            addCriterion("comic_id <>", value, "comicId");
+        public Criteria andTargetIdNotEqualTo(Integer value) {
+            addCriterion("target_id <>", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdGreaterThan(Integer value) {
-            addCriterion("comic_id >", value, "comicId");
+        public Criteria andTargetIdGreaterThan(Integer value) {
+            addCriterion("target_id >", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("comic_id >=", value, "comicId");
+        public Criteria andTargetIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("target_id >=", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdLessThan(Integer value) {
-            addCriterion("comic_id <", value, "comicId");
+        public Criteria andTargetIdLessThan(Integer value) {
+            addCriterion("target_id <", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdLessThanOrEqualTo(Integer value) {
-            addCriterion("comic_id <=", value, "comicId");
+        public Criteria andTargetIdLessThanOrEqualTo(Integer value) {
+            addCriterion("target_id <=", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdIn(List<Integer> values) {
-            addCriterion("comic_id in", values, "comicId");
+        public Criteria andTargetIdIn(List<Integer> values) {
+            addCriterion("target_id in", values, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdNotIn(List<Integer> values) {
-            addCriterion("comic_id not in", values, "comicId");
+        public Criteria andTargetIdNotIn(List<Integer> values) {
+            addCriterion("target_id not in", values, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdBetween(Integer value1, Integer value2) {
-            addCriterion("comic_id between", value1, value2, "comicId");
+        public Criteria andTargetIdBetween(Integer value1, Integer value2) {
+            addCriterion("target_id between", value1, value2, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andComicIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("comic_id not between", value1, value2, "comicId");
+        public Criteria andTargetIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("target_id not between", value1, value2, "targetId");
             return (Criteria) this;
         }
 

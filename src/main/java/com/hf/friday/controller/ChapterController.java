@@ -6,6 +6,7 @@ import com.hf.friday.model.Chapter;
 import com.hf.friday.model.Comic;
 import com.hf.friday.model.SysFile;
 import com.hf.friday.service.ChapterService;
+import com.hf.friday.util.StringUtil;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author CoolWind
@@ -93,5 +95,19 @@ public class ChapterController {
     public Results switchStat(Boolean status,Integer id)
     {
         return chapterService.switchStat(status,id);
+    }
+
+    @ResponseBody
+    @PostMapping("/delete")
+    public Results deleteList(String ids)
+    {
+        return chapterService.deleteList(StringUtil.String2Int(ids));
+    }
+
+    @ResponseBody
+    @PostMapping("/update")
+    public Results update(Chapter chapter)
+    {
+        return chapterService.update(chapter);
     }
 }

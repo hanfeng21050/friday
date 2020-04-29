@@ -35,7 +35,6 @@
                 <div class="layui-card-body ">
                     <script type="text/html" id="bar">
                         <a class="layui-btn layui-btn-xs" lay-event="upload" >上传图片</a>
-                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                     </script>
                 </div>
             </div>
@@ -63,7 +62,7 @@
             ,cols: [
                 [ //表头
                     {type:'checkbox',fixed: "left"}
-                    ,{field: 'title', title: '章节名称'}
+                    ,{field: 'title', title: '章节名称',edit:'text'}
                     ,{field: 'index',title: "索引"}
                     ,{field: "uploadUser",title:"上传者"}
                     ,{field: "uploadTime",title:"上传时间"}
@@ -92,28 +91,35 @@
         //监听工具条
         table.on('tool(member)', function(obj){
             var data = obj.data;
-            if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
-                    $.ajax({
-                        url:"/file/delete",
-                        type:"GET",
-                        data:{ids:data.id+","},
-                        dataType:'json',
-                        success:function(result){
-                            layer.alert("删除成功", {icon: 1},function (index1) {
-                                layer.close(index1);
-                                //xadmin.father_reload();
-                                //只刷新这个表
-                                table.reload('table');
-                            });
-                        },
-                    });
-
-                });
-            } else if(obj.event === 'upload'){
+            if(obj.event === 'upload'){
                 xadmin.open('上传文件','/chapter/upload?id='+data.id)
             }
         });
+
+        table.on('edit(member)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            $.ajax({
+                type: 'POST',
+                url: '/chapter/update',
+                data: {"title":value,"id":data.id},
+                dataType:'json',
+                beforeSend:function(){
+                    index_wx = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
+                },
+                error: function(result){
+                    layer.msg('数据异常，操作失败！');
+                    table.reload('table');
+                },
+                success: function(result,status){
+                    layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+                   // setTimeout(function(){layer.msg('操作成功！')});
+                },
+            });
+
+        });
+
 
         form.on('switch(stat)', function(obj){
             var current_user_id = obj.value;
@@ -140,7 +146,6 @@
     });
 
     function uploadCover() {
-
         var id=$("#comicId").val();
         xadmin.open('上传文件','/comic/uploadSingle?id='+id,500,300)
     }
@@ -166,8 +171,8 @@
         console.log(ids)
         layer.confirm('真的删除行么', function(index){
             $.ajax({
-                url:"/file/delete",
-                type:"GET",
+                url:"/chapter/delete",
+                type:"POST",
                 data:{ids:ids},
                 dataType:'json',
                 success:function(result){

@@ -6,9 +6,16 @@ spring:
       additional-paths: resources/**,static/**,templates/**
 
   redis:
-    host: 192.168.67.131
+    host: 47.114.36.156
     port: 6379
-    database: 1
+    password: redis123
+    lettuce:
+      pool:
+        max-active: 20
+        max-idle: 10
+        min-idle: 5
+        max-wait: 30s
+    timeout: 10s
 
 
   datasource:
@@ -42,10 +49,9 @@ mybatis:
   mapper-locations: classpath:/mybatis-mappers/*
   configuration:
     mapUnderscoreToCamelCase: true
-    cache-enabled: true
+    cache-enabled: false
 logging:
   path: E:/demolog
-
 druid:
   stat:
     slowSqlMillis: 5000
@@ -63,4 +69,3 @@ file:
 comic:
   path: E:/upload/comic/
   staticAccesspath: /comic/**
-  host: http://192.168.0.114:8081

@@ -7,7 +7,6 @@ import com.hf.friday.model.SysRoleUser;
 
 public interface RoleUserService {
 
-    //通过角色id查询用户id
-    public Results<SysRoleUser> getRoleUserByUserId(Integer roleId);
-
+    // 通过角色id查询用户id
+    Results<SysRoleUser> getRoleUserByUserId(Integer roleId);
 }

@@ -20,15 +20,15 @@ public interface ComicService {
 
     Results<Comic> listByPage(Integer offset, Integer limit);
 
-    public List<Comic> selectAll();
+    List<Comic> selectAll();
 
-    public Comic selectById(int id);
+    Comic selectById(int id);
 
-    public Results insert(Comic comic);
+    Results insert(Comic comic);
 
     Results addComic(Comic comic, List<Integer> string2Int, Integer type);
 
-    public Results upload(ImageVO imageVO) throws IOException;
+    Results upload(ImageVO imageVO) throws IOException;
 
     Results<DetailVO> list(PageTableRequest request);
 

@@ -38,8 +38,6 @@ public class ComicServiceImpl implements ComicService {
 
     @Value("${comic.path}")
     private String comicPath;
-    @Value("${comic.host}")
-    private String host;
 
     @Autowired
     private ComicDAO comicDAO;
