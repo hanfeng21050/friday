@@ -1,11 +1,9 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.base.PageTableRequest;
+import com.hf.friday.vo.PageTableRequest;
 import com.hf.friday.base.Results;
-import com.hf.friday.model.Comic;
 import com.hf.friday.model.Tag;
 import com.hf.friday.service.TagService;
-import com.hf.friday.util.StringUtil;
 import com.hf.friday.vo.ImageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * @Author CoolWind

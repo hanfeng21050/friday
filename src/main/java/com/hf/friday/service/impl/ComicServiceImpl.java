@@ -1,7 +1,7 @@
 package com.hf.friday.service.impl;
 
 import com.hf.friday.base.Constants;
-import com.hf.friday.base.PageTableRequest;
+import com.hf.friday.vo.PageTableRequest;
 import com.hf.friday.base.Results;
 import com.hf.friday.dao.*;
 import com.hf.friday.model.*;
@@ -12,7 +12,6 @@ import com.hf.friday.vo.ComicVO;
 import com.hf.friday.vo.DetailVO;
 import com.hf.friday.vo.ImageVO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

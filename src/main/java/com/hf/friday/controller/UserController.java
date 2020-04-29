@@ -1,6 +1,6 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.base.PageTableRequest;
+import com.hf.friday.vo.PageTableRequest;
 import com.hf.friday.base.ResponseCode;
 import com.hf.friday.base.Results;
 import com.hf.friday.dto.UserDto;

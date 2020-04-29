@@ -1,16 +1,15 @@
-package com.hf.friday.base;
+package com.hf.friday.vo;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class PageTableRequest implements Serializable {
+public class PageTableRequest extends BaseVO implements Serializable {
     private Integer page;
     private Integer limit;
     private Integer offset;
     private Integer userId;
-    private Integer id;
     private Integer type;
 
     public void countOffset(){

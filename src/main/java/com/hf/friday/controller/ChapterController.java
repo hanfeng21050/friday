@@ -1,24 +1,15 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.base.PageTableRequest;
+import com.hf.friday.vo.PageTableRequest;
 import com.hf.friday.base.Results;
 import com.hf.friday.model.Chapter;
 import com.hf.friday.model.Comic;
-import com.hf.friday.model.SysFile;
 import com.hf.friday.service.ChapterService;
 import com.hf.friday.util.StringUtil;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * @Author CoolWind

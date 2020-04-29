@@ -1,6 +1,6 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.base.PageTableRequest;
+import com.hf.friday.vo.PageTableRequest;
 import com.hf.friday.base.Results;
 import com.hf.friday.util.StringUtil;
 import com.hf.friday.vo.ComicDetailVO;
@@ -10,6 +10,7 @@ import com.hf.friday.vo.ImageVO;
 import com.hf.friday.model.*;
 import com.hf.friday.service.ComicService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -122,9 +123,9 @@ public class ComicController {
      * 移动段返回接口
      */
     @ResponseBody
-    @GetMapping("/app/imagelist")
+    @PostMapping("/app/imagelist")
     //@PreAuthorize("hasAnyAuthority('comic:query')")
-    public Results<DetailVO> list(PageTableRequest request)
+    public Results<DetailVO> list(@RequestBody PageTableRequest request)
     {
 
         log.info("app:ComicController.list() param:(request = "+request+")");
@@ -132,19 +133,18 @@ public class ComicController {
     }
     /**
      * 移动段返回章节列表
-     * @param id 当前漫画id
      */
     @ResponseBody
-    @GetMapping("/app/getChapter")
-    public Results<Chapter> getChapter(int id)
+    @PostMapping("/app/getChapter")
+    public Results<Chapter> getChapter(@RequestBody PageTableRequest request)
     {
-        log.info("app:ComicController.list() param:(id = "+id+")");
-        return comicService.getChapter(id);
+        log.info("app:ComicController.list() param:(id = "+request.getId()+")");
+        return comicService.getChapter(request.getId());
     }
 
-    @GetMapping("/app/getComic")
+    @PostMapping("/app/getComic")
     @ResponseBody
-    public Results<ComicVO> getHotComic(PageTableRequest request)
+    public Results<ComicVO> getHotComic(@RequestBody PageTableRequest request)
     {
         request.countOffset();
         log.info("app:ComicController.getHotComic() param: (request=" + request +")");
@@ -152,11 +152,11 @@ public class ComicController {
     }
 
     @ResponseBody
-    @RequestMapping("/app/getComicDetail")
-    public Results<ComicDetailVO> getComicDetail(Integer id)
+    @PostMapping("/app/getComicDetail")
+    public Results<ComicDetailVO> getComicDetail(@RequestBody PageTableRequest request)
     {
-        log.info("app:ComicController.getComicDetail() param:(id = "+id+")");
-        return comicService.getComicDetail(id);
+        log.info("app:ComicController.getComicDetail() param:(id = "+request.getId()+")");
+        return comicService.getComicDetail(request.getId());
     }
 
 }

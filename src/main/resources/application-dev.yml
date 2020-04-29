@@ -4,7 +4,8 @@ spring:
   devtools:
     restart:    #需要实时更新的目录
       additional-paths: resources/**,static/**,templates/**
-
+  main:
+    allow-bean-definition-overriding: true
   redis:
     host: 47.114.36.156
     port: 6379
