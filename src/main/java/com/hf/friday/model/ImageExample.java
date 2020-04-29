@@ -325,63 +325,63 @@ public class ImageExample {
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdIsNull() {
-            addCriterion("chapter_id is null");
+        public Criteria andTargetIdIsNull() {
+            addCriterion("target_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdIsNotNull() {
-            addCriterion("chapter_id is not null");
+        public Criteria andTargetIdIsNotNull() {
+            addCriterion("target_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdEqualTo(Integer value) {
-            addCriterion("chapter_id =", value, "chapterId");
+        public Criteria andTargetIdEqualTo(Integer value) {
+            addCriterion("target_id =", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdNotEqualTo(Integer value) {
-            addCriterion("chapter_id <>", value, "chapterId");
+        public Criteria andTargetIdNotEqualTo(Integer value) {
+            addCriterion("target_id <>", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdGreaterThan(Integer value) {
-            addCriterion("chapter_id >", value, "chapterId");
+        public Criteria andTargetIdGreaterThan(Integer value) {
+            addCriterion("target_id >", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("chapter_id >=", value, "chapterId");
+        public Criteria andTargetIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("target_id >=", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdLessThan(Integer value) {
-            addCriterion("chapter_id <", value, "chapterId");
+        public Criteria andTargetIdLessThan(Integer value) {
+            addCriterion("target_id <", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdLessThanOrEqualTo(Integer value) {
-            addCriterion("chapter_id <=", value, "chapterId");
+        public Criteria andTargetIdLessThanOrEqualTo(Integer value) {
+            addCriterion("target_id <=", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdIn(List<Integer> values) {
-            addCriterion("chapter_id in", values, "chapterId");
+        public Criteria andTargetIdIn(List<Integer> values) {
+            addCriterion("target_id in", values, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdNotIn(List<Integer> values) {
-            addCriterion("chapter_id not in", values, "chapterId");
+        public Criteria andTargetIdNotIn(List<Integer> values) {
+            addCriterion("target_id not in", values, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdBetween(Integer value1, Integer value2) {
-            addCriterion("chapter_id between", value1, value2, "chapterId");
+        public Criteria andTargetIdBetween(Integer value1, Integer value2) {
+            addCriterion("target_id between", value1, value2, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andChapterIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("chapter_id not between", value1, value2, "chapterId");
+        public Criteria andTargetIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("target_id not between", value1, value2, "targetId");
             return (Criteria) this;
         }
 

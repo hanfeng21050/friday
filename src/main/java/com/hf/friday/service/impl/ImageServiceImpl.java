@@ -61,7 +61,7 @@ public  class ImageServiceImpl implements ImageService {
 
         Image image = new Image();
         image.setUrl("/comic/" + comic.getNo()+"/"+ StringUtil.genNO(chapter.getIndex()) +"/"+imgName);
-        image.setChapterId(dto.getId());
+        image.setTargetId(dto.getId());
         int x = imageDao.insert(image);
 
         //更新数量

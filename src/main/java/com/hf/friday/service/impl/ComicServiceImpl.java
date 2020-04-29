@@ -112,6 +112,7 @@ public class ComicServiceImpl implements ComicService {
         comic.setLikeNum(0);
         comic.setCount(0);
         comic.setFire(0);
+        //返回主键
         comicDAO.insertSelective(comic);
 
         int comicId = comic.getId();
@@ -187,7 +188,7 @@ public class ComicServiceImpl implements ComicService {
         List<Image> images = imageDAO.listByChapterId(request.getId(),request.getOffset(),request.getLimit());
         //返回当前章节图片的总数
         ImageExample example = new ImageExample();
-        example.createCriteria().andChapterIdEqualTo(request.getId());
+        example.createCriteria().andTargetIdEqualTo(request.getId());
         long count = imageDAO.countByExample(example);
         ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
 

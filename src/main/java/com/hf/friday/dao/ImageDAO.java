@@ -38,6 +38,6 @@ public interface ImageDAO {
      * @param id
      * @return
      */
-    @Select("SELECT * from image where image.chapter_id = (select chapter.id from chapter WHERE  chapter.status = 1 and chapter.id = #{id}) ORDER BY image.url ASC LIMIT #{offset} ,#{limit}")
+    @Select("SELECT * from image where image.target_id = (select chapter.id from chapter WHERE  chapter.status = 1 and chapter.id = #{id}) ORDER BY image.url ASC LIMIT #{offset} ,#{limit}")
     List<Image> listByChapterId(Integer id,Integer offset,Integer limit);
 }

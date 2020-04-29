@@ -10,10 +10,17 @@ import lombok.Data;
  */
 @Data
 public class Comment extends BaseEntity<Integer> {
+
+
     /**
-     * 用户
+     * 发表评论的用户
      */
     private Integer userId;
+
+    /**
+     * 被评论的用户id
+     */
+    private Integer user2Id;
 
     /**
      * 评论目标id,可以是漫画id,也可以是社区帖子id
@@ -28,7 +35,8 @@ public class Comment extends BaseEntity<Integer> {
     /**
      * 不喜欢数
      */
-    private Integer dislekeNum;
+    private Integer dislikeNum;
+
     /**
      * 评论
      */

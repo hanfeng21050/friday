@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hf.friday.dao.CommentDAO">
-  <resultMap id="BaseResultMap" type="com.hf.friday.model.Comment">
+<mapper namespace="com.hf.friday.dao.CardDAO">
+  <resultMap id="BaseResultMap" type="com.hf.friday.model.Card">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="user2_id" jdbcType="INTEGER" property="user2Id" />
-    <result column="target_id" jdbcType="INTEGER" property="targetId" />
-    <result column="like_mun" jdbcType="INTEGER" property="likeMun" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="view_num" jdbcType="INTEGER" property="viewNum" />
+    <result column="like_num" jdbcType="INTEGER" property="likeNum" />
     <result column="dislike_num" jdbcType="INTEGER" property="dislikeNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hf.friday.model.Comment">
-    <result column="text" jdbcType="LONGVARCHAR" property="text" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,21 +73,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, user2_id, target_id, like_mun, dislike_num, create_time, update_time, 
-    `status`
+    id, user_id, title, `text`, `type`, view_num, like_num, dislike_num, create_time, 
+    update_time, `status`
   </sql>
-  <sql id="Blob_Column_List">
-    `text`
-  </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.hf.friday.model.CommentExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExample" parameterType="com.hf.friday.model.CardExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from comment
+    from card
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -104,58 +98,34 @@
       </if>
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.hf.friday.model.CommentExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from comment
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from comment
+    from card
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from comment
+    delete from card
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.hf.friday.model.CommentExample">
-    delete from comment
+  <delete id="deleteByExample" parameterType="com.hf.friday.model.CardExample">
+    delete from card
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hf.friday.model.Comment">
-    insert into comment (id, user_id, user2_id, 
-      target_id, like_mun, dislike_num, 
-      create_time, update_time, `status`, 
-      `text`)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{user2Id,jdbcType=INTEGER}, 
-      #{targetId,jdbcType=INTEGER}, #{likeMun,jdbcType=INTEGER}, #{dislikeNum,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
-      #{text,jdbcType=LONGVARCHAR})
+  <insert id="insert" parameterType="com.hf.friday.model.Card">
+    insert into card (id, user_id, title, 
+      `text`, `type`, view_num, 
+      like_num, dislike_num, create_time, 
+      update_time, `status`)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{text,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{viewNum,jdbcType=INTEGER}, 
+      #{likeNum,jdbcType=INTEGER}, #{dislikeNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hf.friday.model.Comment">
-    insert into comment
+  <insert id="insertSelective" parameterType="com.hf.friday.model.Card">
+    insert into card
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -163,14 +133,20 @@
       <if test="userId != null">
         user_id,
       </if>
-      <if test="user2Id != null">
-        user2_id,
+      <if test="title != null">
+        title,
       </if>
-      <if test="targetId != null">
-        target_id,
+      <if test="text != null">
+        `text`,
       </if>
-      <if test="likeMun != null">
-        like_mun,
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="viewNum != null">
+        view_num,
+      </if>
+      <if test="likeNum != null">
+        like_num,
       </if>
       <if test="dislikeNum != null">
         dislike_num,
@@ -184,9 +160,6 @@
       <if test="status != null">
         `status`,
       </if>
-      <if test="text != null">
-        `text`,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -195,14 +168,20 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="user2Id != null">
-        #{user2Id,jdbcType=INTEGER},
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
       </if>
-      <if test="targetId != null">
-        #{targetId,jdbcType=INTEGER},
+      <if test="text != null">
+        #{text,jdbcType=VARCHAR},
       </if>
-      <if test="likeMun != null">
-        #{likeMun,jdbcType=INTEGER},
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="viewNum != null">
+        #{viewNum,jdbcType=INTEGER},
+      </if>
+      <if test="likeNum != null">
+        #{likeNum,jdbcType=INTEGER},
       </if>
       <if test="dislikeNum != null">
         #{dislikeNum,jdbcType=INTEGER},
@@ -216,19 +195,16 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="text != null">
-        #{text,jdbcType=LONGVARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.hf.friday.model.CommentExample" resultType="java.lang.Long">
-    select count(*) from comment
+  <select id="countByExample" parameterType="com.hf.friday.model.CardExample" resultType="java.lang.Long">
+    select count(*) from card
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update comment
+    update card
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -236,14 +212,20 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.user2Id != null">
-        user2_id = #{record.user2Id,jdbcType=INTEGER},
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
       </if>
-      <if test="record.targetId != null">
-        target_id = #{record.targetId,jdbcType=INTEGER},
+      <if test="record.text != null">
+        `text` = #{record.text,jdbcType=VARCHAR},
       </if>
-      <if test="record.likeMun != null">
-        like_mun = #{record.likeMun,jdbcType=INTEGER},
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.viewNum != null">
+        view_num = #{record.viewNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.likeNum != null">
+        like_num = #{record.likeNum,jdbcType=INTEGER},
       </if>
       <if test="record.dislikeNum != null">
         dislike_num = #{record.dislikeNum,jdbcType=INTEGER},
@@ -257,37 +239,20 @@
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=INTEGER},
       </if>
-      <if test="record.text != null">
-        `text` = #{record.text,jdbcType=LONGVARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map">
-    update comment
-    set id = #{record.id,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=INTEGER},
-      user2_id = #{record.user2Id,jdbcType=INTEGER},
-      target_id = #{record.targetId,jdbcType=INTEGER},
-      like_mun = #{record.likeMun,jdbcType=INTEGER},
-      dislike_num = #{record.dislikeNum,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      `status` = #{record.status,jdbcType=INTEGER},
-      `text` = #{record.text,jdbcType=LONGVARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByExample" parameterType="map">
-    update comment
+    update card
     set id = #{record.id,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
-      user2_id = #{record.user2Id,jdbcType=INTEGER},
-      target_id = #{record.targetId,jdbcType=INTEGER},
-      like_mun = #{record.likeMun,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      `text` = #{record.text,jdbcType=VARCHAR},
+      `type` = #{record.type,jdbcType=INTEGER},
+      view_num = #{record.viewNum,jdbcType=INTEGER},
+      like_num = #{record.likeNum,jdbcType=INTEGER},
       dislike_num = #{record.dislikeNum,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -296,20 +261,26 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hf.friday.model.Comment">
-    update comment
+  <update id="updateByPrimaryKeySelective" parameterType="com.hf.friday.model.Card">
+    update card
     <set>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="user2Id != null">
-        user2_id = #{user2Id,jdbcType=INTEGER},
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="targetId != null">
-        target_id = #{targetId,jdbcType=INTEGER},
+      <if test="text != null">
+        `text` = #{text,jdbcType=VARCHAR},
       </if>
-      <if test="likeMun != null">
-        like_mun = #{likeMun,jdbcType=INTEGER},
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="viewNum != null">
+        view_num = #{viewNum,jdbcType=INTEGER},
+      </if>
+      <if test="likeNum != null">
+        like_num = #{likeNum,jdbcType=INTEGER},
       </if>
       <if test="dislikeNum != null">
         dislike_num = #{dislikeNum,jdbcType=INTEGER},
@@ -323,31 +294,17 @@
       <if test="status != null">
         `status` = #{status,jdbcType=INTEGER},
       </if>
-      <if test="text != null">
-        `text` = #{text,jdbcType=LONGVARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hf.friday.model.Comment">
-    update comment
+  <update id="updateByPrimaryKey" parameterType="com.hf.friday.model.Card">
+    update card
     set user_id = #{userId,jdbcType=INTEGER},
-      user2_id = #{user2Id,jdbcType=INTEGER},
-      target_id = #{targetId,jdbcType=INTEGER},
-      like_mun = #{likeMun,jdbcType=INTEGER},
-      dislike_num = #{dislikeNum,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=INTEGER},
-      `text` = #{text,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.hf.friday.model.Comment">
-    update comment
-    set user_id = #{userId,jdbcType=INTEGER},
-      user2_id = #{user2Id,jdbcType=INTEGER},
-      target_id = #{targetId,jdbcType=INTEGER},
-      like_mun = #{likeMun,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      `text` = #{text,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
+      view_num = #{viewNum,jdbcType=INTEGER},
+      like_num = #{likeNum,jdbcType=INTEGER},
       dislike_num = #{dislikeNum,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},

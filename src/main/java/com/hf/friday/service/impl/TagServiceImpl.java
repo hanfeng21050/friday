@@ -55,6 +55,7 @@ public class TagServiceImpl implements TagService {
     public Results addComic(ImageVO vo) throws IOException {
         Tag tag = new Tag();
         tag.setName(vo.getName());
+        //返回主键
         int i = tagDAO.insertSelective(tag);
         if(i == 1)
         {

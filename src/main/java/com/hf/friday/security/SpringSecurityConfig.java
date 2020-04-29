@@ -52,6 +52,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(
                         "/comic/**",
+                        "/card/**",
                         "/treetable-lay/**",
                         "/xadmin/**",
                         "/ztree/**",

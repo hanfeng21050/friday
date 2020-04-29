@@ -6,10 +6,11 @@ import lombok.Data;
 
 /**
  * @author 
- * 
+ * 图片
  */
 @Data
 public class Image extends BaseEntity<Integer> {
+
     /**
      * 图片地址
      */
@@ -21,7 +22,7 @@ public class Image extends BaseEntity<Integer> {
     private String info;
 
     /**
-     * 所属章节
+     * 目标id
      */
-    private Integer chapterId;
+    private Integer targetId;
 }

@@ -70,7 +70,7 @@ public class ChapterServiceImpl implements ChapterService {
         int num = 0;
         for (Integer id : ids) {
             ImageExample example= new ImageExample();
-            example.createCriteria().andChapterIdEqualTo(id);
+            example.createCriteria().andTargetIdEqualTo(id);
             List<Image> imageList = imageDAO.selectByExample(example);
 
             for (Image image : imageList) {

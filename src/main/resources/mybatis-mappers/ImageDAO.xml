@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hf.friday.dao.ImageDAO">
-  <cache type="com.hf.friday.cache.RedisCache"/>
   <resultMap id="BaseResultMap" type="com.hf.friday.model.Image">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="info" jdbcType="VARCHAR" property="info" />
-    <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="target_id" jdbcType="INTEGER" property="targetId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -70,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, url, info, chapter_id, create_time, update_time, `status`
+    id, url, info, target_id, create_time, update_time, `status`
   </sql>
   <select id="selectByExample" parameterType="com.hf.friday.model.ImageExample" resultMap="BaseResultMap">
     select
@@ -112,10 +111,10 @@
   </delete>
   <insert id="insert" parameterType="com.hf.friday.model.Image">
     insert into image (id, url, info, 
-      chapter_id, create_time, update_time, 
+      target_id, create_time, update_time, 
       `status`)
     values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
-      #{chapterId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{targetId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.hf.friday.model.Image">
@@ -130,8 +129,8 @@
       <if test="info != null">
         info,
       </if>
-      <if test="chapterId != null">
-        chapter_id,
+      <if test="targetId != null">
+        target_id,
       </if>
       <if test="createTime != null">
         create_time,
@@ -153,8 +152,8 @@
       <if test="info != null">
         #{info,jdbcType=VARCHAR},
       </if>
-      <if test="chapterId != null">
-        #{chapterId,jdbcType=INTEGER},
+      <if test="targetId != null">
+        #{targetId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -185,8 +184,8 @@
       <if test="record.info != null">
         info = #{record.info,jdbcType=VARCHAR},
       </if>
-      <if test="record.chapterId != null">
-        chapter_id = #{record.chapterId,jdbcType=INTEGER},
+      <if test="record.targetId != null">
+        target_id = #{record.targetId,jdbcType=INTEGER},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -207,7 +206,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       url = #{record.url,jdbcType=VARCHAR},
       info = #{record.info,jdbcType=VARCHAR},
-      chapter_id = #{record.chapterId,jdbcType=INTEGER},
+      target_id = #{record.targetId,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       `status` = #{record.status,jdbcType=INTEGER}
@@ -224,8 +223,8 @@
       <if test="info != null">
         info = #{info,jdbcType=VARCHAR},
       </if>
-      <if test="chapterId != null">
-        chapter_id = #{chapterId,jdbcType=INTEGER},
+      <if test="targetId != null">
+        target_id = #{targetId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -243,7 +242,7 @@
     update image
     set url = #{url,jdbcType=VARCHAR},
       info = #{info,jdbcType=VARCHAR},
-      chapter_id = #{chapterId,jdbcType=INTEGER},
+      target_id = #{targetId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=INTEGER}
