@@ -11,7 +11,7 @@ import java.util.List;
  * @Date 2020/4/18 17:42
  */
 @Data
-public class ComicDetailVO {
+public class ComicDetailVO extends BaseVO{
     private List<ComicVO> comicVOList;
     private Comic comic;
     private List<Chapter> chapterList;

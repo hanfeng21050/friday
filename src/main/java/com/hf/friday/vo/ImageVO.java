@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
  * 当前页数
  */
 @Data
-public class ImageVO {
+public class ImageVO extends BaseVO{
     private MultipartFile file;
     private Integer id;
     private String name;

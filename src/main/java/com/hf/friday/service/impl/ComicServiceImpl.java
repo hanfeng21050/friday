@@ -1,19 +1,19 @@
 package com.hf.friday.service.impl;
 
 import com.hf.friday.base.Constants;
-import com.hf.friday.vo.PageTableRequest;
+import com.hf.friday.base.ResponseCode;
+import com.hf.friday.util.TokenUtil;
+import com.hf.friday.vo.*;
 import com.hf.friday.base.Results;
 import com.hf.friday.dao.*;
 import com.hf.friday.model.*;
 import com.hf.friday.service.ComicService;
 import com.hf.friday.util.StringUtil;
-import com.hf.friday.vo.ComicDetailVO;
-import com.hf.friday.vo.ComicVO;
-import com.hf.friday.vo.DetailVO;
-import com.hf.friday.vo.ImageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
@@ -37,7 +37,6 @@ public class ComicServiceImpl implements ComicService {
 
     @Value("${comic.path}")
     private String comicPath;
-
     @Autowired
     private ComicDAO comicDAO;
     @Autowired
@@ -54,6 +53,10 @@ public class ComicServiceImpl implements ComicService {
     private ComicTagDAO comicTagDAO;
     @Autowired
     private ComicTypeDAO comicTypeDAO;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Results<Comic> listByPage(Integer offset, Integer limit) {
@@ -64,10 +67,6 @@ public class ComicServiceImpl implements ComicService {
         int count = (int) comicDAO.countByExample(new ComicExample());
         return Results.success(count,comicList);
     }
-
-    @Autowired
-
-
 
     @Override
     public List<Comic> selectAll()
@@ -309,5 +308,51 @@ public class ComicServiceImpl implements ComicService {
         vo.setTagList(tagList);
         vo.setTypeList(typeList);
         return Results.success(vo);
+    }
+
+    @Override
+    public Results<LoginVO> login(SysUser user) {
+        SysUser userByDB = userDao.getUserByUsername(user.getUsername());
+        if(userByDB == null)
+        {
+            //用户不存在
+            return Results.failure(ResponseCode.USERNAME_INVALID);
+        }
+        else if(userByDB.getStatus() == SysUser.Status.LOCKED){
+            //用户被锁定
+            return Results.failure(ResponseCode.USERNAME_LOCK);
+        }
+        else if(userByDB.getStatus() == SysUser.Status.VALID){
+            if(passwordEncoder.matches(user.getPassword(),userByDB.getPassword()))
+            {
+                String token = TokenUtil.buildJWT(userByDB.getId().intValue());
+                LoginVO loginVO = new LoginVO();
+                loginVO.setToken(token);
+                loginVO.setId(userByDB.getId().intValue());
+                return Results.success("登录成功",loginVO);
+            }else
+            {
+                return Results.failure(ResponseCode.USERNAME_ERROR_PASSWORD);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Results verify(String token) {
+        Integer res = TokenUtil.verifyToken(token);
+        if(res == -1)
+        {
+            return new Results(ResponseCode.TOKEN_INVALID.getCode(),ResponseCode.TOKEN_INVALID.getMessage());
+        }else if(res == -2)
+        {
+            return new Results(ResponseCode.TOKEN_EXPIRE.getCode(),ResponseCode.TOKEN_EXPIRE.getMessage());
+
+        }else if(res > 0)
+        {
+            return Results.success("登录成功");
+        }else {
+            return Results.failure();
+        }
     }
 }

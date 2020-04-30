@@ -1,13 +1,10 @@
 package com.hf.friday.service;
 
-import com.hf.friday.vo.PageTableRequest;
+import com.hf.friday.model.SysUser;
+import com.hf.friday.vo.*;
 import com.hf.friday.base.Results;
 import com.hf.friday.model.Chapter;
 import com.hf.friday.model.Comic;
-import com.hf.friday.vo.ComicDetailVO;
-import com.hf.friday.vo.ComicVO;
-import com.hf.friday.vo.DetailVO;
-import com.hf.friday.vo.ImageVO;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,4 +38,8 @@ public interface ComicService {
     Results switchStat(Boolean status, Integer id);
 
     Results<ComicDetailVO> getTagAndType();
+
+    Results<LoginVO> login(SysUser user);
+
+    Results verify(String token);
 }

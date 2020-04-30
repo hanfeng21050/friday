@@ -73,6 +73,7 @@ public class Results<T>  implements Serializable {
         return new Results<T>( ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getMessage());
     }
 
+
     public static <T> Results<T> failure(ResponseCode resultCode) {
         return new Results<T>( resultCode.getCode(),  resultCode.getMessage());
     }

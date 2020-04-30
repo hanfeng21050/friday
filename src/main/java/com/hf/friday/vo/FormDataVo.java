@@ -4,11 +4,11 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
+ * 发布帖子时前端传过来的信息
  * @Author CoolWind
  * @Date 2020/4/29 13:17
  */
 @Data
-public class FormDataVo {
-    private int id;
-    private String text;
+public class FormDataVo extends BaseVO{
+    private String text;//帖子内容
 }

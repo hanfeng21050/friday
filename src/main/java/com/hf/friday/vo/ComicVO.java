@@ -10,7 +10,7 @@ import lombok.Data;
  * @Date 2020/4/18 20:04
  */
 @Data
-public class ComicVO {
+public class ComicVO extends BaseVO{
     private Comic comic;
     private String host;
     private Chapter chapter;//最新章节

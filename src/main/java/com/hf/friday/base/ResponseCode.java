@@ -15,12 +15,21 @@ public enum ResponseCode {
 	USERNAME_REPEAT(5000100,"用户名已存在"),
 	PHONE_REPEAT(5000101,"手机号已存在"),
 	EMAIL_REPEAT(5000102,"邮箱已存在"),
+	USERNAME_INVALID(5000103,"用户不存在"),
+	USERNAME_LOCK(5000104,"用户被锁定"),
+	USERNAME_ERROR_PASSWORD(5000105,"密码错误"),
+
 	//用户-角色
 	//5000201 - 5000300
-	USER_ROLE_NO_CLEAR(5000201,"该角色存在用户关联，无法删除")
-;
+	USER_ROLE_NO_CLEAR(5000201,"该角色存在用户关联，无法删除"),
+
+	//token
+	TOKEN_EXPIRE (5000301,"token过期，请重新登录"),
+	TOKEN_INVALID (5000302,"无效token");
+
+
+
 	private Integer code;
-	
 	private String message;
 	
 	ResponseCode(Integer code, String message) {

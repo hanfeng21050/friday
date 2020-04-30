@@ -1,12 +1,8 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.vo.PageTableRequest;
+import com.hf.friday.vo.*;
 import com.hf.friday.base.Results;
 import com.hf.friday.util.StringUtil;
-import com.hf.friday.vo.ComicDetailVO;
-import com.hf.friday.vo.ComicVO;
-import com.hf.friday.vo.DetailVO;
-import com.hf.friday.vo.ImageVO;
 import com.hf.friday.model.*;
 import com.hf.friday.service.ComicService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -159,4 +157,22 @@ public class ComicController {
         return comicService.getComicDetail(request.getId());
     }
 
+    @PostMapping("/app/login")
+    @ResponseBody
+    public Results<LoginVO> appLogin(@RequestBody SysUser user)
+    {
+        return comicService.login(user);
+    }
+
+    /**
+     * 验证token的有效性
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/verify")
+    public Results verify(@RequestBody PageTableRequest request)
+    {
+        return comicService.verify(request.getToken());
+    }
 }

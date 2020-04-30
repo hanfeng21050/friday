@@ -12,7 +12,7 @@ import java.util.List;
  * @Date 2020/4/18 21:22
  */
 @Data
-public class DetailVO {
+public class DetailVO extends BaseVO{
     private List<Image> imageList;//图片列表
     private Chapter chapter;//当前章节
     private int count;//当前章节图片的总数

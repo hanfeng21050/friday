@@ -1,5 +1,6 @@
 package com.hf.friday.vo;
 
+import com.hf.friday.model.SysUser;
 import lombok.Data;
 
 /**
@@ -8,6 +9,6 @@ import lombok.Data;
  */
 @Data
 public class BaseVO {
-    private String token;
+    private String token;//登录验证
     private Integer id;
 }

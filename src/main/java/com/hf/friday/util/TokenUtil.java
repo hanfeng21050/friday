@@ -21,7 +21,7 @@ public class TokenUtil {
     /**
      * 过期时间一分重
      */
-    private static final long EXPIRE_TIME = 1000 * 5;
+    private static final long EXPIRE_TIME = 1000 * 60 * 2;
 
     /**
      * 生成Token
