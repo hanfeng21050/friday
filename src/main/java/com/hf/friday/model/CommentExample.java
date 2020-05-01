@@ -365,63 +365,133 @@ public class CommentExample {
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunIsNull() {
-            addCriterion("like_mun is null");
+        public Criteria andTextIsNull() {
+            addCriterion("`text` is null");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunIsNotNull() {
-            addCriterion("like_mun is not null");
+        public Criteria andTextIsNotNull() {
+            addCriterion("`text` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunEqualTo(Integer value) {
-            addCriterion("like_mun =", value, "likeMun");
+        public Criteria andTextEqualTo(String value) {
+            addCriterion("`text` =", value, "text");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunNotEqualTo(Integer value) {
-            addCriterion("like_mun <>", value, "likeMun");
+        public Criteria andTextNotEqualTo(String value) {
+            addCriterion("`text` <>", value, "text");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunGreaterThan(Integer value) {
-            addCriterion("like_mun >", value, "likeMun");
+        public Criteria andTextGreaterThan(String value) {
+            addCriterion("`text` >", value, "text");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunGreaterThanOrEqualTo(Integer value) {
-            addCriterion("like_mun >=", value, "likeMun");
+        public Criteria andTextGreaterThanOrEqualTo(String value) {
+            addCriterion("`text` >=", value, "text");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunLessThan(Integer value) {
-            addCriterion("like_mun <", value, "likeMun");
+        public Criteria andTextLessThan(String value) {
+            addCriterion("`text` <", value, "text");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunLessThanOrEqualTo(Integer value) {
-            addCriterion("like_mun <=", value, "likeMun");
+        public Criteria andTextLessThanOrEqualTo(String value) {
+            addCriterion("`text` <=", value, "text");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunIn(List<Integer> values) {
-            addCriterion("like_mun in", values, "likeMun");
+        public Criteria andTextLike(String value) {
+            addCriterion("`text` like", value, "text");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunNotIn(List<Integer> values) {
-            addCriterion("like_mun not in", values, "likeMun");
+        public Criteria andTextNotLike(String value) {
+            addCriterion("`text` not like", value, "text");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunBetween(Integer value1, Integer value2) {
-            addCriterion("like_mun between", value1, value2, "likeMun");
+        public Criteria andTextIn(List<String> values) {
+            addCriterion("`text` in", values, "text");
             return (Criteria) this;
         }
 
-        public Criteria andLikeMunNotBetween(Integer value1, Integer value2) {
-            addCriterion("like_mun not between", value1, value2, "likeMun");
+        public Criteria andTextNotIn(List<String> values) {
+            addCriterion("`text` not in", values, "text");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextBetween(String value1, String value2) {
+            addCriterion("`text` between", value1, value2, "text");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextNotBetween(String value1, String value2) {
+            addCriterion("`text` not between", value1, value2, "text");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumIsNull() {
+            addCriterion("like_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumIsNotNull() {
+            addCriterion("like_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumEqualTo(Integer value) {
+            addCriterion("like_num =", value, "likeNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumNotEqualTo(Integer value) {
+            addCriterion("like_num <>", value, "likeNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumGreaterThan(Integer value) {
+            addCriterion("like_num >", value, "likeNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("like_num >=", value, "likeNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumLessThan(Integer value) {
+            addCriterion("like_num <", value, "likeNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumLessThanOrEqualTo(Integer value) {
+            addCriterion("like_num <=", value, "likeNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumIn(List<Integer> values) {
+            addCriterion("like_num in", values, "likeNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumNotIn(List<Integer> values) {
+            addCriterion("like_num not in", values, "likeNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumBetween(Integer value1, Integer value2) {
+            addCriterion("like_num between", value1, value2, "likeNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("like_num not between", value1, value2, "likeNum");
             return (Criteria) this;
         }
 

@@ -42,4 +42,9 @@ public interface ComicService {
     Results<LoginVO> login(SysUser user);
 
     Results verify(String token);
+
+    Results addComment(PageTableRequest request);
+
+    Results<CommentVO> getCommentList(PageTableRequest request);
+
 }

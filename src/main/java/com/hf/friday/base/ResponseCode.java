@@ -4,7 +4,7 @@ public enum ResponseCode {
 
 	// 公共请求信息
 	SUCCESS(200, "请求成功"),
-	TABLE_SUCCESS(0, "请求成功"),
+	TABLE_SUCCESS(200, "请求成功"),
 	FAIL(500, "请求失败"),
 	PARAMETER_MISSING(600,"参数缺失"),
 	UNAUTHORIZED(401,"未授权"),

@@ -9,8 +9,7 @@ import lombok.Data;
  * 评论
  */
 @Data
-public class Comment extends BaseEntity<Integer> {
-
+public class Comment  extends BaseEntity<Integer> {
 
     /**
      * 发表评论的用户
@@ -28,17 +27,17 @@ public class Comment extends BaseEntity<Integer> {
     private Integer targetId;
 
     /**
+     * 评论
+     */
+    private String text;
+
+    /**
      * 点赞数
      */
-    private Integer likeMun;
+    private Integer likeNum;
 
     /**
      * 不喜欢数
      */
     private Integer dislikeNum;
-
-    /**
-     * 评论
-     */
-    private String text;
 }

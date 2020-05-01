@@ -11,6 +11,7 @@ public class PageTableRequest extends BaseVO implements Serializable {
     private Integer offset;
     private Integer userId;
     private Integer type;
+    private String text;
 
     public void countOffset(){
         if(null == this.page || null == this.limit){

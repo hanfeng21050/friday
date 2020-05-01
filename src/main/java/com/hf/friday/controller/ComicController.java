@@ -175,4 +175,28 @@ public class ComicController {
     {
         return comicService.verify(request.getToken());
     }
+
+
+    /**
+     * 添加评论
+     * @param request
+     * @return
+     */
+    @PostMapping("/app/addComment")
+    @ResponseBody
+    public Results addComment(@RequestBody PageTableRequest request) {
+        return comicService.addComment(request);
+    }
+
+    /**
+     * id 漫画id
+     * @param request
+     * @return
+     */
+    @PostMapping("/app/commentList")
+    @ResponseBody
+    public Results<CommentVO> getCommentList(@RequestBody PageTableRequest request)
+    {
+        return comicService.getCommentList(request);
+    }
 }

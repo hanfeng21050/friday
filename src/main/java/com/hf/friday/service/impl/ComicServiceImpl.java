@@ -9,6 +9,7 @@ import com.hf.friday.dao.*;
 import com.hf.friday.model.*;
 import com.hf.friday.service.ComicService;
 import com.hf.friday.util.StringUtil;
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,6 +58,8 @@ public class ComicServiceImpl implements ComicService {
     private UserDao userDao;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CommentDAO commentDAO;
 
     @Override
     public Results<Comic> listByPage(Integer offset, Integer limit) {
@@ -206,6 +209,7 @@ public class ComicServiceImpl implements ComicService {
      */
     @Override
     public Results<ComicVO> getHotComic(PageTableRequest request) {
+        //type表示取出什么类型的漫画
         if(request.getType() == 1)
         {
             ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
@@ -354,5 +358,66 @@ public class ComicServiceImpl implements ComicService {
         }else {
             return Results.failure();
         }
+    }
+
+    @Override
+    public Results addComment(PageTableRequest request) {
+        //获取目标id
+        Integer targetId = request.getId();
+        //获取发表人id
+        Integer userId = TokenUtil.verifyToken(request.getToken());
+
+        Comment comment = new Comment();
+        comment.setUserId(userId);
+        comment.setTargetId(targetId);
+        comment.setText(request.getText());
+        int i = commentDAO.insertSelective(comment);
+
+        return i == 1 ? Results.success() : Results.failure();
+    }
+
+    @Override
+    public Results<CommentVO> getCommentList(PageTableRequest request) {
+        request.countOffset();
+        //得到目标id
+        Integer targetId = request.getId();
+        CommentExample example = new CommentExample();
+        example.setOffset((long) request.getOffset());
+        example.setLimit(request.getLimit());
+
+        if(request.getType() == 1)
+        {
+            //时间排序最近
+            example.setOrderByClause("comment.create_time desc");
+        }else if(request.getType() == 2)
+        {
+            //时间排序最远
+            //时间排序最近
+            example.setOrderByClause("comment.create_time asc");
+        }else if(request.getType() == 3){
+            //最热排序降序
+            example.setOrderByClause("comment.like_num desc");
+        }else if(request.getType() == 4){
+            //最热排序升序
+            example.setOrderByClause("comment.like_num asc");
+        }
+        example.createCriteria().andTargetIdEqualTo(targetId).andStatusEqualTo(Constants.VALID);
+        //得到评论
+        List<Comment> commentList = commentDAO.selectByExample(example);
+
+        List<CommentVO> commentVOList = new ArrayList<>();
+        for (Comment comment : commentList) {
+            SysUser user = userDao.getUserById(comment.getUserId().longValue());
+            CommentVO commentVO = new CommentVO();
+            commentVO.setUser(user);
+            commentVO.setComment(comment);
+            commentVOList.add(commentVO);
+        }
+        //得到评论总数
+        example.clear();
+        example.createCriteria().andTargetIdEqualTo(request.getId()).andStatusEqualTo(Constants.VALID);
+        int count = (int) commentDAO.countByExample(example);
+
+        return Results.success("success",count,commentVOList);
     }
 }
