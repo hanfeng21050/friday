@@ -60,6 +60,11 @@ public class ComicServiceImpl implements ComicService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CommentDAO commentDAO;
+    @Autowired
+    private UserCommentDAO userCommentDAO;
+    @Autowired
+    private UserCollectionDAO userCollectionDAO;
+
 
     @Override
     public Results<Comic> listByPage(Integer offset, Integer limit) {
@@ -230,18 +235,23 @@ public class ComicServiceImpl implements ComicService {
                 dto.setHost(comicConfig.getHost());
                 list.add(dto);
             }
-            return Results.success("success",list.size(),list);
+
+            //当前类型漫画总数量
+            int count = (int) comicDAO.countByExample(new ComicExample());
+
+            return Results.success("success",count,list);
         }
         return Results.failure();
     }
 
     /**
      * app ComicDetail页面所需数据
-     * @param id
      * @return
      */
     @Override
-    public Results<ComicDetailVO> getComicDetail(Integer id) {
+    public Results<ComicDetailVO> getComicDetail(PageTableRequest request) {
+        Integer id = request.getId();
+
         ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
         //查询漫画
         Comic comic = comicDAO.selectByPrimaryKey(id);
@@ -263,6 +273,22 @@ public class ComicServiceImpl implements ComicService {
         ComicDetailVO comicDetailVO = new ComicDetailVO();
         comicDetailVO.setChapterList(chapterList);
         comicDetailVO.setComic(comic);
+
+        //查询玩家是否收藏该漫画
+        Integer userId = TokenUtil.verifyToken(request.getToken());
+        UserCollectionExample userCollectionExample = new UserCollectionExample();
+        userCollectionExample.createCriteria().andUserIdEqualTo(userId).andTargetIdEqualTo(id).andTypeEqualTo(Constants.COLLECT_COMIC).andStatusEqualTo(Constants.VALID);
+        List<UserCollection> userCollections = userCollectionDAO.selectByExample(userCollectionExample);
+        if(userCollections.isEmpty())
+        {
+            comicDetailVO.setIsCollect(false);
+        }else if(userCollections.get(0).getStatus() == Constants.INVALID)
+        {
+            comicDetailVO.setIsCollect(false);
+        }
+        else {
+            comicDetailVO.setIsCollect(true);
+        }
 
         List<ComicVO> comicVOList = new ArrayList<>();
         //详细下的推荐漫画
@@ -413,11 +439,40 @@ public class ComicServiceImpl implements ComicService {
             commentVO.setComment(comment);
             commentVOList.add(commentVO);
         }
+
+
         //得到评论总数
         example.clear();
         example.createCriteria().andTargetIdEqualTo(request.getId()).andStatusEqualTo(Constants.VALID);
         int count = (int) commentDAO.countByExample(example);
 
         return Results.success("success",count,commentVOList);
+    }
+
+    @Override
+    public Results collect(PageTableRequest request) {
+        int targetId = request.getId();
+        String token = request.getToken();
+        //获取当前用户
+        int userId = TokenUtil.verifyToken(token);
+
+        UserCollectionExample userCollectionExample = new UserCollectionExample();
+        userCollectionExample.createCriteria().andUserIdEqualTo(userId).andTargetIdEqualTo(targetId);
+        List<UserCollection> userCollections = userCollectionDAO.selectByExample(userCollectionExample);
+        int i;
+        if(userCollections.isEmpty())
+        {
+            UserCollection userCollection = new UserCollection();
+            userCollection.setTargetId(targetId);
+            userCollection.setUserId(userId);
+            userCollection.setType(request.getType());
+            i = userCollectionDAO.insertSelective(userCollection);
+        }else {
+            UserCollection userCollection = new UserCollection();
+            userCollection.setId(userCollections.get(0).getId());
+            userCollection.setStatus(userCollections.get(0).getStatus() == 0 ? Constants.VALID : Constants.INVALID);
+            i = userCollectionDAO.updateByPrimaryKeySelective(userCollection);
+        }
+        return Results.success();
     }
 }

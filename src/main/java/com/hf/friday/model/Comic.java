@@ -2,16 +2,15 @@ package com.hf.friday.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
  * @author 
- * 
+ * 漫画
  */
 @Data
-public class Comic extends BaseEntity<Integer> {
+public class Comic extends BaseEntity<Integer>{
+
     /**
      * 漫画编号
      */
@@ -67,4 +66,5 @@ public class Comic extends BaseEntity<Integer> {
      * 评分
      */
     private Double score;
+
 }

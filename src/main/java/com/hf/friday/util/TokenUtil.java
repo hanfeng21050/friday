@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
+ * 生成token,用于手机app登录验证
  * @Author CoolWind
  * @Date 2020/4/29 19:40
  */

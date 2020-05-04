@@ -11,4 +11,8 @@ public class Constants {
 
     public static final int TOKEN_INVALID = -1;//token非法
     public static final int TOKEN_EXPIRE = -2;//token过期
+
+    public static final int COLLECT_COMIC = 0;//收藏漫画
+    public static final int FOLLOW_USER = 1;//收藏漫画
+
 }

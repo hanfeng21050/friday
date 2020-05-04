@@ -64,12 +64,14 @@ public  class ImageServiceImpl implements ImageService {
         image.setTargetId(dto.getId());
         int x = imageDao.insert(image);
 
-        //更新数量
+        //章节更新数量
         chapter.setNum(chapter.getNum() + 1);
-        if(chapter.getUploadTime() == null)
-        {
-            chapter.setUploadTime(new Date());
-        }
+
+        //更新总数量
+        comic.setCount(comic.getCount() + 1);
+        comic.setUpdateTime(new Date());
+        comicDAO.updateByPrimaryKeySelective(comic);
+
         int y = chapterDAO.updateByPrimaryKeySelective(chapter);
         return x == 1 ? Results.success() : Results.failure();
     }

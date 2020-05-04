@@ -1,5 +1,6 @@
 package com.hf.friday.service.impl;
 
+import com.hf.friday.base.ResponseCode;
 import com.hf.friday.base.Results;
 import com.hf.friday.dao.ChapterDAO;
 import com.hf.friday.dao.ComicDAO;
@@ -41,19 +42,10 @@ public class ChapterServiceImpl implements ChapterService {
 
     @Override
     public Results insert(Chapter chapter) {
-        Comic comic = comicDAO.selectByPrimaryKey(chapter.getComicId());
-        Integer count = comic.getCount();
-        count ++;
-        comic.setCount(count);
-        comicDAO.updateByPrimaryKey(comic);
-
-        chapter.setNum(1);
-        chapter.setIndex(count);
+        chapter.setNum(0);
         chapter.setStatus(0);
-        chapter.setUploadTime(new Date());
-
+        chapter.setCreateTime(new Date());
         int x =chapterDAO.insert(chapter);
-
         return x == 1 ? Results.success() : Results.failure();
     }
 
@@ -69,21 +61,28 @@ public class ChapterServiceImpl implements ChapterService {
     public Results deleteList(List<Integer> ids) {
         int num = 0;
         for (Integer id : ids) {
+            Chapter chapter = chapterDAO.selectByPrimaryKey(id);
+            if(chapter == null)
+            {
+                return Results.failure(ResponseCode.FAIL.getCode(),"删除的章节不存在!");
+            }
             ImageExample example= new ImageExample();
             example.createCriteria().andTargetIdEqualTo(id);
             List<Image> imageList = imageDAO.selectByExample(example);
-
-            for (Image image : imageList) {
-                String url = image.getUrl();
-                String name = url.substring(7);
-                File file = new File(Paths.get(comicPath, name).toString());
-                //删除文件
-                if(file.exists() )
-                {
-                    file.delete();
+            if(imageList != null && imageList.size() != 0)
+            {
+                for (Image image : imageList) {
+                    String url = image.getUrl();
+                    String name = url.substring(7);
+                    File file = new File(Paths.get(comicPath, name).toString());
+                    //删除文件
+                    if(file.exists() )
+                    {
+                        file.delete();
+                    }
+                    int i = imageDAO.deleteByPrimaryKey(image.getId());
+                    num ++;
                 }
-                int i = imageDAO.deleteByPrimaryKey(image.getId());
-                num ++;
             }
             chapterDAO.deleteByPrimaryKey(id);
         }

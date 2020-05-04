@@ -15,8 +15,8 @@ public class ComicDetailVO extends BaseVO{
     private List<ComicVO> comicVOList;
     private Comic comic;
     private List<Chapter> chapterList;
-    private List<Comment> comments;
     private List<Tag> tagList;
     private List<Type> typeList;
     private String host;
+    private Boolean isCollect;
 }

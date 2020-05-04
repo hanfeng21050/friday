@@ -28,11 +28,16 @@
                                 <input class="layui-input" disabled type="text"  name="comicId" th:value="${comic.id}">
                             </div>
                         </div>
-
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">索引index</label>
+                            <div class="layui-input-inline">
+                                <input class="layui-input" type="number"  name="index">
+                            </div>
+                        </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">名称</label>
                             <div class="layui-input-inline">
-                                <input type="text" th:value="${comic.title}" name="title"  class="layui-input">
+                                <input type="text" name="title"  class="layui-input">
                             </div>
                         </div>
 

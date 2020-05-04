@@ -2,6 +2,8 @@ package com.hf.friday.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 /**
@@ -9,11 +11,7 @@ import lombok.Data;
  * 漫画章节
  */
 @Data
-public class Chapter implements Serializable {
-    /**
-     * 唯一
-     */
-    private Integer id;
+public class Chapter extends BaseEntity<Integer> {
 
     /**
      * 章节名称
@@ -26,19 +24,13 @@ public class Chapter implements Serializable {
     private Integer comicId;
 
     /**
-     * 上传时间
+     * 创建时间
      */
-    private Date uploadTime;
-
+    private Date createTime;
     /**
      * 上传者
      */
     private String uploadUser;
-
-    /**
-     * 状态  刚上传时为0  表示未审核
-     */
-    private Integer status;
 
     /**
      * 包含的图片数量
@@ -50,5 +42,4 @@ public class Chapter implements Serializable {
      */
     private Integer index;
 
-    private static final long serialVersionUID = 1L;
 }

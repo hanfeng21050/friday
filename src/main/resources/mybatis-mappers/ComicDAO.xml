@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hf.friday.dao.ComicDAO">
-  <cache type="com.hf.friday.cache.RedisCache"/>
   <resultMap id="BaseResultMap" type="com.hf.friday.model.Comic">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="no" jdbcType="VARCHAR" property="no" />
@@ -131,7 +130,7 @@
       #{status,jdbcType=INTEGER}, #{likeNum,jdbcType=INTEGER}, #{fire,jdbcType=INTEGER}, 
       #{count,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR}, #{score,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.hf.friday.model.Comic" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="com.hf.friday.model.Comic"  keyProperty="id" keyColumn="id" useGeneratedKeys="true">
     insert into comic
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

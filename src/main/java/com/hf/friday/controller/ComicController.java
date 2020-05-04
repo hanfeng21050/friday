@@ -140,6 +140,11 @@ public class ComicController {
         return comicService.getChapter(request.getId());
     }
 
+    /**
+     * index 页面
+     * @param request
+     * @return
+     */
     @PostMapping("/app/getComic")
     @ResponseBody
     public Results<ComicVO> getHotComic(@RequestBody PageTableRequest request)
@@ -154,7 +159,7 @@ public class ComicController {
     public Results<ComicDetailVO> getComicDetail(@RequestBody PageTableRequest request)
     {
         log.info("app:ComicController.getComicDetail() param:(id = "+request.getId()+")");
-        return comicService.getComicDetail(request.getId());
+        return comicService.getComicDetail(request);
     }
 
     @PostMapping("/app/login")
@@ -199,4 +204,19 @@ public class ComicController {
     {
         return comicService.getCommentList(request);
     }
+
+    /**
+     * 收藏漫画或者关注某人
+     * request.id 为漫画的id
+     * type :收藏0 or 关注1
+     * @param request
+     * @return
+     */
+    @RequestMapping("/app/collect")
+    @ResponseBody
+    public Results collect(@RequestBody PageTableRequest request)
+    {
+        return comicService.collect(request);
+    }
+
 }

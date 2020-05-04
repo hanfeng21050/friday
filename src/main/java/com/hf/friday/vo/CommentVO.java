@@ -15,4 +15,5 @@ import java.util.List;
 public class CommentVO{
     private SysUser user;
     private Comment comment;
+    private Integer isLIke;
 }

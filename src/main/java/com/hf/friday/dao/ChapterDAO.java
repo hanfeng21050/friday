@@ -47,6 +47,7 @@ public interface ChapterDAO {
     /**
      * 获取最新章节
      */
-    @Select("select * from chapter where comic_id=#{id} and status =1  order by upload_time desc limit 1")
+    @Select("select * from chapter where comic_id=#{id} and status =1  order by create_time desc limit 1")
     Chapter selectNew(int id);
+
 }

@@ -33,7 +33,7 @@ public interface ComicService {
 
     Results<ComicVO> getHotComic(PageTableRequest request);
 
-    Results<ComicDetailVO> getComicDetail(Integer id);
+    Results<ComicDetailVO> getComicDetail(PageTableRequest request);
 
     Results switchStat(Boolean status, Integer id);
 
@@ -46,5 +46,7 @@ public interface ComicService {
     Results addComment(PageTableRequest request);
 
     Results<CommentVO> getCommentList(PageTableRequest request);
+
+    Results collect(PageTableRequest request);
 
 }
