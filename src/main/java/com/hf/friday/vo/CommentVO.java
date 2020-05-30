@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 public class CommentVO{
     private SysUser user;
-    private Comment comment;
+    private Comment comment;//评论
+    private List<Comment> commentList;//评论评论的评论
     private Integer isLIke;
 }

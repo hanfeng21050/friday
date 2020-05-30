@@ -8,8 +8,8 @@
 <body>
 
 
-
-<ul class="layui-nav" style="margin-top: 5px">
+<div class="">
+<ul class="layui-nav left" style="margin-top: 5px">
     <li class="layui-nav-item"><a onclick="xadmin.open('添加用户','/comic/add')">上传作品</a></li>
     <li class="layui-nav-item">
         <a href="javascript:">排序</a>
@@ -22,8 +22,14 @@
     <li class="layui-nav-item"><a href="">占位</a></li>
 
     <li class="layui-nav-item layui-col-md-offset4"><input type="text" style="line-height: 25px;border-radius: 5px"> <button type="button" class="layui-btn layui-btn-primary layui-btn-radius">搜索</button> </li>
-</ul>
+    <a class="layui-btn layui-btn-small" style="margin-top: 15px;float:right!important;" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
 
+</ul>
+<ul class="layui-nav right" lay-filter="">
+
+</ul>
+</div>
 <div class="comic-boay" id="comicList">
 
 </div>

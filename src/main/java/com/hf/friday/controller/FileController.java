@@ -1,6 +1,6 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.vo.PageTableRequest;
+import com.hf.friday.vo.HtpRquest;
 import com.hf.friday.base.Results;
 import com.hf.friday.dto.FileDto;
 import com.hf.friday.model.SysFile;
@@ -46,7 +46,7 @@ public class FileController {
             @ApiImplicitParam(name = "limit", required = true,dataType = "Integer"),
             @ApiImplicitParam(name = "userId", required = true,dataType = "Integer"),
     })
-    public Results<SysFile> list(PageTableRequest request)
+    public Results<SysFile> list(HtpRquest request)
     {
         request.countOffset();
         log.info("FileController.list() param:(request = "+request+")");
@@ -109,7 +109,7 @@ public class FileController {
             @ApiImplicitParam(name = "fileName",value = "模糊搜索的文件名", required = true),
             @ApiImplicitParam(name = "userId",value = "用户id", required = true),
     })
-    public Results findFileByFuzzyFileName(PageTableRequest request,String fileName,Integer userId)
+    public Results findFileByFuzzyFileName(HtpRquest request, String fileName, Integer userId)
     {
         log.info("FileController.findFileByFuzzyFileName() param:(request = "+request+" fileName:"+fileName+")");
         request.countOffset();

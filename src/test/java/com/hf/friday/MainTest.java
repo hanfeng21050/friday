@@ -27,4 +27,10 @@ public class MainTest {
         Thread.sleep(3000);
         System.out.println(TokenUtil.verifyToken(s));
     }
+
+    @Test
+    public void test3() throws InterruptedException {
+        String s = "Screenshot_2020-05-05-10-19-58-654_com.tencent.mm.jpg";
+        System.out.println(s.substring(s.lastIndexOf('.')));
+    }
 }

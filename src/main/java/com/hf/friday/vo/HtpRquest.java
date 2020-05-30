@@ -5,13 +5,14 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class PageTableRequest extends BaseVO implements Serializable {
+public class HtpRquest extends BaseVO implements Serializable {
     private Integer page;
     private Integer limit;
     private Integer offset;
     private Integer userId;
     private Integer type;
     private String text;
+    private String token;
 
     public void countOffset(){
         if(null == this.page || null == this.limit){

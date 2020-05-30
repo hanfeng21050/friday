@@ -6,6 +6,7 @@
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="info" jdbcType="VARCHAR" property="info" />
     <result column="target_id" jdbcType="INTEGER" property="targetId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, url, info, target_id, create_time, update_time, `status`
+    id, url, info, target_id, `type`, create_time, update_time, `status`
   </sql>
   <select id="selectByExample" parameterType="com.hf.friday.model.ImageExample" resultMap="BaseResultMap">
     select
@@ -111,11 +112,11 @@
   </delete>
   <insert id="insert" parameterType="com.hf.friday.model.Image">
     insert into image (id, url, info, 
-      target_id, create_time, update_time, 
-      `status`)
+      target_id, `type`, create_time, 
+      update_time, `status`)
     values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
-      #{targetId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=INTEGER})
+      #{targetId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.hf.friday.model.Image">
     insert into image
@@ -131,6 +132,9 @@
       </if>
       <if test="targetId != null">
         target_id,
+      </if>
+      <if test="type != null">
+        `type`,
       </if>
       <if test="createTime != null">
         create_time,
@@ -154,6 +158,9 @@
       </if>
       <if test="targetId != null">
         #{targetId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -187,6 +194,9 @@
       <if test="record.targetId != null">
         target_id = #{record.targetId,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -207,6 +217,7 @@
       url = #{record.url,jdbcType=VARCHAR},
       info = #{record.info,jdbcType=VARCHAR},
       target_id = #{record.targetId,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       `status` = #{record.status,jdbcType=INTEGER}
@@ -226,6 +237,9 @@
       <if test="targetId != null">
         target_id = #{targetId,jdbcType=INTEGER},
       </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -243,6 +257,7 @@
     set url = #{url,jdbcType=VARCHAR},
       info = #{info,jdbcType=VARCHAR},
       target_id = #{targetId,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=INTEGER}

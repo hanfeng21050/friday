@@ -13,9 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -35,7 +33,7 @@ public class ComicController {
      */
     @GetMapping("/list")
     @ResponseBody
-    public Results<Comic> listByPage(PageTableRequest request)
+    public Results<Comic> listByPage(HtpRquest request)
     {
         request.countOffset();
         log.info("ComicController.list() param:(request = "+request+")");
@@ -123,7 +121,7 @@ public class ComicController {
     @ResponseBody
     @PostMapping("/app/imagelist")
     //@PreAuthorize("hasAnyAuthority('comic:query')")
-    public Results<DetailVO> list(@RequestBody PageTableRequest request)
+    public Results<DetailVO> list(@RequestBody HtpRquest request)
     {
 
         log.info("app:ComicController.list() param:(request = "+request+")");
@@ -134,7 +132,7 @@ public class ComicController {
      */
     @ResponseBody
     @PostMapping("/app/getChapter")
-    public Results<Chapter> getChapter(@RequestBody PageTableRequest request)
+    public Results<Chapter> getChapter(@RequestBody HtpRquest request)
     {
         log.info("app:ComicController.list() param:(id = "+request.getId()+")");
         return comicService.getChapter(request.getId());
@@ -147,7 +145,7 @@ public class ComicController {
      */
     @PostMapping("/app/getComic")
     @ResponseBody
-    public Results<ComicVO> getHotComic(@RequestBody PageTableRequest request)
+    public Results<ComicVO> getHotComic(@RequestBody HtpRquest request)
     {
         request.countOffset();
         log.info("app:ComicController.getHotComic() param: (request=" + request +")");
@@ -156,7 +154,7 @@ public class ComicController {
 
     @ResponseBody
     @PostMapping("/app/getComicDetail")
-    public Results<ComicDetailVO> getComicDetail(@RequestBody PageTableRequest request)
+    public Results<ComicDetailVO> getComicDetail(@RequestBody HtpRquest request)
     {
         log.info("app:ComicController.getComicDetail() param:(id = "+request.getId()+")");
         return comicService.getComicDetail(request);
@@ -171,12 +169,11 @@ public class ComicController {
 
     /**
      * 验证token的有效性
-     * @param request
      * @return
      */
     @ResponseBody
     @PostMapping("/verify")
-    public Results verify(@RequestBody PageTableRequest request)
+    public Results verify(@RequestBody HtpRquest request)
     {
         return comicService.verify(request.getToken());
     }
@@ -189,7 +186,7 @@ public class ComicController {
      */
     @PostMapping("/app/addComment")
     @ResponseBody
-    public Results addComment(@RequestBody PageTableRequest request) {
+    public Results addComment(@RequestBody HtpRquest request) {
         return comicService.addComment(request);
     }
 
@@ -200,10 +197,18 @@ public class ComicController {
      */
     @PostMapping("/app/commentList")
     @ResponseBody
-    public Results<CommentVO> getCommentList(@RequestBody PageTableRequest request)
+    public Results<CommentVO> getCommentList(@RequestBody HtpRquest request)
     {
         return comicService.getCommentList(request);
     }
+
+    @PostMapping("/app/cardList")
+    @ResponseBody
+    public Results<CardVO> getCardList(@RequestBody HtpRquest request)
+    {
+        return comicService.getCardList(request);
+    }
+
 
     /**
      * 收藏漫画或者关注某人
@@ -214,9 +219,33 @@ public class ComicController {
      */
     @RequestMapping("/app/collect")
     @ResponseBody
-    public Results collect(@RequestBody PageTableRequest request)
+    public Results collect(@RequestBody HtpRquest request)
     {
         return comicService.collect(request);
     }
 
+
+    /**
+     * 获取帖子详情页的数据
+     * @param request
+     * @return
+     */
+    @RequestMapping("/app/getCardDetail")
+    @ResponseBody
+    public Results<CardVO> getCardDetail(@RequestBody HtpRquest request)
+    {
+        return comicService.getCardDetail(request);
+    }
+
+    /**
+     * 获取用户信息
+     * @param request
+     * @return
+     */
+    @RequestMapping("/app/UserInfo")
+    @ResponseBody
+    public Results<UserCenterVO> getUserInfo(@RequestBody HtpRquest request)
+    {
+       return comicService.getUserInfo(request);
+    }
 }

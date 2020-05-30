@@ -25,4 +25,10 @@ public class Image extends BaseEntity<Integer> {
      * 目标id
      */
     private Integer targetId;
+
+    /**
+     * 类型  0  表示漫画图片.   1表示社区发布图片
+     */
+    private Integer type;
+
 }

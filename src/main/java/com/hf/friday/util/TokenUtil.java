@@ -18,11 +18,11 @@ import java.util.Objects;
  * @Date 2020/4/29 19:40
  */
 public class TokenUtil {
-    private static final byte[] SECRET = "GL62M7RDMSIPCIEGEN.3SSD(OPTIONAL)".getBytes();
+    private static final byte[] SECRET = "GL62M7RDMSIPCI-EGEN.3SSD(OPTIONAL".getBytes();
     /**
      * 过期时间一分重
      */
-    private static final long EXPIRE_TIME = 1000 * 60 * 30;
+    private static final long EXPIRE_TIME = 1000 * 60 * 1;
 
     /**
      * 生成Token

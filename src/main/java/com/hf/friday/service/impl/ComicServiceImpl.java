@@ -9,11 +9,9 @@ import com.hf.friday.dao.*;
 import com.hf.friday.model.*;
 import com.hf.friday.service.ComicService;
 import com.hf.friday.util.StringUtil;
-import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +62,8 @@ public class ComicServiceImpl implements ComicService {
     private UserCommentDAO userCommentDAO;
     @Autowired
     private UserCollectionDAO userCollectionDAO;
+    @Autowired
+    private CardDAO cardDAO;
 
 
     @Override
@@ -79,7 +79,9 @@ public class ComicServiceImpl implements ComicService {
     @Override
     public List<Comic> selectAll()
     {
-        return comicDAO.selectByExample(new ComicExample());
+        ComicExample comicExample = new ComicExample();
+        comicExample.createCriteria().andStatusEqualTo(Constants.VALID);
+        return comicDAO.selectByExample(comicExample);
     }
 
     @Override
@@ -187,7 +189,7 @@ public class ComicServiceImpl implements ComicService {
      * @return
      */
     @Override
-    public Results<DetailVO> list(PageTableRequest request) {
+    public Results<DetailVO> list(HtpRquest request) {
 
         //返回图片
         request.countOffset();
@@ -213,7 +215,7 @@ public class ComicServiceImpl implements ComicService {
      * @return
      */
     @Override
-    public Results<ComicVO> getHotComic(PageTableRequest request) {
+    public Results<ComicVO> getHotComic(HtpRquest request) {
         //type表示取出什么类型的漫画
         if(request.getType() == 1)
         {
@@ -249,7 +251,7 @@ public class ComicServiceImpl implements ComicService {
      * @return
      */
     @Override
-    public Results<ComicDetailVO> getComicDetail(PageTableRequest request) {
+    public Results<ComicDetailVO> getComicDetail(HtpRquest request) {
         Integer id = request.getId();
 
         ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
@@ -275,7 +277,7 @@ public class ComicServiceImpl implements ComicService {
         comicDetailVO.setComic(comic);
 
         //查询玩家是否收藏该漫画
-        Integer userId = TokenUtil.verifyToken(request.getToken());
+        Integer userId = request.getUserId();
         UserCollectionExample userCollectionExample = new UserCollectionExample();
         userCollectionExample.createCriteria().andUserIdEqualTo(userId).andTargetIdEqualTo(id).andTypeEqualTo(Constants.COLLECT_COMIC).andStatusEqualTo(Constants.VALID);
         List<UserCollection> userCollections = userCollectionDAO.selectByExample(userCollectionExample);
@@ -313,7 +315,7 @@ public class ComicServiceImpl implements ComicService {
         if(chapterList != null)
         {
             for (Chapter chapter : chapterList) {
-                chapter.setStatus(!status? 0:null);
+                chapter.setStatus(!status? 0:1);
                 chapterDAO.updateByPrimaryKeySelective(chapter);
             }
         }
@@ -358,7 +360,7 @@ public class ComicServiceImpl implements ComicService {
                 String token = TokenUtil.buildJWT(userByDB.getId().intValue());
                 LoginVO loginVO = new LoginVO();
                 loginVO.setToken(token);
-                loginVO.setId(userByDB.getId().intValue());
+                loginVO.setUser(userByDB);
                 return Results.success("登录成功",loginVO);
             }else
             {
@@ -387,23 +389,24 @@ public class ComicServiceImpl implements ComicService {
     }
 
     @Override
-    public Results addComment(PageTableRequest request) {
+    public Results addComment(HtpRquest request) {
         //获取目标id
         Integer targetId = request.getId();
         //获取发表人id
-        Integer userId = TokenUtil.verifyToken(request.getToken());
+        Integer userId = request.getUserId();
 
         Comment comment = new Comment();
         comment.setUserId(userId);
         comment.setTargetId(targetId);
         comment.setText(request.getText());
+        comment.setType(1);
         int i = commentDAO.insertSelective(comment);
 
         return i == 1 ? Results.success() : Results.failure();
     }
 
     @Override
-    public Results<CommentVO> getCommentList(PageTableRequest request) {
+    public Results<CommentVO> getCommentList(HtpRquest request) {
         request.countOffset();
         //得到目标id
         Integer targetId = request.getId();
@@ -427,7 +430,7 @@ public class ComicServiceImpl implements ComicService {
             //最热排序升序
             example.setOrderByClause("comment.like_num asc");
         }
-        example.createCriteria().andTargetIdEqualTo(targetId).andStatusEqualTo(Constants.VALID);
+        example.createCriteria().andTargetIdEqualTo(targetId).andTypeEqualTo(1).andStatusEqualTo(Constants.VALID);
         //得到评论
         List<Comment> commentList = commentDAO.selectByExample(example);
 
@@ -450,11 +453,10 @@ public class ComicServiceImpl implements ComicService {
     }
 
     @Override
-    public Results collect(PageTableRequest request) {
+    public Results collect(HtpRquest request) {
         int targetId = request.getId();
-        String token = request.getToken();
         //获取当前用户
-        int userId = TokenUtil.verifyToken(token);
+        int userId = request.getUserId();
 
         UserCollectionExample userCollectionExample = new UserCollectionExample();
         userCollectionExample.createCriteria().andUserIdEqualTo(userId).andTargetIdEqualTo(targetId);
@@ -474,5 +476,84 @@ public class ComicServiceImpl implements ComicService {
             i = userCollectionDAO.updateByPrimaryKeySelective(userCollection);
         }
         return Results.success();
+    }
+
+    @Override
+    public Results<CardVO> getCardList(HtpRquest request) {
+        ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
+        Integer userId = request.getUserId();
+        String host = comicConfig.getHost();
+        request.countOffset();
+        CardExample cardExample = new CardExample();
+        cardExample.setOffset((long)request.getOffset());
+        cardExample.setLimit(request.getLimit());
+        cardExample.createCriteria().andStatusEqualTo(Constants.VALID);
+        if(request.getType() == 0)
+        {
+            //帖子最新
+            cardExample.setOrderByClause("card.create_time desc");
+        }else if(request.getType() == 1)
+        {
+            //点赞最多
+            cardExample.setOrderByClause("card.like_num desc");
+        }
+        List<Card> cardList = cardDAO.selectByExample(cardExample);
+        List<CardVO> list = new ArrayList<>();
+        if(cardList != null && cardList.size() >0)
+        {
+            for (Card card : cardList) {
+                CardVO vo = new CardVO();
+
+                SysUser user = userDao.getUserById(card.getUserId().longValue());
+                //通过当前用户id和card用户id
+                if(userId == user.getId().intValue())
+                {
+                    vo.setFollow(true);
+                }
+                ImageExample imageExample  = new ImageExample();
+                imageExample.createCriteria().andTargetIdEqualTo(card.getId()).andTypeEqualTo(1);
+                List<Image> imageList = imageDAO.selectByExample(imageExample);
+
+                vo.setCard(card);
+                vo.setImageList(imageList);
+                vo.setUser(user);
+                vo.setHost(host);
+                list.add(vo);
+            }
+        }
+
+        //count
+        cardExample.clear();
+        cardExample.createCriteria().andStatusEqualTo(Constants.VALID);
+        long count = cardDAO.countByExample(cardExample);
+        return Results.success("success",(int)count,list);
+    }
+
+    @Override
+    public Results<CardVO> getCardDetail(HtpRquest request) {
+        ComicConfig comicConfig = comicConfigDAO.selectByPrimaryKey(Constants.CONFIGID);
+        Card card = cardDAO.selectByPrimaryKey(request.getId());
+        ImageExample imageExample = new ImageExample();
+        imageExample.createCriteria().andTargetIdEqualTo(card.getId()).andTypeEqualTo(1);
+        List<Image> imageList = imageDAO.selectByExample(imageExample);
+
+        SysUser user = userDao.getUserById(card.getUserId().longValue());
+
+        CardVO cardVO = new CardVO();
+        cardVO.setUser(user);
+        cardVO.setCard(card);
+        cardVO.setImageList(imageList);
+        cardVO.setHost(comicConfig.getHost());
+
+        return Results.success("success",cardVO);
+    }
+
+    @Override
+    public Results getUserInfo(HtpRquest request) {
+        Integer userId = request.getUserId();
+        SysUser user = userDao.getUserById(userId.longValue());
+        UserCenterVO userCenterVO = new UserCenterVO();
+        userCenterVO.setSysUser(user);
+        return Results.success(userCenterVO);
     }
 }

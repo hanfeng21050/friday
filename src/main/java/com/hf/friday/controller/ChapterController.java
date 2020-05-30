@@ -1,6 +1,6 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.vo.PageTableRequest;
+import com.hf.friday.vo.HtpRquest;
 import com.hf.friday.base.Results;
 import com.hf.friday.model.Chapter;
 import com.hf.friday.model.Comic;
@@ -28,7 +28,7 @@ public class ChapterController {
      */
     @GetMapping("/list")
     @ResponseBody
-    public Results<Chapter> list(PageTableRequest request)
+    public Results<Chapter> list(HtpRquest request)
     {
         request.countOffset();
         return chapterService.list(request.getOffset(),request.getLimit(),request.getId());

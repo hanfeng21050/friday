@@ -6,6 +6,7 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user2_id" jdbcType="INTEGER" property="user2Id" />
     <result column="target_id" jdbcType="INTEGER" property="targetId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="text" jdbcType="VARCHAR" property="text" />
     <result column="like_num" jdbcType="INTEGER" property="likeNum" />
     <result column="dislike_num" jdbcType="INTEGER" property="dislikeNum" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, user2_id, target_id, `text`, like_num, dislike_num, create_time, update_time, 
-    `status`
+    id, user_id, user2_id, target_id, `type`, `text`, like_num, dislike_num, create_time, 
+    update_time, `status`
   </sql>
   <select id="selectByExample" parameterType="com.hf.friday.model.CommentExample" resultMap="BaseResultMap">
     select
@@ -115,13 +116,13 @@
   </delete>
   <insert id="insert" parameterType="com.hf.friday.model.Comment">
     insert into comment (id, user_id, user2_id, 
-      target_id, `text`, like_num, 
-      dislike_num, create_time, update_time, 
-      `status`)
+      target_id, `type`, `text`, 
+      like_num, dislike_num, create_time, 
+      update_time, `status`)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{user2Id,jdbcType=INTEGER}, 
-      #{targetId,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, #{likeNum,jdbcType=INTEGER}, 
-      #{dislikeNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=INTEGER})
+      #{targetId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, 
+      #{likeNum,jdbcType=INTEGER}, #{dislikeNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.hf.friday.model.Comment">
     insert into comment
@@ -137,6 +138,9 @@
       </if>
       <if test="targetId != null">
         target_id,
+      </if>
+      <if test="type != null">
+        `type`,
       </if>
       <if test="text != null">
         `text`,
@@ -169,6 +173,9 @@
       </if>
       <if test="targetId != null">
         #{targetId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="text != null">
         #{text,jdbcType=VARCHAR},
@@ -211,6 +218,9 @@
       <if test="record.targetId != null">
         target_id = #{record.targetId,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.text != null">
         `text` = #{record.text,jdbcType=VARCHAR},
       </if>
@@ -240,6 +250,7 @@
       user_id = #{record.userId,jdbcType=INTEGER},
       user2_id = #{record.user2Id,jdbcType=INTEGER},
       target_id = #{record.targetId,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=INTEGER},
       `text` = #{record.text,jdbcType=VARCHAR},
       like_num = #{record.likeNum,jdbcType=INTEGER},
       dislike_num = #{record.dislikeNum,jdbcType=INTEGER},
@@ -261,6 +272,9 @@
       </if>
       <if test="targetId != null">
         target_id = #{targetId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
       </if>
       <if test="text != null">
         `text` = #{text,jdbcType=VARCHAR},
@@ -288,6 +302,7 @@
     set user_id = #{userId,jdbcType=INTEGER},
       user2_id = #{user2Id,jdbcType=INTEGER},
       target_id = #{targetId,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
       `text` = #{text,jdbcType=VARCHAR},
       like_num = #{likeNum,jdbcType=INTEGER},
       dislike_num = #{dislikeNum,jdbcType=INTEGER},

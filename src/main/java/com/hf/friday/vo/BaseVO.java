@@ -9,6 +9,5 @@ import lombok.Data;
  */
 @Data
 public class BaseVO {
-    private String token;//登录验证
     private Integer id;
 }

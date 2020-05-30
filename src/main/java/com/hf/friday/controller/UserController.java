@@ -1,6 +1,6 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.vo.PageTableRequest;
+import com.hf.friday.vo.HtpRquest;
 import com.hf.friday.base.ResponseCode;
 import com.hf.friday.base.Results;
 import com.hf.friday.dto.UserDto;
@@ -43,7 +43,7 @@ public class UserController {
     @ApiOperation(value = "分页获取用户信息", notes = "分页获取用户信息")//描述
     @ApiImplicitParam(name = "request", value = "分页查询实体类", required=false)
     @PreAuthorize("hasAuthority('sys:user:query')")
-    public Results<SysUser> list(PageTableRequest request)
+    public Results<SysUser> list(HtpRquest request)
     {
         request.countOffset();
         log.info("UserController.getAll() param:(request = "+request+")");
@@ -180,7 +180,7 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username",value = "模糊搜索的用户名", required = true),
     })
-    public Results findUserByFuzzyUserName(PageTableRequest request,String username)
+    public Results findUserByFuzzyUserName(HtpRquest request, String username)
     {
         log.info("UserController.findUserByFuzzyUserName() param:(request = "+request+" username:"+username+")");
         request.countOffset();

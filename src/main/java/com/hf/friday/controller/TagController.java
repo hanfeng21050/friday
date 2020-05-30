@@ -1,6 +1,6 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.vo.PageTableRequest;
+import com.hf.friday.vo.HtpRquest;
 import com.hf.friday.base.Results;
 import com.hf.friday.model.Tag;
 import com.hf.friday.service.TagService;
@@ -31,7 +31,7 @@ public class TagController {
      */
     @GetMapping("/list")
     @ResponseBody
-    public Results<Tag> listByPage(PageTableRequest request)
+    public Results<Tag> listByPage(HtpRquest request)
     {
         request.countOffset();
         log.info("TagController.list() param:(request = "+request+")");

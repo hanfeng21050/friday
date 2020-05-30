@@ -27,13 +27,13 @@ public interface ComicService {
 
     Results upload(ImageVO imageVO) throws IOException;
 
-    Results<DetailVO> list(PageTableRequest request);
+    Results<DetailVO> list(HtpRquest request);
 
     Results<Chapter> getChapter(int id);
 
-    Results<ComicVO> getHotComic(PageTableRequest request);
+    Results<ComicVO> getHotComic(HtpRquest request);
 
-    Results<ComicDetailVO> getComicDetail(PageTableRequest request);
+    Results<ComicDetailVO> getComicDetail(HtpRquest request);
 
     Results switchStat(Boolean status, Integer id);
 
@@ -43,10 +43,15 @@ public interface ComicService {
 
     Results verify(String token);
 
-    Results addComment(PageTableRequest request);
+    Results addComment(HtpRquest request);
 
-    Results<CommentVO> getCommentList(PageTableRequest request);
+    Results<CommentVO> getCommentList(HtpRquest request);
 
-    Results collect(PageTableRequest request);
+    Results collect(HtpRquest request);
 
+    Results<CardVO> getCardList(HtpRquest request);
+
+    Results<CardVO> getCardDetail(HtpRquest request);
+
+    Results getUserInfo(HtpRquest request);
 }

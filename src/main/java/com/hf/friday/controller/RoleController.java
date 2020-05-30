@@ -1,6 +1,6 @@
 package com.hf.friday.controller;
 
-import com.hf.friday.vo.PageTableRequest;
+import com.hf.friday.vo.HtpRquest;
 import com.hf.friday.base.Results;
 import com.hf.friday.dto.RoleDto;
 import com.hf.friday.model.SysRole;
@@ -55,7 +55,7 @@ public class RoleController {
             @ApiImplicitParam(name = "page", required = true,dataType = "Integer"),
             @ApiImplicitParam(name = "limit", required = true,dataType = "Integer"),
     })
-    public Results<SysRole> list(PageTableRequest request)
+    public Results<SysRole> list(HtpRquest request)
     {
         request.countOffset();
         log.info("RoleController.list() param:(request = "+request+")");
@@ -145,7 +145,7 @@ public class RoleController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleName",value = "模糊搜索的角色名", required = true),
     })
-    public Results findRoleByFuzzyName(PageTableRequest request,String roleName)
+    public Results findRoleByFuzzyName(HtpRquest request, String roleName)
     {
         log.info("RoleController.findRoleByFuzzyName() param:(request = "+request+" ,roleName:"+roleName+")");
         request.countOffset();

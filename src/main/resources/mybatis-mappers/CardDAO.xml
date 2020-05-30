@@ -124,7 +124,7 @@
       #{likeNum,jdbcType=INTEGER}, #{dislikeNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hf.friday.model.Card">
+  <insert id="insertSelective" parameterType="com.hf.friday.model.Card" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
     insert into card
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

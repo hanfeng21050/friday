@@ -11,4 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class FormDataVo extends BaseVO{
     private String text;//帖子内容
+    private Integer userId;
+    
 }

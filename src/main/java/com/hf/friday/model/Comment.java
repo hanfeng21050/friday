@@ -27,6 +27,11 @@ public class Comment  extends BaseEntity<Integer> {
     private Integer targetId;
 
     /**
+     * 1 评论漫画  2评论帖子   3评论其他人的评论
+     */
+    private Integer type;
+
+    /**
      * 评论
      */
     private String text;
