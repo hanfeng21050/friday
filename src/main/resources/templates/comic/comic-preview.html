@@ -11,58 +11,99 @@
 
     </div>
 
+    <div class="swiper-pagination" style="color: white"></div>
 
-    <!-- 如果需要导航按钮 -->
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
 
 </div>
 
+<div id="page" style="text-align: center"></div>
 </body>
 <script>
-
     var id = [[${id}]];
-    console.log(id)
-
+    var mySwiper
+    var length;
+    var curPage = 1
     $.ajax({
         url: "/image/list/" + id,
         type: "GET",
         dataType: 'json',
         success: function (result) {
             let data = result.datas;
+            length = data.length;
             html = ""
-            for (let i = 0; i < data.length; i++) {
+            for (let i = 0; i < length; i++) {
                 if(i === 0)
                 {
-                    html += "<div class=\"swiper-slide\">\n" +
+                    html += "<div class=\"swiper-slide stop-swiping\" >\n" +
                         "            <img src='"+data[i].url+"'>\n" +
                         "        </div>"
                 }else {
-                    html += "<div class='swiper-slide'>\n" +
+                    html += "<div class='swiper-slide stop-swiping'>\n" +
                         "            <img data-src='"+data[i].url+"' class='swiper-lazy'>\n" +
                         "            <div class='swiper-lazy-preloader swiper-lazy-preloader-white'></div>\n" +
                         "        </div>"
                 }
 
             }
-            console.log(html)
             document.getElementById("swiper").innerHTML = html;
-
-            var mySwiper = new Swiper ('.swiper-container', {
+            mySwiper =new Swiper ('.swiper-container', {
                 direction: 'horizontal',
-                // 如果需要前进后退按钮
-                nextButton: '.swiper-button-next',
-                prevButton: '.swiper-button-prev',
-                grabCursor: true,
+                speed:300,
+                pagination: '.swiper-pagination',
+                paginationType : 'bullets',
+                grabCursor : true,
                 autoHeight: true,
                 effect : 'coverflow',
                 slidesPerView: 3,
                 centeredSlides: true,
                 lazyLoading : true,
-                lazyLoadingOnTransitionStart:true
+                lazyLoadingInPrevNext : true,
+                lazyLoadingOnTransitionStart:true,
+                mousewheelControl : true,//滚轮控制
+                zoom:true,
+                onSlideChangeStart: function(swiper){
+                    layui.use(['laypage'], function() {
+                        var laypage = layui.laypage
+                        laypage.render({
+                            elem: 'page'
+                            , count: length
+                            , layout: ['count', 'prev', 'page', 'next', 'skip']
+                            , limit: 1
+                            , curr: swiper.activeIndex + 1
+                            , theme: '#1E9FFF'
+                            , jump: function (obj, first) {
+                                if (!first) {
+                                    curPage = obj.curr;
+                                    mySwiper.slideTo(obj.curr - 1, 1000, false);
+                                }
+                            }
+                        });
+                    })
+                },
+            })
+
+
+            layui.use(['laypage', 'layer'], function() {
+                var laypage = layui.laypage
+                    , layer = layui.layer;
+
+                laypage.render({
+                    elem: 'page'
+                    ,count: length
+                    ,layout: ['count', 'prev', 'page', 'next','skip']
+                    ,limit:1
+                    ,theme: '#1E9FFF'
+                    ,jump: function(obj,first){
+                        if(!first){
+                            curPage = obj.curr;
+                            mySwiper.slideTo(obj.curr -1, 1000, false);
+                        }
+                    }
+                });
             })
         }
     });
+
 </script>
 
 <style>
@@ -72,9 +113,11 @@
     .swiper-slide{
         display: flex;
         justify-content: center;
+        width: 100%;
     }
     img{
-        max-height: 1000px;
+        width: 100%;
+        height: auto;
     }
 </style>
 </html>
