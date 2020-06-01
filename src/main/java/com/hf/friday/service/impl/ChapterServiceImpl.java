@@ -27,8 +27,6 @@ public class ChapterServiceImpl implements ChapterService {
     @Value("${comic.path}")
     private String comicPath;
     @Autowired
-    private ComicDAO comicDAO;
-    @Autowired
     private ChapterDAO chapterDAO;
     @Autowired
     private ImageDAO imageDAO;

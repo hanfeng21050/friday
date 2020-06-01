@@ -64,6 +64,8 @@ public class ComicServiceImpl implements ComicService {
     private UserCollectionDAO userCollectionDAO;
     @Autowired
     private CardDAO cardDAO;
+    @Autowired
+    SwiperImgDAO swiperImgDAO;
 
 
     @Override
@@ -555,5 +557,13 @@ public class ComicServiceImpl implements ComicService {
         UserCenterVO userCenterVO = new UserCenterVO();
         userCenterVO.setSysUser(user);
         return Results.success(userCenterVO);
+    }
+
+    @Override
+    public Results getSwiperImg(){
+        SwiperImgExample example = new SwiperImgExample();
+        example.createCriteria().andStatusEqualTo(Constants.VALID);
+        List<SwiperImg> list = swiperImgDAO.selectByExample(example);
+        return Results.success("success",list.size(),list);
     }
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图片列表</title>
+    <header th:replace="header::html"></header>
+</head>
+<body>
+<div class="swiper-container">
+    <div class="swiper-wrapper" id="swiper">
+
+    </div>
+
+
+    <!-- 如果需要导航按钮 -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+</div>
+
+</body>
+<script>
+
+    var id = [[${id}]];
+    console.log(id)
+
+    $.ajax({
+        url: "/image/list/" + id,
+        type: "GET",
+        dataType: 'json',
+        success: function (result) {
+            let data = result.datas;
+            html = ""
+            for (let i = 0; i < data.length; i++) {
+                if(i === 0)
+                {
+                    html += "<div class=\"swiper-slide\">\n" +
+                        "            <img src='"+data[i].url+"'>\n" +
+                        "        </div>"
+                }else {
+                    html += "<div class='swiper-slide'>\n" +
+                        "            <img data-src='"+data[i].url+"' class='swiper-lazy'>\n" +
+                        "            <div class='swiper-lazy-preloader swiper-lazy-preloader-white'></div>\n" +
+                        "        </div>"
+                }
+
+            }
+            console.log(html)
+            document.getElementById("swiper").innerHTML = html;
+
+            var mySwiper = new Swiper ('.swiper-container', {
+                direction: 'horizontal',
+                // 如果需要前进后退按钮
+                nextButton: '.swiper-button-next',
+                prevButton: '.swiper-button-prev',
+                grabCursor: true,
+                autoHeight: true,
+                effect : 'coverflow',
+                slidesPerView: 3,
+                centeredSlides: true,
+                lazyLoading : true,
+                lazyLoadingOnTransitionStart:true
+            })
+        }
+    });
+</script>
+
+<style>
+    body{
+        background-color: #888;
+    }
+    .swiper-slide{
+        display: flex;
+        justify-content: center;
+    }
+    img{
+        max-height: 1000px;
+    }
+</style>
+</html>

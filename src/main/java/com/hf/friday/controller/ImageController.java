@@ -1,13 +1,12 @@
 package com.hf.friday.controller;
 
 import com.hf.friday.base.Results;
+import com.hf.friday.vo.HtpRquest;
 import com.hf.friday.vo.ImageVO;
 import com.hf.friday.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -25,5 +24,12 @@ public class ImageController {
     @ResponseBody
     public Results upload(ImageVO dto) throws IOException {
        return   imageService.upload(dto);
+    }
+
+
+    @GetMapping("/list/{id}")
+    @ResponseBody
+    public Results selectAllByChapterId(@PathVariable("id") Integer id) throws IOException {
+        return  imageService.selectAllByChapterId(id);
     }
 }

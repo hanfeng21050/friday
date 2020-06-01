@@ -26,7 +26,7 @@
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
                     <button class="layui-btn" onclick="goAdd()" ><i class="layui-icon"></i>新建章节</button>
-                    <button class="layui-btn" onclick="uploadCover()" ck><i class="layui-icon"></i>上传封面</button>
+                    <button class="layui-btn" onclick="uploadCover()"><i class="layui-icon"></i>上传封面</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-hide" id="table" lay-filter="member"></table>
@@ -35,6 +35,7 @@
                 <div class="layui-card-body ">
                     <script type="text/html" id="bar">
                         <a class="layui-btn layui-btn-xs" lay-event="upload" >上传图片</a>
+                        <a class="layui-btn layui-btn-warm" lay-event="preview" >预览</a>
                     </script>
                 </div>
             </div>
@@ -94,6 +95,9 @@
             var data = obj.data;
             if(obj.event === 'upload'){
                 xadmin.open('上传文件','/chapter/upload?id='+data.id)
+            }else if(obj.event === 'preview')
+            {
+                xadmin.open('第'+data.index+'话  '+data.title,'/chapter/preview/' + data.id,'','',true)
             }
         });
 

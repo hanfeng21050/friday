@@ -65,6 +65,17 @@ public class ChapterController {
     }
 
     /**
+     * 跳转到预览页面
+     * @param model
+     * @return
+     */
+    @GetMapping("/preview/{id}")
+    public String addPage(Model model,@PathVariable("id") Integer id){
+        model.addAttribute("id",id);
+        return "comic/comic-preview";
+    }
+
+    /**
      * 添加章节
      * @param chapter
      * @return

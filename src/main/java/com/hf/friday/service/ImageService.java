@@ -1,6 +1,7 @@
 package com.hf.friday.service;
 
 import com.hf.friday.base.Results;
+import com.hf.friday.vo.HtpRquest;
 import com.hf.friday.vo.ImageVO;
 
 import java.io.IOException;
@@ -11,4 +12,6 @@ import java.io.IOException;
  */
 public interface ImageService {
     Results upload(ImageVO dto) throws IOException;
+
+    Results selectAllByChapterId(Integer id);
 }

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户编辑</title>
+    <header th:replace="header::html"></header>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">新增标签</div>
+                <div class="layui-card-body" pad15>
+
+                    <div class="layui-form" lay-filter="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">id</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="不填" disabled name="id" th:value="${swiperImg.id}"  class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">名称</label>
+                            <div class="layui-input-inline">
+                                <input id="name" type="text" th:value="${swiperImg.name}" name="name"  class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">链接</label>
+                            <div class="layui-input-inline">
+                                <input id="url" type="text" th:value="${swiperImg.url}" name="url"  class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">封面</label>
+                            <div class="layui-upload">
+                                <button type="button" class="layui-btn" id="img">上传图片</button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">封面</label>
+                            <img style="width: 120px;" class="layui-upload-img" id="demo1">
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">文本域</label>
+                            <div class="layui-input-block">
+                                <textarea id="description" name="description" placeholder="请输入内容" class="layui-textarea" maxlength="255"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" id="add" lay-submit lay-filter="add">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script></script>
+<script>
+    $(function () {
+        var item = localStorage.getItem("userId");
+        $("#userId").val(item)
+    })
+
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , upload = layui.upload
+        ;
+        var uploadInst = upload.render({
+            elem: '#img'
+            ,url: '/swiper/add' //改成您自己的上传接口
+            ,auto: false
+            ,size: 1024
+            ,accept: 'images'
+            ,bindAction: '#add'
+            ,data:{
+                name:function(){
+                    return $('#name').val();
+                },
+                url:function(){
+                    return $('#url').val();
+                },
+                description:function(){
+                    return $('#description').val();
+                }
+            }
+            ,choose: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                if(res.code == 200){
+                    layer.alert("设置成功", {icon: 6}, function () {
+                        //关闭当前frame
+                        xadmin.close();
+                        // 可以对父窗口进行刷新
+                        xadmin.father_reload();
+                    });
+                }else {
+                    return layer.msg('添加失败');
+                }
+                //上传成功
+            }
+            ,error: function(){
+
+            }
+        });
+
+
+        //监听提交
+        /*form.on('submit(add)', function (data) {
+            $.ajax({
+                url: "/tag/add",
+                type: "POST",
+                data: data.field,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.code == 500 || result.code == 5000100 || result.code == 5000101 || result.code == 5000102) {
+                        layer.alert(result.msg);
+                    } else {
+                        layer.alert("设置成功", {icon: 6}, function () {
+                            //关闭当前frame
+                            xadmin.close();
+                            // 可以对父窗口进行刷新
+                            xadmin.father_reload();
+                        });
+                    }
+
+                }
+            });
+            return false;
+        });*/
+
+    });
+</script>
+</body>
+</html>

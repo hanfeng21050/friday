@@ -54,4 +54,7 @@ public interface ComicService {
     Results<CardVO> getCardDetail(HtpRquest request);
 
     Results getUserInfo(HtpRquest request);
+
+    Results getSwiperImg();
+
 }

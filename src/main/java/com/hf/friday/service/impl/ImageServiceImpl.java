@@ -1,9 +1,12 @@
 package com.hf.friday.service.impl;
 
+import com.hf.friday.base.Constants;
 import com.hf.friday.base.Results;
 import com.hf.friday.dao.ChapterDAO;
 import com.hf.friday.dao.ComicDAO;
 import com.hf.friday.dao.ImageDAO;
+import com.hf.friday.model.ImageExample;
+import com.hf.friday.vo.HtpRquest;
 import com.hf.friday.vo.ImageVO;
 import com.hf.friday.model.Chapter;
 import com.hf.friday.model.Comic;
@@ -21,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author CoolWind
@@ -75,5 +79,14 @@ public  class ImageServiceImpl implements ImageService {
 
         int y = chapterDAO.updateByPrimaryKeySelective(chapter);
         return x == 1 ? Results.success() : Results.failure();
+    }
+
+    @Override
+    public Results selectAllByChapterId(Integer id) {
+        ImageExample example = new ImageExample();
+        example.setOrderByClause("url asc");
+        example.createCriteria().andTypeEqualTo(0).andTargetIdEqualTo(id);
+        List<Image> imageList = imageDao.selectByExample(example);
+        return Results.success("success",imageList.size(),imageList);
     }
 }

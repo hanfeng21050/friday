@@ -15,4 +15,6 @@ public class ImageVO extends BaseVO{
     private MultipartFile file;
     private Integer id;
     private String name;
+    private String url;
+    private String description;
 }

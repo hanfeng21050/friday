@@ -248,4 +248,16 @@ public class ComicController {
     {
        return comicService.getUserInfo(request);
     }
+
+
+    /**
+     * 获取轮播图
+     * @return
+     */
+    @GetMapping("/app/getSwiperImg")
+    @ResponseBody
+    public Results getSwiperImg()
+    {
+        return comicService.getSwiperImg();
+    }
 }
